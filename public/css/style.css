@@ -2,26 +2,39 @@
     flame = #e35c1a
     eerie black = #1d181a
     rgba(242, 121, 53)
+     orange #e67e22
 */
 
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+html,body {
+    font-family: 'Lato','Arial',sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+    height: 100%;
 }
 
 /* -----------------Header------------ */
-/* body {
-    //background with an image
+body {
+    /* background with an image */
     background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0, 0, 0, 0.7)),url("../img/background.jpeg");
     background-position: center;
     background-size: cover;
-    background-attachment: fixed;
-} */
+    background-attachment: fixed;   
+    background-repeat: no-repeat;
+}
 
+/* 
 body {
     background-image: linear-gradient(90deg,rgba(242, 121, 53,0.9),rgba(242, 121, 53,1));
     font-family: 'Lato', sans-serif;
-}
+} */
 
 /*-----------------Navigation----------------*/
 /* navbar */
@@ -125,3 +138,86 @@ body {
 .hidden {
     visibility: hidden;
 } */
+
+.main-nav {
+    float:right;
+    list-style: none;
+    margin-top: 55px;
+}
+
+.main-nav li{
+    display: inline-block;
+    margin-left: 40px;
+}
+
+
+.main-nav li a:link,
+.main-nav li a:visited{
+    padding : 8px 0;
+    color:#fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 90%;
+    border-bottom: 2px solid transparent;
+    transition:border-bottom 0.2s;
+}
+
+.main-nav li a:hover,
+.main-nav li a:active{
+    border-bottom:2px solid #e67e22;
+}
+
+.btn:link ,
+.btn:visited{
+    display: inline-block;
+    padding : 10px 30px;
+    width: 12rem;
+    font-size: 1rem;
+    font-weight: 300;
+    text-decoration: none;
+    border-radius: 200px;
+    color:#fff;
+    transform: translate(120px);
+    transition: background-color 0.2s, border 0.2s, color 0.2s;
+
+}
+
+.btn-full:link,
+.btn-full:visited{
+    background-color: #e67e22;
+    border:1px solid #e67e22;
+    color:#fff;
+    margin-right: 15px;
+}
+
+.btn:hover,
+.btn:active{
+    background-color:#cf6d17;
+}
+
+.btn-full:hover,
+.btn-full:active
+{
+    border:1px solid #cf6d17;
+    
+}
+
+.hero-text-box {
+    position: absolute;
+    color: #fff;
+    width: 1140px;
+    top:50%;
+    left:50%;
+    text-transform: uppercase;
+    font-size: 250%;
+    /* transform: translate(-25%,-30%); */
+    transform: translate(-25%,-50%);
+}
+
+.main-nav > li >  a.active {
+    color: #e67e22;
+}
+
+.hidden {
+    visibility: hidden;
+}
