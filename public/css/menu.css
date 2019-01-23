@@ -26,7 +26,7 @@ html,body {
     overflow-x: hidden;
     height: 100%;
     /* background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);  */ 
-    background-image: linear-gradient(120deg, #F44336 0%, #ffcdd2 100%);  
+    /* background-image: linear-gradient(120deg, #F44336 0%, #ffcdd2 100%);   */
 }
 
 .navbar-default {
@@ -74,38 +74,59 @@ html,body {
 }
 
 .container.menu-form {
-    background: #ffcdd2;
+    color:#212121;
 }
 
 .cuisine {
     text-align: center;
 }
 
-/* .img-responsive {
-    max-width: 60%;
-    border: 1px solid#ddd;
-    width: 70%;
-    height: 100%;
-    background: #fff;
-    padding: 6px;
-    margin: 0 auto; 
-} */
-
-/* figcaption {
-    padding: 6px;
-    margin: 0 auto;
-} */
-
-/* 
-dt {
-    margin: 0 auto;
+h3{
+    font-size: 1.7em;
 }
 
-dd{
-    text-indent: 20px;
-    letter-spacing: 1px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-wrap: break-word;
-    text-align: justify;
+.cuisine-choice {
+    list-style-type: none;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.cuisine-choice > li{
+    display: inline;
+    text-transform: uppercase;
+    padding: 0 10px;
+}
+
+.cuisine-choice > li > a{
+    color: #757575;
+    text-decoration: none;
+}
+
+.cuisine-choice > li > a:hover {
+    color: #D32F2F;
+}
+
+.cuisine-choice > li > a.cuisine-active{
+    color: #212121;
+}
+
+
+/* .col-md-4 {
+    border:3px solid red;
 } */
+
+.Title {
+    text-align: center;
+    text-transform: capitalize;
+    margin: 3px;
+}
+
+.Description,
+.Price {
+    font-size: 0.9em;
+}
+
+.btn {
+    font-size: 80%;
+    margin: 5px;
+}
