@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Top Foods</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,300i,400" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./css/order.css"/>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                <a class="navbar-brand" href="#"><i class="fa fa-cutlery"></i> &nbsp TopFoods</a>
+                </div>
+                <ul class="nav navbar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact Us</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="signup.html"><i class="fa fa-user-plus"></i> Sign Up </a></li> 
+                    <li  class="active"><a href="signin.html"><i class="fa fa-sign-in"></i> Sign In </a></li>  
+                    <li><a href="#" class="hidden"><i class="fa fa-user" ></i> Profile </a></li>                    
+                    <li><a href="#" class="hidden"><i class="fa fa-sign-out" ></i> Sign Out </a></li>                    
+                </ul>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <form>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    <input type="text" name="name" id="name" class="form-control input-lg" placeholder="Enter Name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="phone-number">Phone Number</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+                    <input type="text" name="phone-number" id="phone-number" class="form-control input-lg" placeholder="Enter Phone Number">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                    <input type="email" name="email" id="email" class="form-control input-lg" placeholder="Enter Email" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ddress">Address</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-address-card"></i></span>
+                    <textarea name="address" id="address" class="form-control input-lg" placeholder="Enter Address" cols="30" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+                <button type="reset" class="btn btn-default btn-lg">Clear</button>    
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

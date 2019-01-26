@@ -56,10 +56,62 @@ html,body {
     font-size: 20px;
 }
 .navbar-default .navbar-nav > li > a:hover,
-.navbar-default .navbar-nav > li > a:focus {
-    /* color: #000; */
-    color: #212121;
+.   background:#fff;
+    transition: 0.2s;
+}
+
+/* Active */
+.nav.navbar-nav .active a{
+    color: #fff;
+    background: #000;
+}
+
+.nav.navbar-nav .active a:hover{
+    color: #000;
+    background: #fff;
+}navbar-default .navbar-nav > li > a:focus {
     background:#fff;
+    transition: 0.2s;
+}
+
+/* Active */
+.nav.navbar-nav .active a{
+    color: #fff;
+    background: #000;
+}
+
+.nav.navbar-nav .active a:hover{
+    color: #000;
+    background: #fff;
+}   /* color: #000; */
+    background:#fff;
+    transition: 0.2s;
+}
+
+/* Active */
+.nav.navbar-nav .active a{
+    color: #fff;
+    background: #000;
+}
+
+.nav.navbar-nav .active a:hover{
+    color: #000;
+    background: #fff;
+}   color: #212121;
+    background:#fff;
+    transition: 0.2s;
+}
+
+/* Active */
+.nav.navbar-nav .active a{
+    color: #fff;
+    background: #000;
+}
+
+.nav.navbar-nav .active a:hover{
+    color: #000;
+    background: #fff;
+}   background:#fff;
     transition: 0.2s;
 }
 
