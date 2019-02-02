@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Lato:100,300,300i,400" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="./css/cart.css"/>
+    <!-- <link rel="stylesheet" type="text/css" href="./css/cart.css"/> -->
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 
@@ -36,10 +37,10 @@
     <hr>
 
     <div class="container">
-        <div class="row">
+        <div class="row cart-item">
             <div class="col-md-3">
                 <div class="thumbnail">
-                    <img src="./img/Indian/Chapati.jpg" alt="Chapati">
+                    <img src="./img/Indian/Chapati.jpg" class="food-image" alt="Chapati">
                 </div>
             </div>
             <div class="col-md-6">
@@ -51,7 +52,7 @@
                 <br>
                 <p>
                     10.00 &#8360 &nbsp; x &nbsp;&nbsp;&nbsp;   
-                    <input type="number" name="quantity">
+                    <input type="number" name="quantity" class="quantity-box">
                     &nbsp;&nbsp;&nbsp;
                 </p>
                 <i class="fa fa-trash" aria-hidden="true"></i>
@@ -62,8 +63,8 @@
         <br>
 
         <div class="row">
-            <button class="btn btn-success btn-lg">Checkout</button>
-            <button class="btn btn-default btn-lg">Empty Cart</button>
+            <button class="btn btn-success btn-lg check-out-button">Checkout</button>
+            <button class="btn btn-default btn-lg empty-cart-button">Empty Cart</button>
         </div>
     </div>
 
