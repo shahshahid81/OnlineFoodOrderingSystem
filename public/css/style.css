@@ -23,8 +23,7 @@
 
 html,body {
     font-family: 'Lato','Arial',sans-serif;
-    font-weight: 300;
-    /* font-weight: 400; */
+    font-weight: 400;
     font-size: 20px;
     color: #212121;
     text-rendering: optimizeLegibility;
@@ -184,7 +183,7 @@ body.main{
 .category-choice {
     list-style-type: none;
     text-align: center;
-    font-size: 1.2em;
+    font-size: 1.1em;
 }
 
 .category-choice > li{
