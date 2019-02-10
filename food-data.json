@@ -332,56 +332,56 @@
         "Name" : "Gulab Jamun",
         "Description" : "Deep fried milk confection in sweet syrup (3 pieces).",
         "Price" : 35.00,
-        "Category" : "Desserts",
+        "Category" : "Dessert",
         "ImagePath" : "/img/Food/GULAB JAMUN.jpg"
     },
     {
         "Name" : "Kheer",
         "Description" : "Rice cooked in flavoured milk with nuts and cardamon, served cold.",
         "Price" : 45.00,
-        "Category" : "Desserts",
+        "Category" : "Dessert",
         "ImagePath" : "/img/Food/KHEER.jpg"
     },
     {
         "Name" : "Kulfi",
         "Description" : "Homemade sweetened milk ice cream, choice of mango or pistachio.",
         "Price" : 45.00,
-        "Category" : "Desserts",
+        "Category" : "Dessert",
         "ImagePath" : "/img/Food/KULFI.jpg"
     },
     {
         "Name" : "Gajar Halwa",
         "Description" : "Grated carrots cooked in milk and butter.",
         "Price" : 45.00,
-        "Category" : "Desserts",
+        "Category" : "Dessert",
         "ImagePath" : "/img/Food/GAJAR HALWA.jpg"
     },
     {
         "Name" : "Lassi",
         "Description" : "Cold sweetened yogurt drink.",
         "Price" : 30.00,
-        "Category" : "Beverages",
+        "Category" : "Beverage",
         "ImagePath" : "/img/Food/LASSI.jpg"
     },
     {
         "Name" : "Mango Juice",
         "Description" : "Juice made of fresh mango pulp.",
         "Price" : 30.00,
-        "Category" : "Beverages",
+        "Category" : "Beverage",
         "ImagePath" : "/img/Food/MANGO JUICE.jpg"
     },
     {
         "Name" : "Chai",
         "Description" : "",
         "Price" : 20.00,
-        "Category" : "Beverages",
+        "Category" : "Beverage",
         "ImagePath" : "/img/Food/CHAI.jpg"
     },
     {
         "Name" : "Cold Drink",
         "Description" : "Coke, Sprite, Fanta, Thums Up, Pepsi",
         "Price" : 50.00,
-        "Category" : "Beverages",
+        "Category" : "Beverage",
         "ImagePath" : "/img/Food/COLD DRINK.jpg"
     }
 ]

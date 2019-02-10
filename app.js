@@ -6,6 +6,8 @@ const Food = require("./models/food");
 
 const app = express();
 
+const port = 2000;
+
 mongoose.connect("mongodb://127.0.0.1:27017/foodDB",{ useNewUrlParser:true },function(err){
 	if(err){
 		console.log(err);
@@ -23,23 +25,39 @@ app.get('/',function(req,res){
 });
 
 app.get('/menu',function(req,res){
-	Food.find({Category:"Chicken"},function(err,allFoods){
-		if(err){
-			console.log(err);
-		}else{
-			res.render("menu",{Foods:allFoods});
-		}
-	});
+	var itemCategory = req.query.item;
+	if(itemCategory){
+
+		Food.find({Category:itemCategory},function(err,allFoods){
+			if(err){
+				console.log(err);
+			}else{
+				res.render("partials/menu-item",{Foods:allFoods});
+			}
+		});
+
+	} else {
+
+		Food.find({Category:"Chicken"},function(err,allFoods){
+			if(err){
+				console.log(err);
+			}else{
+				res.render("menu",{Foods:allFoods});
+			}
+		});
+
+	}
 });
 
 app.get('*',function(req,res){
 	res.send("page not found");
 });
 
-app.listen(3000,function(err){
+app.listen(port,function(err){
 	if(err){
 		console.log(err);
 	}else{
 		console.log('Server Started.....');
 	}
 });
+

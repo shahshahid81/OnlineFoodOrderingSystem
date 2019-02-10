@@ -9,47 +9,27 @@
 
             <div class="row">
                 <ul class="category-choice">
-                    <li><a href="#" class="category-active">Chicken</a></li>
-                    <li><a href="#">Seafood</a></li>
-                    <li><a href="#">Appetizers</a></li>
-                    <li><a href="#">Rice</a></li>
-                    <li><a href="#">Bread</a></li>
-                    <li><a href="#">Vegetable</a></li>
-                    <li><a href="#">Drinks</a></li>
-                    <li><a href="#">Dessert</a></li>
+                <li><a href="#">Chicken</a></li>
+                <li><a href="#">Seafood</a></li>
+                <li><a href="#">Appetizers</a></li>
+                <li><a href="#">Rice</a></li>
+                <li><a href="#">Bread</a></li>
+                <li><a href="#">Vegetable</a></li>
+                <li><a href="#">Beverage</a></li>
+                <li><a href="#">Dessert</a></li>
                 </ul>
             </div>
 
             <hr>
 
-            <% Foods.forEach(function(food,index){ %>
-               
-
-
-                <div class="col-md-3">
-                    <div class="row Item">
-                        <div class="thumbnail">
-                            <img src="<%= food.ImagePath %>" alt="<%= food.Name %>" class="img-thumbnail img-responsive">
-                            <div class="caption">
-                                <p class="Title"><strong> <%= food.Name %> </strong></p>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <p class="Description"> <%= food.Description %> </p>
-                            <p class="Price"> <strong> &nbsp <%= food.Price %> &#8360  </strong>  </p>
-                            <button class="btn btn-primary add-to-cart">Add to Cart</button>
-                            <button class="btn btn-success order-online">Order Online</button> 
-                        </div>
-                    </div>
-                </div>
-
-               
-            <% }); %>
+            <% include partials/menu-item %>
 
         </div>
-                
+
     </div>
 </section>
+
+<script src="/js/menu.js"></script>
 
 <% include partials/footer%>
 
