@@ -1,0 +1,51 @@
+<% include partials/header.ejs%>
+
+<% include partials/navigation.ejs%>
+
+<div class="container">
+    <form action="/signup" method="post" class="sign-up-form">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <input type="text" name="name" id="name" class="form-control input-lg" placeholder="Enter Name" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="phone-number">Phone Number</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+                <input type="text" name="phone-number" id="phone-number" class="form-control input-lg" minlength="1" maxlength="10" placeholder="Enter Phone Number" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                <input type="email" name="email" id="email" class="form-control input-lg" placeholder="Enter Email" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                <input type="password" name="password" id="password" minlength="6" maxlength="32" class="form-control input-lg" placeholder="Enter Password" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="confirm-password">Confirm Password</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                <input type="password" name="confirm-password" id="confirm-password" minlength="6" maxlength="32" class="form-control input-lg" placeholder="Enter Password Again" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-lg sign-up-button">Sign Up</button>
+            <button type="reset" class="btn btn-default btn-lg clear-button">Clear</button>    
+        </div>
+    </form>
+</div>
+
+<script src="/js/signup.js"></script>
+
+<% include partials/footer.ejs %>

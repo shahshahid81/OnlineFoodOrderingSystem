@@ -1,12 +1,14 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const Food = require("./models/food");
+const User = require("./models/user");
 
 const app = express();
 
-const port = 2000;
+const port = 3000;
 
 mongoose.connect("mongodb://127.0.0.1:27017/foodDB",{ useNewUrlParser:true },function(err){
 	if(err){
@@ -17,6 +19,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/foodDB",{ useNewUrlParser:true },fun
 	}
 });
 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.set('view engine','ejs');
 
@@ -47,6 +50,30 @@ app.get('/menu',function(req,res){
 		});
 
 	}
+});
+
+app.get('/signup',function(req,res){
+	res.render("signup");
+});
+
+app.post('/signup',function(req,res){
+	console.log(req.body);
+	const Name = req.body.name;
+	const EmailAddress = req.body.email;
+	const Password = req.body.password;
+	const PhoneNumber = req.body['phone-number'];
+	User.create({
+		Name,
+		EmailAddress,
+		Password,
+		PhoneNumber
+	},function(err){
+		if(err){
+			console.log(err);
+		} else {
+			res.redirect('signin');
+		}
+	});
 });
 
 app.get('*',function(req,res){
