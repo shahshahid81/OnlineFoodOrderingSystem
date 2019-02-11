@@ -1,0 +1,36 @@
+<% include partials/header%>
+
+<% include partials/navigation%>
+
+
+<div class="container">
+
+    <% if( errors && errors.length > 0 ) {%>
+        <div class="alert alert-danger" role="alert"><%= errors %></div>
+    <% } %>
+
+    <form class="sign-in-form" method="post">
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                <input type="email" name="email" id="email" class="form-control input-lg" placeholder="Enter Email" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                <input type="password" name="password" id="password" minlength="6" maxlength="32" class="form-control input-lg" placeholder="Enter Password" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-lg sign-in-button">Sign In</button>
+            <button type="reset" class="btn btn-default btn-lg clear-button">Clear</button>    
+        </div>
+    </form>
+</div>
+
+<script src="/js/signin.js"></script>
+
+<% include partials/footer%>

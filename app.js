@@ -90,6 +90,27 @@ app.post('/signup',function(req,res){
 	});
 });
 
+app.get('/signin',function(req,res){
+	res.render('signin');
+});
+
+app.post('/signin',function(req,res){
+	const EmailAddress = req.body.email;
+	const Password = req.body.password;
+	User.find({EmailAddress,Password},function(err,doc){
+		if(err){
+			console.log(err);
+		} else {
+			if(doc.EmailAddress === EmailAddress){
+				res.redirect("/menu");
+			} else {
+				req.flash('error','Password not matching');
+				res.redirect("/signin");
+			}
+		}
+	});
+});
+
 app.get('*',function(req,res){
 	res.send("page not found");
 });
