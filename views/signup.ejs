@@ -3,6 +3,11 @@
 <% include partials/navigation.ejs%>
 
 <div class="container">
+
+    <% if( errors && errors.length > 0 ) {%>
+    <div class="alert alert-danger" role="alert"><%= errors %></div>
+    <% } %>
+
     <form action="/signup" method="post" class="sign-up-form">
         <div class="form-group">
             <label for="name">Name</label>

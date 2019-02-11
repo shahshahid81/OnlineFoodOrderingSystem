@@ -1,7 +1,9 @@
 const express = require('express');
-const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
 
 const Food = require("./models/food");
 const User = require("./models/user");
@@ -17,6 +19,16 @@ mongoose.connect("mongodb://127.0.0.1:27017/foodDB",{ useNewUrlParser:true },fun
 	else{
 		console.log('connected');
 	}
+});
+
+app.use(cookieParser());
+app.use(session({cookie: { maxAge: 60000 },resave:true,saveUninitialized:true,secret : 'secret'}));
+app.use(flash());
+
+app.use(function(req, res, next){
+    res.locals.success = req.flash('success');
+    res.locals.errors = req.flash('error');
+    next();
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -48,7 +60,7 @@ app.get('/menu',function(req,res){
 				res.render("menu",{Foods:allFoods});
 			}
 		});
-
+		
 	}
 });
 
@@ -70,6 +82,8 @@ app.post('/signup',function(req,res){
 	},function(err){
 		if(err){
 			console.log(err);
+			req.flash('error','An error occured!');
+			res.redirect('signup');
 		} else {
 			res.redirect('signin');
 		}
