@@ -4,9 +4,8 @@
 
 <div class="container">
 
-    <% if( errors && errors.length > 0 ) {%>
-    <div class="alert alert-danger" role="alert"><%= errors %></div>
-    <% } %>
+    <% include partials/_messages%>
+
 
     <form action="/signup" method="post" class="sign-up-form">
         <div class="form-group">
