@@ -11,10 +11,13 @@
             <li><a href="/contactus" id="contact-us">Contact Us</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <% if(!user) {%>
                 <li><a href="/signup" id="signup"><i class="fa fa-user-plus"></i> Sign Up </a></li> 
                 <li><a href="/signin" id="signin"><i class="fa fa-sign-in"></i> Sign In </a></li>  
-                <li><a href="#" class="hidden"><i class="fa fa-user"></i> Profile </a></li>
-                <li><a href="#" class="hidden"><i class="fa fa-sign-out" ></i> Sign Out </a></li>                    
+                <% } else { %>
+                <li><a href="/profile"><i class="fa fa-user"></i> Profile </a></li>
+                <li><a href="/signout"><i class="fa fa-sign-out" ></i> Sign Out </a></li>                    
+                <% } %>
             </ul>
         </div>
     </nav>
