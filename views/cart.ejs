@@ -1,0 +1,47 @@
+<% include partials/header%>
+
+<% include partials/navigation%>
+
+    <hr>
+
+    <div class="container">
+
+        <% cartItems.forEach(function(current){ %>
+        
+            <div class="row cart-item">
+            
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <img src="<%= current.ImagePath %>" class="food-image" alt="<%= current.Name %>">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h3> <%= current.Name %> </h3>
+                    <p class="description"> <%= current.Description %>  </p>
+                </div>
+                <div class="col-md-3">
+                    <br>
+                    <br>
+                    <p>
+                        <%= current.Price %> &#8360 &nbsp; x &nbsp;&nbsp;&nbsp;   
+                        <input type="number" name="quantity" class="quantity-box">
+                        &nbsp;&nbsp;&nbsp;
+                    </p>
+                    <i class="fa fa-trash"></i>
+                    <br>
+                </div>
+
+            </div>
+
+        <% }) %>
+
+    <br>
+
+    <div class="row">
+        <button class="btn btn-success btn-lg check-out-button">Checkout</button>
+        <button class="btn btn-default btn-lg empty-cart-button">Empty Cart</button>
+    </div>
+
+    </div>
+
+<% include partials/footer%>

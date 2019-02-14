@@ -16,8 +16,10 @@
                     <div class="col-md-12">
                         <p class="Description"> <%= food.Description %> </p>
                         <p class="Price"> <strong> &nbsp <%= food.Price %> &#8360  </strong>  </p>
-                        <button class="btn btn-primary add-to-cart">Add to Cart</button>
-                        <button class="btn btn-success order-online">Order Online</button> 
+                        <form>
+                        <button class="btn btn-primary add-to-cart" onclick='addToCart(event,"<%= food.Name %>")'> Add to Cart</button>
+                        <button class="btn btn-success order-online" formMethod="post" onclick='orderOnline()'>Order Online</button> 
+                        </form>
                     </div>
                 </div>
             </div>

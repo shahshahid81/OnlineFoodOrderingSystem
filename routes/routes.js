@@ -13,9 +13,41 @@ router.get('/',function(req,res){
 });
 
 router.get('/menu',function(req,res){
-	var itemCategory = req.query.item;
-	if(itemCategory){
+	// var itemCategory = req.query.item;
+	// if(itemCategory){
 
+	// 	Food.find({Category:itemCategory},function(err,allFoods){
+	// 		if(err){
+	// 			console.log(err);
+	// 		}else{
+	// 			res.render("partials/menu-item",{Foods:allFoods});
+	// 		}
+	// 	});
+
+	// } else {
+
+	// 	Food.find({Category:"Chicken"},function(err,allFoods){
+	// 		if(err){
+	// 			console.log(err);
+	// 		}else{
+	// 			res.render("menu",{Foods:allFoods});
+	// 		}
+	// 	});
+		
+	// }
+
+	var itemCategory = req.query.item;
+	var visited = req.get('visited');
+
+	if(!itemCategory){
+		Food.find({Category:"Chicken"},function(err,allFoods){
+			if(err){
+			console.log(err);
+			}else{
+			res.render("menu",{Foods:allFoods});
+			}
+		});
+	} else if(itemCategory && visited === 'true') {
 		Food.find({Category:itemCategory},function(err,allFoods){
 			if(err){
 				console.log(err);
@@ -23,17 +55,14 @@ router.get('/menu',function(req,res){
 				res.render("partials/menu-item",{Foods:allFoods});
 			}
 		});
-
-	} else {
-
-		Food.find({Category:"Chicken"},function(err,allFoods){
+	} else if(itemCategory && visited !== 'true'){
+		Food.find({Category : itemCategory},function(err,allFoods){
 			if(err){
 				console.log(err);
-			}else{
-				res.render("menu",{Foods:allFoods});
+			} else {
+				res.render('menu',{Foods : allFoods});
 			}
 		});
-		
 	}
 });
 
@@ -75,14 +104,40 @@ router.post('/signin',
 		failureFlash : true
 }));
 
-router.get('/cart',middleware.isLoggedIn,function(req,res){
-    res.send('cart');
+router.post('/cart',middleware.isLoggedIn,function(req,res){
+	var items = JSON.parse(req.query.items);
+
+	var cartItems = [];
+
+	items.forEach(function(current){
+		Food.findOne({Name:current},function(err,item){
+			if(err){
+				console.log(err);
+			} else{
+				cartItems.push(item);
+			}
+		});
+	});
+
+	res.render('cart',{cartItems:cartItems});
 });
 
 
 router.get('/signout', function(req, res){
-	req.logout();
+req.logout();
   res.redirect('/menu');
+});
+
+router.get('/profile',function(req,res){
+	res.send('profile');
+});
+
+router.get('/cart',function(req,res){
+	res.render('cart');
+});
+
+router.get('/order',function(req,res){
+	res.send('order');
 });
 
 router.get('*',function(req,res){
