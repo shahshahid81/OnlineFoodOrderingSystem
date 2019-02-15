@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+// const Promise = require('promise');
 
 const router  = express.Router();
 
@@ -13,28 +14,6 @@ router.get('/',function(req,res){
 });
 
 router.get('/menu',function(req,res){
-	// var itemCategory = req.query.item;
-	// if(itemCategory){
-
-	// 	Food.find({Category:itemCategory},function(err,allFoods){
-	// 		if(err){
-	// 			console.log(err);
-	// 		}else{
-	// 			res.render("partials/menu-item",{Foods:allFoods});
-	// 		}
-	// 	});
-
-	// } else {
-
-	// 	Food.find({Category:"Chicken"},function(err,allFoods){
-	// 		if(err){
-	// 			console.log(err);
-	// 		}else{
-	// 			res.render("menu",{Foods:allFoods});
-	// 		}
-	// 	});
-		
-	// }
 
 	var itemCategory = req.query.item;
 	var visited = req.get('visited');
@@ -104,28 +83,53 @@ router.post('/signin',
 		failureFlash : true
 }));
 
+// router.post('/cart',middleware.isLoggedIn,function(req,res){
+// 	var items = JSON.parse(req.query.items);
+
+// 	var cartItems = [];
+
+// 	items.forEach(function(current){
+// 		Food.findOne({Name:current},function(err,item){
+// 			if(err){
+// 				console.log(err);
+// 			} else{
+// 				console.log(item);
+// 				cartItems.push(item);
+// 			}
+// 		});
+// 	});
+
+// 	res.render('cart',{cartItems:cartItems});
+
+// });
+
 router.post('/cart',middleware.isLoggedIn,function(req,res){
+
 	var items = JSON.parse(req.query.items);
 
-	var cartItems = [];
-
-	items.forEach(function(current){
-		Food.findOne({Name:current},function(err,item){
-			if(err){
-				console.log(err);
-			} else{
-				cartItems.push(item);
-			}
+	var cartItems = items.map(function(current){
+		return new Promise(function(resolve,reject){
+			Food.findOne({Name : current},function(err,item){
+				if(err){
+					reject();
+				}
+				resolve(item);
+			});
 		});
 	});
 
-	res.render('cart',{cartItems:cartItems});
+	Promise.all(cartItems)
+	.then(function(items){
+		res.render('cart', {cartItems : items});
+	});
+
 });
 
 
+
 router.get('/signout', function(req, res){
-req.logout();
-  res.redirect('/menu');
+	req.logout();
+	res.redirect('/menu');
 });
 
 router.get('/profile',function(req,res){
