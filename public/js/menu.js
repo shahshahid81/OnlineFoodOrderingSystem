@@ -108,6 +108,19 @@ var cart = [];
 
 function addToCart(event,name){
     event.preventDefault();
+    cartToggle(name);
+}
+
+function orderOnline(name){
+    cartToggle(name);
+    window.history.replaceState("","","/cart?items="+JSON.stringify(cart));
+}
+
+function capitalize(str){
+    return str.charAt(0)+str.slice(1).toLowerCase();
+}
+
+function cartToggle(name){
     if(cart.indexOf(name) === -1){
         cart.push(name);
         event.target.innerText = "Remove from Cart";
@@ -115,15 +128,6 @@ function addToCart(event,name){
         cart.pop(name);
         event.target.innerText = "Add to Cart";
     }
-    console.log(cart);
-}
-
-function orderOnline(){
-    window.history.replaceState("","","/cart?items="+JSON.stringify(cart));   
-}
-
-function capitalize(str){
-    return str.charAt(0)+str.slice(1).toLowerCase();
 }
 
 pageInit();

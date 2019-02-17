@@ -8,6 +8,7 @@ const Food = require("../models/food");
 const User = require("../models/user");
 const middleware = require('../middleware/middelware');
 
+var savedItems ;
 
 router.get('/',function(req,res){
 	res.render('index');
@@ -77,31 +78,15 @@ router.get('/signin',function(req,res){
 });
 
 router.post('/signin',
-	passport.authenticate("local",{
-		successRedirect : '/menu',
-		failureRedirect : "/signin",
-		failureFlash : true
+passport.authenticate("local",{
+	successRedirect : '/menu',
+	failureRedirect : "/signin",
+	failureFlash : true
 }));
-
-// router.post('/cart',middleware.isLoggedIn,function(req,res){
-// 	var items = JSON.parse(req.query.items);
-
-// 	var cartItems = [];
-
-// 	items.forEach(function(current){
-// 		Food.findOne({Name:current},function(err,item){
-// 			if(err){
-// 				console.log(err);
-// 			} else{
-// 				console.log(item);
-// 				cartItems.push(item);
-// 			}
-// 		});
-// 	});
-
-// 	res.render('cart',{cartItems:cartItems});
-
-// });
+	
+router.get('/cart',middleware.isLoggedIn,function(req,res){
+	res.render('cart',{cartItems:savedItems});
+});
 
 router.post('/cart',middleware.isLoggedIn,function(req,res){
 
@@ -120,12 +105,11 @@ router.post('/cart',middleware.isLoggedIn,function(req,res){
 
 	Promise.all(cartItems)
 	.then(function(items){
-		res.render('cart', {cartItems : items});
+		savedItems = items;
+		res.render('cart', {cartItems : savedItems});
 	});
 
 });
-
-
 
 router.get('/signout', function(req, res){
 	req.logout();
@@ -136,13 +120,10 @@ router.get('/profile',function(req,res){
 	res.send('profile');
 });
 
-router.get('/cart',function(req,res){
-	res.render('cart');
-});
-
 router.get('/order',function(req,res){
 	res.send('order');
 });
+
 
 router.get('*',function(req,res){
 	res.send("page not found");
