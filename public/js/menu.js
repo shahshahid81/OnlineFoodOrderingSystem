@@ -60,27 +60,6 @@ function activeCategory(){
     }
 }
 
-// Working listener code
-// function setAJAXListeners(){
-//     var el = document.querySelectorAll('ul.category-choice > li > a');
-//     var elArr = Array.prototype.slice.call(el);
-//     elArr.forEach(function(current){
-//         current.addEventListener("click",function(event){
-//             event.preventDefault();
-//             document.getElementById('food-items').innerHTML = '<div class="loader"></div>';
-//             var xhttp = new XMLHttpRequest();
-//             xhttp.onreadystatechange = function(){
-//                 if (this.readyState == 4 && this.status == 200) {
-//                     document.getElementById('food-items').innerHTML = xhttp.responseText;
-//                 }
-//             };
-//             var query = "/menu?item="+capitalize(current.innerText);
-//             xhttp.open("get",query);
-//             xhttp.send();
-//         });
-//     });
-// }
-
 function setAJAXListeners(){
     var el = document.querySelectorAll('ul.category-choice > li > a');
     var elArr = Array.prototype.slice.call(el);

@@ -11,7 +11,7 @@
 
             <% cartItems.forEach(function(current){ %>
             
-                <div class="row" id = 'cart-item'>
+                <div class="row cart-item">
                 
                     <div class="col-md-3">
                         <div class="thumbnail">
@@ -27,17 +27,31 @@
                         <br>
                         <p>
                             <%= current.Price %> &#8360 &nbsp; x &nbsp;&nbsp;&nbsp;   
-                            <input type="number" name="quantity" class="quantity-box">
+
+                            <div class="quantity-group">
+                            <button type="button" class="btn btn-danger" id="decrement" onClick="decrement(event)">
+                            <i class="fa fa-minus" aria-hidden="true"></i>
+                            </button>
+                            <input type="number" id="quantity" name="quantity" class="quantity-box" value="1">
+                            <button type="button" class="btn btn-success" id="increment" onClick="increment(event)">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            </button>
+                            </div>
+                            
                             &nbsp;&nbsp;&nbsp;
                         </p>
                         <i class="fa fa-trash" onClick ='removeItem(event,<% current.Name%>)'></i>
-                        <br>
+                        <hr>
+                        <p> Total = <span class="total-price" id="total-price" data-price="<%= current.Price %>"><%= current.Price %></span></p>
                     </div>
 
                 </div>
 
                 <% }) %>
-                
+                <div>
+                    <hr>
+                    <p> Grand Total <span id="grand-total"></span> </p>
+                </div>
                 <% } else { %>
                 <h3>Cart is Empty! &nbsp;&nbsp; Select items from menu to add.</h3>
                 <% } %>   
@@ -51,7 +65,10 @@
                 </div>
                 
 <script>
-    var cart = <%- JSON.stringify(cartItems.map(function(current){return current.Name})); %>
+    var cart;
+    <% if(cartItems){ %> 
+    cart = <%- JSON.stringify(cartItems.map(function(current){return current.Name})); %>
+    <% } %>
 </script>
 <script src="/js/cart.js"></script>
 
