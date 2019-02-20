@@ -29,11 +29,11 @@
                             <%= current.Price %> &#8360 &nbsp; x &nbsp;&nbsp;&nbsp;   
 
                             <div class="quantity-group">
-                            <button type="button" class="btn btn-danger" id="decrement" onClick="decrement(event)">
+                            <button type="button" class="btn btn-danger" id="decrement" onclick="decrement(event)">
                             <i class="fa fa-minus" aria-hidden="true"></i>
                             </button>
-                            <input type="number" id="quantity" name="quantity" class="quantity-box" value="1">
-                            <button type="button" class="btn btn-success" id="increment" onClick="increment(event)">
+                            <input type="number" id="quantity" name="quantity" class="quantity-box" value="1" oninput="validateQuantity(event)">
+                            <button type="button" class="btn btn-success" id="increment" onclick="increment(event)">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             </button>
                             </div>
@@ -42,7 +42,7 @@
                         </p>
                         <i class="fa fa-trash" onClick ='removeItem(event,<% current.Name%>)'></i>
                         <hr>
-                        <p> Total = <span class="total-price" id="total-price" data-price="<%= current.Price %>"><%= current.Price %></span></p>
+                        <p> Total = <span class="total-price" data-price="<%= current.Price %>"><%= current.Price %></span></p>
                     </div>
 
                 </div>

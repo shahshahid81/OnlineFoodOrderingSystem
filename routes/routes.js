@@ -1,12 +1,11 @@
 const express = require('express');
 const passport = require('passport');
-// const Promise = require('promise');
 
 const router  = express.Router();
 
 const Food = require("../models/food");
 const User = require("../models/user");
-const middleware = require('../middleware/middelware');
+const middleware = require('../middleware/middleware');
 
 var savedItems ;
 

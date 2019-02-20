@@ -23,17 +23,33 @@ function activePage(){
 
 function validateSignUp(){
 
-    const signUpButton = document.querySelector('.btn.sign-up-button');
-    signUpButton.addEventListener("click",function(event){
-        const phoneNumber = document.getElementById('phone-number');
-        const password = document.getElementById('password');
-        const confirmPassword = document.getElementById('confirm-password');
+    // const signUpButton = document.querySelector('.btn.sign-up-button');
+    // signUpButton.addEventListener("click",function(event){
+    //     const phoneNumber = document.getElementById('phone-number');
+    //     const password = document.getElementById('password');
+    //     const confirmPassword = document.getElementById('confirm-password');
 
-        if(phoneNumber.value.length < 10 ){
+    //     if(phoneNumber.value.length < 10 ){
+    //         alert("Enter Phone Number with 10 digits");
+    //         event.preventDefault();
+    //     }
+    //     if(password.value !== confirmPassword.value){
+    //         alert("Entered Password does not match");
+    //         event.preventDefault();
+    //     }
+    // });
+
+    const signUpButton = $('.btn.sign-up-button');
+    signUpButton.on("click",function(event){
+        const phoneNumber = $('#phone-number');
+        const password = $('#password');
+        const confirmPassword = $('#confirm-password');
+
+        if(phoneNumber.val().length < 10 ){
             alert("Enter Phone Number with 10 digits");
             event.preventDefault();
         }
-        if(password.value !== confirmPassword.value){
+        if(password.val() !== confirmPassword.val()){
             alert("Entered Password does not match");
             event.preventDefault();
         }

@@ -61,26 +61,48 @@ function activeCategory(){
 }
 
 function setAJAXListeners(){
-    var el = document.querySelectorAll('ul.category-choice > li > a');
-    var elArr = Array.prototype.slice.call(el);
-    elArr.forEach(function(current){
-        current.addEventListener("click",function(event){
+    // var el = document.querySelectorAll('ul.category-choice > li > a');
+    // var elArr = Array.prototype.slice.call(el);
+    // elArr.forEach(function(current){
+    //     current.addEventListener("click",function(event){
+    //         event.preventDefault();
+    //         document.getElementById('food-items').innerHTML = '<div class="loader"></div>';
+    //         var xhttp = new XMLHttpRequest();
+    //         var query = "/menu?item="+capitalize(current.innerText);
+    //         xhttp.onreadystatechange = function(){
+    //             if (this.readyState == 4 && this.status == 200) {
+    //                 document.getElementById('food-items').innerHTML = xhttp.responseText;
+    //                 window.history.replaceState("","",query);
+    //                 activeCategory();
+    //             }
+    //         };
+    //         xhttp.open("get",query);
+    //         xhttp.setRequestHeader('visited','true');
+    //         xhttp.send();
+    //     });
+    // });
+
+    $('ul.category-choice > li > a').each(function(){
+        $(this).on("click",function(event){
             event.preventDefault();
-            document.getElementById('food-items').innerHTML = '<div class="loader"></div>';
+            $('#food-items').html('<div class="loader"></div>');
+            var query = "/menu?item="+capitalize($(this).text());
+
             var xhttp = new XMLHttpRequest();
-            var query = "/menu?item="+capitalize(current.innerText);
             xhttp.onreadystatechange = function(){
                 if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById('food-items').innerHTML = xhttp.responseText;
+                    $('#food-items').html(xhttp.responseText);
                     window.history.replaceState("","",query);
                     activeCategory();
                 }
             };
+            
             xhttp.open("get",query);
             xhttp.setRequestHeader('visited','true');
             xhttp.send();
         });
     });
+    
 }
 
 var cart = [];
@@ -102,10 +124,12 @@ function capitalize(str){
 function cartToggle(name){
     if(cart.indexOf(name) === -1){
         cart.push(name);
-        event.target.innerText = "Remove from Cart";
+        // event.target.innerText = "Remove from Cart";
+        $(event.target).text("Remove from Cart");
     } else {
         cart.pop(name);
-        event.target.innerText = "Add to Cart";
+        // event.target.innerText = "Add to Cart";
+        $(event.target).text("Add to Cart");
     }
 }
 

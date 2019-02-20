@@ -372,7 +372,7 @@
     },
     {
         "Name" : "Chai",
-        "Description" : "",
+        "Description" : "Chai Tea",
         "Price" : 20.00,
         "Category" : "Beverage",
         "ImagePath" : "/img/Food/CHAI.jpg"

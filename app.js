@@ -8,7 +8,9 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
 const User = require("./models/user");
+const Food = require("./models/food");
 const routes = require("./routes/routes");
+const seedDB = require('./seed');
 
 const app = express();
 
@@ -20,6 +22,11 @@ mongoose.connect("mongodb://127.0.0.1:27017/foodDB",{ useNewUrlParser:true },fun
 	}
 	else{
 		console.log('connected');
+		if(Food.find({},function(err,items){
+			if(items.length === 0){
+				seedDB();
+			}
+		}));
 	}
 });
 
