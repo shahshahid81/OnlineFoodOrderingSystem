@@ -25,11 +25,36 @@ function setListeners(){
     $('#empty-cart').on('click',clearCart);
 }
     
+// function clearCart(){
+//     // document.getElementById('cart-list').innerHTML="<h3>Cart is Empty! &nbsp; Select items from menu to add.</h3>";
+//     $('#cart-list').html("<h3>Cart is Empty! &nbsp; Select items from menu to add.</h3>");
+//     updateTotal();
+// }
+
+
 function clearCart(){
-    // document.getElementById('cart-list').innerHTML="<h3>Cart is Empty! &nbsp; Select items from menu to add.</h3>";
-    $('#cart-list').html("<h3>Cart is Empty! &nbsp; Select items from menu to add.</h3>");
-    updateTotal();
+    var clearRequest = new XMLHttpRequest();
+    clearRequest.onreadystatechange = function(){
+        if(this.status == 200 && this.readyState == 4){
+            $('#cart-list').html("<h3>Cart is Empty! &nbsp; Select items from menu to add.</h3>");
+            updateTotal();
+        }
+    }
+    clearRequest.open('post','/cart?items=[]');
+    clearRequest.send();
 }
+
+// function removeItem(event,name){
+//     if(cart.indexOf(name) === -1){
+//         cart.pop(name);
+//     }
+//     if(cart.length === 0){
+//         clearCart();
+//     }
+//     // event.target.parentNode.parentNode.innerHTML = "";
+//     $(event.target).closest("div.row.cart-item").html("");
+//     updateTotal();
+// }
 
 function removeItem(event,name){
     if(cart.indexOf(name) === -1){
@@ -38,10 +63,17 @@ function removeItem(event,name){
     if(cart.length === 0){
         clearCart();
     }
-    // event.target.parentNode.parentNode.innerHTML = "";
-    $(event.target).closest("div.row.cart-item").html("");
-    updateTotal();
-}
+
+//     var clearRequest = new XMLHttpRequest();
+//     clearRequest.onreadystatechange = function(){
+//         if(this.status == 200 && this.readyState == 4){
+//             $(event.target).closest("div.row.cart-item").html("");            
+//             updateTotal();
+//         }
+//     }
+//     clearRequest.open('patch','/cart?_method=patch&item='+JSON.stringify(name));
+//     clearRequest.send();
+// }
 
 var grandTotal = 0;
 

@@ -7,14 +7,14 @@ const Food = require("../models/food");
 const User = require("../models/user");
 const middleware = require('../middleware/middleware');
 
-var savedItems ;
+var savedItems = [];
 
 router.get('/',function(req,res){
 	res.render('index');
 });
 
 router.get('/menu',function(req,res){
-
+// router.get('/menu',middleware.isLoggedIn,function(req,res){
 	var itemCategory = req.query.item;
 	var visited = req.get('visited');
 
@@ -23,7 +23,7 @@ router.get('/menu',function(req,res){
 			if(err){
 			console.log(err);
 			}else{
-			res.render("menu",{Foods:allFoods});
+			res.render("menu",{Foods:allFoods,cartItems:savedItems});
 			}
 		});
 	} else if(itemCategory && visited === 'true') {
@@ -31,7 +31,7 @@ router.get('/menu',function(req,res){
 			if(err){
 				console.log(err);
 			}else{
-				res.render("partials/menu-item",{Foods:allFoods});
+				res.render("partials/menu-item",{Foods:allFoods,cartItems:savedItems});
 			}
 		});
 	} else if(itemCategory && visited !== 'true'){
@@ -39,7 +39,7 @@ router.get('/menu',function(req,res){
 			if(err){
 				console.log(err);
 			} else {
-				res.render('menu',{Foods : allFoods});
+				res.render('menu',{Foods : allFoods,cartItems:savedItems});
 			}
 		});
 	}
@@ -82,6 +82,29 @@ passport.authenticate("local",{
 	failureRedirect : "/signin",
 	failureFlash : true
 }));
+
+// router.post('/cart',middleware.isLoggedIn,function(req,res){
+
+// 	var items = JSON.parse(req.query.items);
+
+// 	var cartItems = items.map(function(current){
+// 		return new Promise(function(resolve,reject){
+// 			Food.findOne({Name : current},function(err,item){
+// 				if(err){
+// 					reject();
+// 				}
+// 				resolve(item);
+// 			});
+// 		});
+// 	});
+
+// 	Promise.all(cartItems)
+// 	.then(function(items){
+// 		savedItems = items;
+// 		res.render('cart', {cartItems : savedItems});
+// 	});
+
+// });
 	
 router.get('/cart',middleware.isLoggedIn,function(req,res){
 	res.render('cart',{cartItems:savedItems});
@@ -89,8 +112,9 @@ router.get('/cart',middleware.isLoggedIn,function(req,res){
 
 router.post('/cart',middleware.isLoggedIn,function(req,res){
 
+	console.log(savedItems);
+	console.log('------------------');
 	var items = JSON.parse(req.query.items);
-
 	var cartItems = items.map(function(current){
 		return new Promise(function(resolve,reject){
 			Food.findOne({Name : current},function(err,item){
@@ -104,8 +128,9 @@ router.post('/cart',middleware.isLoggedIn,function(req,res){
 
 	Promise.all(cartItems)
 	.then(function(items){
-		savedItems = items;
-		res.render('cart', {cartItems : savedItems});
+		savedItems = [...new Set(items)];
+		res.sendStatus(200);
+		console.log(savedItems);
 	});
 
 });

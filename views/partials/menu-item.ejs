@@ -17,8 +17,10 @@
                         <p class="Description"> <%= food.Description %> </p>
                         <p class="Price"> <strong> &nbsp <%= food.Price %> &#8360  </strong>  </p>
                         <form>
-                        <button class="btn btn-primary add-to-cart" onclick='addToCart(event,"<%= food.Name %>")'> Add to Cart</button>
-                        <button class="btn btn-success order-online" formMethod ="post" onclick='orderOnline("<%= food.Name %>")'>Order Online</button> 
+                        <button class="btn btn-primary add-to-cart" onclick='toggleCart(event,"<%= food.Name %>")'>
+                            Add to Cart
+                        </button>
+                        <!-- <button class="btn btn-success order-online" formMethod ="post" onclick='orderOnline("<%= food.Name %>")'>Order Online</button>--> 
                         </form>
                     </div>
                 </div> 

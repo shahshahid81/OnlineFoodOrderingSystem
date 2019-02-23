@@ -7,7 +7,9 @@ middlewareObj.isLoggedIn = function(req,res,next){
         next();
     } else {
         req.flash('alert','You need to sign in');
-        res.redirect('/signin');
+        res.status(401);
+        res.render('signin');
+        // res.redirect('/signin');
     }
 };
 

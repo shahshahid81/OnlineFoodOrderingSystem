@@ -107,30 +107,57 @@ function setAJAXListeners(){
 
 var cart = [];
 
-function addToCart(event,name){
-    event.preventDefault();
-    cartToggle(name);
+// function addToCart(event,name){
+//     event.preventDefault();
+//     cartToggle(name);
+// }
+
+function toggleCart(event,name){ 
+        var isAdded ;
+        event.preventDefault();
+        if(cart.indexOf(name) === -1){
+            cart.push(name);
+            isAdded = true;
+        } else if(cart.indexOf(name) !== -1) {
+            cart.pop(name);
+            isAdded = false;
+        }
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function(){
+            if (this.readyState == 4 && this.status == 200) {
+                if(isAdded){
+                    $(event.target).text('Remove from Cart');
+                } else {
+                    $(event.target).text('Add to Cart');
+                }
+            } else if(this.readyState == 4 && this.status == 401){
+                window.location.replace('/signin');
+            }
+        };
+        
+        var query = "/cart?items="+JSON.stringify(cart);
+        xhttp.open("post",query);
+        xhttp.send();
+
 }
 
-function orderOnline(name){
-    cartToggle(name);
-    window.history.replaceState("","","/cart?items="+JSON.stringify(cart));
-}
+// function orderOnline(name){
+//     cartToggle(name);
+//     window.history.replaceState("","","/cart?items="+JSON.stringify(cart));
+// }
 
 function capitalize(str){
     return str.charAt(0)+str.slice(1).toLowerCase();
 }
 
-function cartToggle(name){
-    if(cart.indexOf(name) === -1){
-        cart.push(name);
-        // event.target.innerText = "Remove from Cart";
-        $(event.target).text("Remove from Cart");
-    } else {
-        cart.pop(name);
-        // event.target.innerText = "Add to Cart";
-        $(event.target).text("Add to Cart");
-    }
-}
+// function cartToggle(name){
+//     if(cart.indexOf(name) === -1){
+//         cart.push(name);
+//         $(event.target).text("Remove from Cart");
+//     } else {
+//         cart.pop(name);
+//         $(event.target).text("Add to Cart");
+//     }
+// }
 
 pageInit();
