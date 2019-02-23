@@ -112,26 +112,37 @@ router.get('/cart',middleware.isLoggedIn,function(req,res){
 
 router.post('/cart',middleware.isLoggedIn,function(req,res){
 
-	console.log(savedItems);
-	console.log('------------------');
-	var items = JSON.parse(req.query.items);
-	var cartItems = items.map(function(current){
-		return new Promise(function(resolve,reject){
-			Food.findOne({Name : current},function(err,item){
-				if(err){
-					reject();
-				}
-				resolve(item);
+	// console.log(savedItems);
+	// console.log('------------------');
+	var removeItem = req.get('removeItem');
+	
+	if(removeItem === 'true'){
+		var items = req.query.items;
+		var index = savedItems.indexOf(items);
+		savedItems.splice(index,1);
+		// console.log('removed item');
+		// console.log(savedItems);
+		res.sendStatus(200);
+	} else {
+		var items = JSON.parse(req.query.items);
+		var cartItems = items.map(function(current){
+			return new Promise(function(resolve,reject){
+				Food.findOne({Name : current},function(err,item){
+					if(err){
+						reject();
+					}
+					resolve(item);
+				});
 			});
 		});
-	});
-
-	Promise.all(cartItems)
-	.then(function(items){
-		savedItems = [...new Set(items)];
-		res.sendStatus(200);
-		console.log(savedItems);
-	});
+	
+		Promise.all(cartItems)
+		.then(function(foundItems){
+			savedItems = [...new Set(foundItems)];
+			res.sendStatus(200);
+			// console.log(savedItems);
+		});
+	}
 
 });
 

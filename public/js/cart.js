@@ -57,23 +57,21 @@ function clearCart(){
 // }
 
 function removeItem(event,name){
-    if(cart.indexOf(name) === -1){
-        cart.pop(name);
-    }
-    if(cart.length === 0){
-        clearCart();
+
+    var clearRequest = new XMLHttpRequest();
+    
+    clearRequest.onreadystatechange = function(){
+        if(this.status == 200 && this.readyState == 4){
+            $(event.target).closest("div.row.cart-item").html("");            
+            updateTotal();
+        }
     }
 
-//     var clearRequest = new XMLHttpRequest();
-//     clearRequest.onreadystatechange = function(){
-//         if(this.status == 200 && this.readyState == 4){
-//             $(event.target).closest("div.row.cart-item").html("");            
-//             updateTotal();
-//         }
-//     }
-//     clearRequest.open('patch','/cart?_method=patch&item='+JSON.stringify(name));
-//     clearRequest.send();
-// }
+    clearRequest.open('post','/cart?items='+name);
+    clearRequest.setRequestHeader('removeItem','true');
+    clearRequest.send();
+
+}
 
 var grandTotal = 0;
 
@@ -135,6 +133,9 @@ function updateTotal(){
         grandTotal += parseInt($(this).text());
     });
 
+    if(grandTotal === 0){
+        $('#cart-list').html("<h3>Cart is Empty! &nbsp; Select items from menu to add.</h3>");
+    }
     // document.getElementById('grand-total').innerText = grandTotal;
     $('#grand-total').text(grandTotal);
 }

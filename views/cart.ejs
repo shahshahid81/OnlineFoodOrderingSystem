@@ -7,7 +7,7 @@
     <div class="container">
         <div id="cart-list">
 
-        <% if(cartItems){ %>
+        <% if(cartItems && cartItems.length > 0){ %>
 
             <% cartItems.forEach(function(current){ %>
             
@@ -53,7 +53,7 @@
                     <p> Grand Total <span id="grand-total"></span> </p>
                 </div>
                 <% } else { %>
-                <h3>Cart is Empty! &nbsp;&nbsp; Select items from menu to add.</h3>
+                <h3> Cart is Empty! &nbsp; Select items from menu to add. </h3>
                 <% } %>   
                 </div> 
                 <br>
@@ -64,12 +64,6 @@
                 </div>
                 </div>
                 
-<script>
-    var cart;
-    <% if(cartItems){ %> 
-    cart = <%- JSON.stringify(cartItems.map(function(current){return current.Name})); %>
-    <% } %>
-</script>
 <script src="/js/cart.js"></script>
 
 <% include partials/footer%>
