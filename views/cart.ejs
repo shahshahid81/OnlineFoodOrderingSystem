@@ -7,7 +7,7 @@
     <div class="container">
         <div id="cart-list">
 
-        <% if(cartItems && cartItems.length > 0){ %>
+        <% if(typeof cartItems !== 'undefined' && cartItems.length > 0){ %>
 
             <% cartItems.forEach(function(current){ %>
             
@@ -40,7 +40,7 @@
                             
                             &nbsp;&nbsp;&nbsp;
                         </p>
-                        <i class="fa fa-trash" onClick ='removeItem(event,<% current.Name%>)'></i>
+                        <i class="fa fa-trash" onClick ='removeItem(event,"<%= current.Name %>")'></i>
                         <hr>
                         <p> Total = <span class="total-price" data-price="<%= current.Price %>"><%= current.Price %></span></p>
                     </div>

@@ -32,7 +32,8 @@ mongoose.connect("mongodb://127.0.0.1:27017/foodDB",{ useNewUrlParser:true },fun
 
 app.use(cookieParser());
 app.use(session({
-	cookie: { maxAge: 60000 },
+	// cookie: { maxAge: 60000 },
+	cookie: { maxAge: 3600000 },
 	resave:false,
 	saveUninitialized:false,
 	secret : 'secret'
@@ -67,4 +68,3 @@ app.listen(port,function(err){
 		console.log('Server Started.....');
 	}
 });
-
