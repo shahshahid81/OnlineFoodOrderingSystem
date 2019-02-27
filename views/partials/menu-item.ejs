@@ -19,20 +19,24 @@
                         <form>
                         <button class="btn btn-primary add-to-cart" onclick='toggleCart(event,"<%= food.Name %>")'>
                             
-                            <% if(cartItems && cartItems.length > 0){ %>
-                                <% for(var i=0;i<cartItems.length;i++){ %>
-                                    <% if(cartItems[i].Name === food.Name){ %>
+                            <% if(typeof cartItems!=='undefined' && cartItems.length > 0){ %>
+                                <% var flag = false;%>
+                                <% for(var i=0;i<cartItems.length;i++){%>
+                                    <% if(cartItems[i].Name === food.Name ){%>
+                                        <% flag = true; %>
+                                        <% break; %>
+                                    <% } %>
+                                <% } %>
+                                    <% if(flag === true ){ %>
                                         Remove from Cart
-                                    <% break; %>
                                     <% } else {%>
                                         Add to Cart
                                     <% } %>
-                                <% } %>
-                            <% }else { %>
+                            <% } else { %>
                                 Add to Cart
                             <% } %>
+                        
                         </button>
-                        <!-- <button class="btn btn-success order-online" formMethod ="post" onclick='orderOnline("<%= food.Name %>")'>Order Online</button>--> 
                         </form>
                     </div>
                 </div> 

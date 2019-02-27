@@ -113,30 +113,82 @@ var cart = [];
 // }
 
 function toggleCart(event,name){ 
-        var isAdded ;
+        // var isAdded ;
+        // event.preventDefault();
+        // if(cart.indexOf(name) === -1){
+        //     cart.push(name);
+        //     isAdded = true;
+        // } else if(cart.indexOf(name) !== -1) {
+        //     cart.pop(name);
+        //     isAdded = false;
+        // }
+        
+        // var xhttp = new XMLHttpRequest();
+        // xhttp.onreadystatechange = function(){
+        //     if (this.readyState == 4 && this.status == 200) {
+        //         if(isAdded){
+        //             $(event.target).text('Remove from Cart');
+        //         } else {
+        //             $(event.target).text('Add to Cart');
+        //         }
+        //     } else if(this.readyState == 4 && this.status == 401){
+        //         window.location.replace('/signin');
+        //     }
+        // };
+        
+        // var query = "/cart?items="+JSON.stringify(cart);
+        // xhttp.open("post",query);
+        // xhttp.send();
+
+        // event.preventDefault();
+        // var xhttp = new XMLHttpRequest();
+        // xhttp.onreadystatechange = function(){
+        //     if (this.readyState == 4 && this.status == 200) {
+        //         // if(isAdded){
+        //         //     $(event.target).text('Remove from Cart');
+        //         // } else {
+        //         //     $(event.target).text('Add to Cart');
+        //         // }
+        //         $(event.target).text('Remove from Cart');
+        //     } else if(this.readyState == 4 && this.status == 401){
+        //         window.location.replace('/signin');
+        //     }
+        // };
+        
+        // var query = "/cart?items="+name;
+        // xhttp.open("post",query);
+        // // if($(event.target).text() === 'Remove from Cart'){
+        // //     xhttp.setRequestHeader('removeItem','true');
+        // //     isAdded = false;
+        // // } else {
+        // //     isAdded = true;
+        // // }
+        // xhttp.send();
+
         event.preventDefault();
-        if(cart.indexOf(name) === -1){
-            cart.push(name);
-            isAdded = true;
-        } else if(cart.indexOf(name) !== -1) {
-            cart.pop(name);
-            isAdded = false;
-        }
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function(){
-            if (this.readyState == 4 && this.status == 200) {
-                if(isAdded){
-                    $(event.target).text('Remove from Cart');
-                } else {
+            if(this.readyState == 4 && this.status == 200){
+                // console.log($(event.target).text());
+                // console.log($(event.target).text().trim() == 'Remove from Cart');
+                // console.log($(event.target).text() == 'Remove from Cart');
+                // console.log($(event.target).text().trim() == 'Add to Cart');
+                // console.log($(event.target).text() == 'Add to Cart');
+
+                if($(event.target).text().trim() === 'Remove from Cart'){
                     $(event.target).text('Add to Cart');
+                } else if($(event.target).text().trim() === 'Add to Cart'){
+                    $(event.target).text('Remove from Cart');
                 }
             } else if(this.readyState == 4 && this.status == 401){
                 window.location.replace('/signin');
             }
-        };
-        
-        var query = "/cart?items="+JSON.stringify(cart);
-        xhttp.open("post",query);
+        }
+        var query = '/cart?items='+name;
+        xhttp.open('post',query);
+        if($(event.target).text().trim() === 'Remove from Cart'){
+            xhttp.setRequestHeader('removeItem','true');
+        }
         xhttp.send();
 
 }

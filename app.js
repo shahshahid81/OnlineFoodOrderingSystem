@@ -14,7 +14,7 @@ const seedDB = require('./seed');
 
 const app = express();
 
-const port = 4000;
+const port = 3000;
 
 mongoose.connect("mongodb://127.0.0.1:27017/foodDB",{ useNewUrlParser:true },function(err){
 	if(err){
@@ -30,7 +30,13 @@ mongoose.connect("mongodb://127.0.0.1:27017/foodDB",{ useNewUrlParser:true },fun
 	}
 });
 
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
 	// cookie: { maxAge: 60000 },
 	cookie: { maxAge: 3600000 },
@@ -38,15 +44,9 @@ app.use(session({
 	saveUninitialized:false,
 	secret : 'secret'
 }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(flash());
-
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-passport.use(new LocalStrategy(User.authenticate()));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 app.use(function(req, res, next){
     res.locals.alert = req.flash('alert');
@@ -56,7 +56,6 @@ app.use(function(req, res, next){
     next();
 });
 
-app.use(express.static(__dirname + "/public"));
 app.set('view engine','ejs');
 
 app.use('/',routes);
