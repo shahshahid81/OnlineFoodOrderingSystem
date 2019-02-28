@@ -19,197 +19,118 @@ function activePage(){
 
 function activeCategory(){
     const activeCategory = window.location.search.replace("?item=","");
-    const category = document.querySelectorAll('ul.category-choice > li > a');
-    const categoryArr = Array.prototype.slice.call(category);
     
-    categoryArr.forEach(function(current){
-        current.classList.remove('category-active');
+    // const category = document.querySelectorAll('ul.category-choice > li > a');
+    // const categoryArr = Array.prototype.slice.call(category);
+    
+    // categoryArr.forEach(function(current){
+    //     current.classList.remove('category-active');
+    // });
+
+    $('ul.category-choice > li > a').each(function(){
+        $(this).removeClass('category-active');
     });
 
     console.log(activeCategory);
+
     if(activeCategory === ""){
-        document.getElementById('Chicken').classList.add('category-active');
+        // document.getElementById('Chicken').classList.add('category-active');
+        $('#Chicken').addClass('category-active');
     } else {
         switch(activeCategory){
             case "Seafood" : 
-                document.getElementById('Seafood').classList.add('category-active');
+                // document.getElementById('Seafood').classList.add('category-active');
+                $('#Seafood').addClass('category-active');
                 break;
             case "Appetizers" : 
-                document.getElementById('Appetizers').classList.add('category-active');
+                // document.getElementById('Appetizers').classList.add('category-active');
+                $('#Appetizers').addClass('category-active');
                 break;
             case "Rice" : 
-                document.getElementById('Rice').classList.add('category-active');
+                // document.getElementById('Rice').classList.add('category-active');
+                $('#Rice').addClass('category-active');
                 break;
             case "Bread" : 
-                document.getElementById('Bread').classList.add('category-active');
+                // document.getElementById('Bread').classList.add('category-active');
+                $('#Bread').addClass('category-active');
                 break;
             case "Vegetable" : 
-                document.getElementById('Vegetable').classList.add('category-active');
+                // document.getElementById('Vegetable').classList.add('category-active');
+                $('#Vegetable').addClass('category-active');
                 break;
             case "Beverage" : 
-                document.getElementById('Beverage').classList.add('category-active');
+                // document.getElementById('Beverage').classList.add('category-active');
+                $('#Beverage').addClass('category-active');
                 break;
             case "Dessert" : 
-                document.getElementById('Dessert').classList.add('category-active');
+                // document.getElementById('Dessert').classList.add('category-active');
+                $('#Dessert').addClass('category-active');
                 break;
             case "Chicken" : 
             default:
-                document.getElementById('Chicken').classList.add('category-active');
+                // document.getElementById('Chicken').classList.add('category-active');
+                $('#Chicken').addClass('category-active');
                 break;
         }
     }
 }
 
 function setAJAXListeners(){
-    // var el = document.querySelectorAll('ul.category-choice > li > a');
-    // var elArr = Array.prototype.slice.call(el);
-    // elArr.forEach(function(current){
-    //     current.addEventListener("click",function(event){
-    //         event.preventDefault();
-    //         document.getElementById('food-items').innerHTML = '<div class="loader"></div>';
-    //         var xhttp = new XMLHttpRequest();
-    //         var query = "/menu?item="+capitalize(current.innerText);
-    //         xhttp.onreadystatechange = function(){
-    //             if (this.readyState == 4 && this.status == 200) {
-    //                 document.getElementById('food-items').innerHTML = xhttp.responseText;
-    //                 window.history.replaceState("","",query);
-    //                 activeCategory();
-    //             }
-    //         };
-    //         xhttp.open("get",query);
-    //         xhttp.setRequestHeader('visited','true');
-    //         xhttp.send();
-    //     });
-    // });
 
     $('ul.category-choice > li > a').each(function(){
         $(this).on("click",function(event){
             event.preventDefault();
             $('#food-items').html('<div class="loader"></div>');
+
             var query = "/menu?item="+capitalize($(this).text());
 
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function(){
+            var itemRequest = new XMLHttpRequest();
+            itemRequest.onreadystatechange = function(){
                 if (this.readyState == 4 && this.status == 200) {
-                    $('#food-items').html(xhttp.responseText);
+                    $('#food-items').html(itemRequest.responseText);
                     window.history.replaceState("","",query);
                     activeCategory();
                 }
             };
             
-            xhttp.open("get",query);
-            xhttp.setRequestHeader('visited','true');
-            xhttp.send();
+            itemRequest.open("get",query);
+            itemRequest.setRequestHeader('visited','true');
+            itemRequest.send();
         });
     });
     
 }
 
-var cart = [];
-
-// function addToCart(event,name){
-//     event.preventDefault();
-//     cartToggle(name);
-// }
-
 function toggleCart(event,name){ 
-        // var isAdded ;
-        // event.preventDefault();
-        // if(cart.indexOf(name) === -1){
-        //     cart.push(name);
-        //     isAdded = true;
-        // } else if(cart.indexOf(name) !== -1) {
-        //     cart.pop(name);
-        //     isAdded = false;
-        // }
-        
-        // var xhttp = new XMLHttpRequest();
-        // xhttp.onreadystatechange = function(){
-        //     if (this.readyState == 4 && this.status == 200) {
-        //         if(isAdded){
-        //             $(event.target).text('Remove from Cart');
-        //         } else {
-        //             $(event.target).text('Add to Cart');
-        //         }
-        //     } else if(this.readyState == 4 && this.status == 401){
-        //         window.location.replace('/signin');
-        //     }
-        // };
-        
-        // var query = "/cart?items="+JSON.stringify(cart);
-        // xhttp.open("post",query);
-        // xhttp.send();
-
-        // event.preventDefault();
-        // var xhttp = new XMLHttpRequest();
-        // xhttp.onreadystatechange = function(){
-        //     if (this.readyState == 4 && this.status == 200) {
-        //         // if(isAdded){
-        //         //     $(event.target).text('Remove from Cart');
-        //         // } else {
-        //         //     $(event.target).text('Add to Cart');
-        //         // }
-        //         $(event.target).text('Remove from Cart');
-        //     } else if(this.readyState == 4 && this.status == 401){
-        //         window.location.replace('/signin');
-        //     }
-        // };
-        
-        // var query = "/cart?items="+name;
-        // xhttp.open("post",query);
-        // // if($(event.target).text() === 'Remove from Cart'){
-        // //     xhttp.setRequestHeader('removeItem','true');
-        // //     isAdded = false;
-        // // } else {
-        // //     isAdded = true;
-        // // }
-        // xhttp.send();
 
         event.preventDefault();
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function(){
+        var cartRequest = new XMLHttpRequest();
+        cartRequest.onreadystatechange = function(){
             if(this.readyState == 4 && this.status == 200){
-                // console.log($(event.target).text());
-                // console.log($(event.target).text().trim() == 'Remove from Cart');
-                // console.log($(event.target).text() == 'Remove from Cart');
-                // console.log($(event.target).text().trim() == 'Add to Cart');
-                // console.log($(event.target).text() == 'Add to Cart');
 
                 if($(event.target).text().trim() === 'Remove from Cart'){
                     $(event.target).text('Add to Cart');
                 } else if($(event.target).text().trim() === 'Add to Cart'){
                     $(event.target).text('Remove from Cart');
                 }
+
             } else if(this.readyState == 4 && this.status == 401){
                 window.location.replace('/signin');
             }
         }
+
         var query = '/cart?items='+name;
-        xhttp.open('post',query);
+        cartRequest.open('post',query);
         if($(event.target).text().trim() === 'Remove from Cart'){
-            xhttp.setRequestHeader('removeItem','true');
+            cartRequest.setRequestHeader('removeItem','true');
         }
-        xhttp.send();
+        cartRequest.send();
 
 }
 
-// function orderOnline(name){
-//     cartToggle(name);
-//     window.history.replaceState("","","/cart?items="+JSON.stringify(cart));
-// }
 
 function capitalize(str){
     return str.charAt(0)+str.slice(1).toLowerCase();
 }
-
-// function cartToggle(name){
-//     if(cart.indexOf(name) === -1){
-//         cart.push(name);
-//         $(event.target).text("Remove from Cart");
-//     } else {
-//         cart.pop(name);
-//         $(event.target).text("Add to Cart");
-//     }
-// }
 
 pageInit();

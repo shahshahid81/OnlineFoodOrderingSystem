@@ -383,6 +383,27 @@ form.order-form > div.form-group > .btn.clear-button {
     width: 40%;
     margin: 10px 33px;
 }
+
+/* ------------------------------------------------- */
+/* -------------------   PROFILE    ---------------- */
+/* ------------------------------------------------- */
+
+form.update-profile-form {
+    width: 65%;
+    margin: 30px auto;
+}
+
+.btn.update-button,
+.btn.reset-button {
+    font-weight: bold;
+}
+
+form.update-profile-form > div.form-group > .btn.update-button,
+form.update-profile-form > div.form-group > .btn.reset-button {
+    width: 40%;
+    margin: 10px 23px;
+}
+
 /* ------------------------------------------------ */
 /* -------------------  Previous   ---------------- */
 /* ------------------------------------------------ */
