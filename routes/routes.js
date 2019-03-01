@@ -225,8 +225,6 @@ router.get('/profile',middleware.isLoggedIn,function(req,res){
 
 router.post('/profile',middleware.isLoggedIn,function(req,res){
 
-	//ADD VALIDATION FOR THIS PAGE
-
 	User.findOne({username:req.user.username},function(err,foundUser){
 		if(err){
 			console.log(err);
@@ -268,28 +266,131 @@ router.post('/profile',middleware.isLoggedIn,function(req,res){
 
 });
 
-router.get('/order',middleware.isLoggedIn,function(req,res){
-	res.send('order get');
-});
+// router.get('/order',middleware.isLoggedIn,function(req,res){
+
+// 	// console.log(JSON.parse(req.query.items));
+// 	// console.log(JSON.parse(req.query.items).total);
+
+// 	var savedUser = savedItems.find(function(element){
+// 		return element.user === req.user.username;
+// 	});
+
+// 	// console.log(savedUser);
+
+// 	if(typeof savedUser === 'undefined'){	
+// 		req.flash('error','Please Enter Items in the cart');
+// 		res.redirect('/menu');
+// 	} else if(typeof savedUser.cart === 'undefined' || savedUser.cart.length === 0){	
+// 		req.flash('error','Please Enter Items in the cart');
+// 		res.redirect('/menu');
+// 	} else {
+// 		User.findOne({username:savedUser.user},function(err,foundUser){
+// 			if(err){
+// 				console.log(err);
+// 			} else {
+// 				res.render('order',{User:foundUser});
+// 			}
+// 		});
+// 	}
+// });
+
+// router.post('/order',middleware.isLoggedIn,function(req,res){
+// 	console.log(JSON.parse(req.query.items));
+// 	console.log(JSON.parse(req.query.items).total);
+// 	res.send('order');
+// });
+
 
 router.post('/order',middleware.isLoggedIn,function(req,res){
+
+	// // console.log(JSON.parse(req.query.items));
+	// // console.log(JSON.parse(req.query.items).total);
+
+	// var savedUser = savedItems.find(function(element){
+	// 	return element.user === req.user.username;
+	// });
+
+	// // console.log(savedUser);
+
+	// if(typeof savedUser === 'undefined'){	
+	// 	req.flash('error','Please Enter Items in the cart');
+	// 	res.redirect('/menu');
+	// } else if(typeof savedUser.cart === 'undefined' || savedUser.cart.length === 0){	
+	// 	req.flash('error','Please Enter Items in the cart');
+	// 	res.redirect('/menu');
+	// } else {
+	// 	User.findOne({username:savedUser.user},function(err,foundUser){
+	// 		if(err){
+	// 			console.log(err);
+	// 		} else {
+	// 			res.render('order',{User:foundUser});
+	// 		}
+	// 	});
+	// }
+
+	var orderItems = JSON.parse(req.query.items);
+	var savedOrderItems = {};
 
 	var savedUser = savedItems.find(function(element){
 		return element.user === req.user.username;
 	});
 
-	console.log(savedUser);
+	// console.log(orderItems);
+	// console.log("\n\n"+savedUser);
 
-	if(typeof savedUser === 'undefined'){	
-		req.flash('error','Please Enter Items in the cart');
+	if(typeof savedUser === 'undefined' || typeof orderItems === 'undefined'){
+		req.flash('error','Please Enter items in the cart');
 		res.redirect('/menu');
-	} else if(typeof savedUser.cart === 'undefined' || savedUser.cart.length === 0){	
-		req.flash('error','Please Enter Items in the cart');
-		res.redirect('/menu');
+	} else if(typeof orderItems.items === 'undefined' || orderItems.items.length === 0){
+		req.flash('error','Please Enter items in the cart');
+		res.redirect('/menu');		
 	} else {
+		var orderItemsPromises = orderItems.items.map(function(current){
+			return new Promise(function(resolve,reject){
+				Food.findOne({Name:current.name},function(err,item){
+					if(err){
+						reject(err);
+					}
+					resolve([item,current.quantity]);
+				});
+			});
+		});
 
-		res.render('order');
+
+		Promise.all(orderItemsPromises).then(function(foundItems){
+			foundItems.forEach(function(current){
+				// console.log(current);
+				console.log([current[0]._id,current[1],parseInt(current[1])*parseInt(current[0].Price)]);
+				// var arr = [current[0]._id,current[1]];
+			});
+			// console.log(foundItems);
+		}).catch(function(err){
+			console.log(err);
+		});
+
+		// var cartItems = items.map(function(current){
+		// 	return new Promise(function(resolve,reject){
+		// 		Food.findOne({Name : current},function(err,item){
+		// 			if(err){
+		// 				reject();
+		// 			}
+		// 			resolve(item);
+		// 		});
+		// 	});
+		// });
+	
+		// Promise.all(cartItems)
+		// .then(function(foundItems){
+		// 	savedItems = [...new Set(foundItems)];
+		// 	res.sendStatus(200);
+		// 	// console.log(savedItems);
+		// });
 	}
+
+});
+
+router.get('/order',middleware.isLoggedIn,function(req,res){
+	res.send('GET previous orders');
 });
 
 router.get('*',function(req,res){

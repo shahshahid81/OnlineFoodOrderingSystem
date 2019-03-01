@@ -55,6 +55,54 @@ function removeItem(event,name){
 
 }
 
+function checkout() {
+    event.preventDefault();
+    // if($('#cart-list').html() === '<h3>Cart is Empty! &nbsp; Select items from menu to add.</h3>'){
+    //     alert('Add menu items to cart.');
+    // } else {
+        var cart = {};
+        cart.items = [];
+        $('div.row.cart-item').each(function(element){
+            var name = $(this).find('h3.food-name').text();
+            // var price = $(this).find('span.food-price').text();
+            var quantity = $(this).find('input.quantity-box').val();
+            var item = {
+                name,
+                // price,
+                quantity
+            }
+            cart.items.push(item);
+            // console.log(name);
+            // console.log(price);
+            // console.log(quantity);
+            // console.log(item);
+        });
+        cart.total = $('#grand-total').text();
+        // console.log(cart);
+        // window.location.replace('/order?items='+JSON.stringify(cart));
+        // var checkoutRequest = new XMLHttpRequest();
+        // checkoutRequest.open('post','/order?items='+JSON.stringify(cart),false);
+        // checkoutRequest.open('post','/order?items='+JSON.stringify(cart));
+        // checkoutRequest.send();
+        // checkoutRequest.onreadystatechange = function(){
+        //     if(this.status == 200 && this.readyState == 4){
+                
+        //     }
+        // }
+
+        var redirect = function(url, method) {
+            var form = document.createElement('form');
+            document.body.appendChild(form);
+            form.method = method;
+            form.action = url;
+            form.submit();
+        };
+        
+        redirect('/order?items='+JSON.stringify(cart), 'post');
+        
+    // }
+}
+
 var grandTotal = 0;
 
 function increment(event){
