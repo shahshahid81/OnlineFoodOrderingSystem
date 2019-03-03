@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+const mongoose = require('mongoose');
 
 const router  = express.Router();
 
@@ -188,18 +189,34 @@ router.post('/cart',middleware.isLoggedIn,function(req,res){
 				return element.user === req.user.username;
 			});
 
+			// if(typeof user.cart === 'undefined'){
+			// 	user.cart = [];
+			// }
+
+			// var index = user.cart.findIndex(function(element){
+			// 	return element.Name === foundItems.Name;
+			// });
+
+			// if(index === -1){
+			// 	user.cart.push(foundItems);
+			// }
+			// res.sendStatus(200);
+
 			if( typeof user.cart === 'undefined'){
 				user.cart = [];
-			}
-
-			var index = user.cart.findIndex(function(element){
-				return element.Name === foundItems.Name;
-			});
-
-			if(index === -1){
 				user.cart.push(foundItems);
+				res.sendStatus(200);
+			} else {
+				var index = user.cart.findIndex(function(element){
+					return element.Name === foundItems.Name;
+				});
+	
+				if(index === -1){
+					user.cart.push(foundItems);
+				}
+				res.sendStatus(200);
 			}
-			res.sendStatus(200);
+
 		}).catch(function(error){
 			console.log(error);
 		});
@@ -329,7 +346,6 @@ router.post('/order',middleware.isLoggedIn,function(req,res){
 	// }
 
 	var orderItems = JSON.parse(req.query.items);
-	var savedOrderItems = {};
 
 	var savedUser = savedItems.find(function(element){
 		return element.user === req.user.username;
@@ -341,10 +357,13 @@ router.post('/order',middleware.isLoggedIn,function(req,res){
 	if(typeof savedUser === 'undefined' || typeof orderItems === 'undefined'){
 		req.flash('error','Please Enter items in the cart');
 		res.redirect('/menu');
-	} else if(typeof orderItems.items === 'undefined' || orderItems.items.length === 0){
+	} else if(typeof orderItems.items === 'undefined'){
 		req.flash('error','Please Enter items in the cart');
 		res.redirect('/menu');		
-	} else {
+	} else if( orderItems.items.length === 0){
+		req.flash('error','Please Enter items in the cart');
+		res.redirect('/menu');
+	}else {
 		var orderItemsPromises = orderItems.items.map(function(current){
 			return new Promise(function(resolve,reject){
 				Food.findOne({Name:current.name},function(err,item){
@@ -358,39 +377,100 @@ router.post('/order',middleware.isLoggedIn,function(req,res){
 
 
 		Promise.all(orderItemsPromises).then(function(foundItems){
+			var savedOrder = {};
+			savedOrder.items = [];
 			foundItems.forEach(function(current){
 				// console.log(current);
-				console.log([current[0]._id,current[1],parseInt(current[1])*parseInt(current[0].Price)]);
+				// console.log([current[0]._id,current[1],parseInt(current[1])*parseInt(current[0].Price)]);
+				var item = {};
+				item.product_id = current[0]._id;
+				item.quantity = current[1],
+				item.price = (parseInt(current[1])*parseInt(current[0].Price)).toString();
 				// var arr = [current[0]._id,current[1]];
+				savedOrder.items.push(item);
 			});
+			// console.log(orderItems.total);
+			savedOrder.grandTotal = orderItems.total;
 			// console.log(foundItems);
+			// console.log(savedOrder);
+			savedUser.order = savedOrder;
+			// console.log(savedUser);
+			User.findOne({username:savedUser.user},function(err,foundUser){
+				if(err){
+					console.log(err);
+				} else {
+					res.render('order',{User:foundUser});
+				}
+			});
 		}).catch(function(err){
 			console.log(err);
 		});
 
-		// var cartItems = items.map(function(current){
-		// 	return new Promise(function(resolve,reject){
-		// 		Food.findOne({Name : current},function(err,item){
-		// 			if(err){
-		// 				reject();
-		// 			}
-		// 			resolve(item);
-		// 		});
-		// 	});
-		// });
-	
-		// Promise.all(cartItems)
-		// .then(function(foundItems){
-		// 	savedItems = [...new Set(foundItems)];
-		// 	res.sendStatus(200);
-		// 	// console.log(savedItems);
-		// });
 	}
 
 });
 
 router.get('/order',middleware.isLoggedIn,function(req,res){
 	res.send('GET previous orders');
+});
+
+router.post('/checkout',middleware.isLoggedIn,function(req,res){
+	var address = {
+		apartment : req.body.apartment,
+		street : req.body.street,
+		city : req.body.city,
+		pincode : req.body.pincode
+	};
+	// console.log(address);
+	var savedUser = savedItems.find(function(element){
+		return element.user === req.user.username;
+	});
+
+	if(typeof savedUser === 'undefined' || typeof address === 'undefined'){
+		req.flash('error','Please Enter items in the cart');
+		res.redirect('/menu');
+	} else if(typeof savedUser.order === 'undefined'){
+		req.flash('error','Please Enter items in the cart');
+		res.redirect('/menu');		
+	} else if(typeof savedUser.order.items === 'undefined'){
+		req.flash('error','Please Enter items in the cart');
+		res.redirect('/menu');		
+	} else if(savedUser.order.items.length === 0){
+		req.flash('error','Please Enter items in the cart');
+		res.redirect('/menu');				
+	} else {
+		// console.log(savedUser);
+		savedUser.order.address = address;
+		order = savedUser.order;
+		// order.order_id = mongoose.Types.ObjectId();
+		order.order_id = mongoose.mongo.ObjectId();
+		// console.log(mongoose.mongo.ObjectId());
+		// console.log(mongoose.Types.ObjectId());
+		// console.log(savedUser);
+		// console.log(savedUser._id);
+		console.log(order);
+		User.findOneAndUpdate({username : savedUser.user},{$push:{orders : order}},function(err,foundDoc){
+		// User.findOneAndUpdate({username : savedUser.user},{$push:{orders : order}},{new:true},function(err,foundDoc){
+
+		// User.findOneAndUpdate({name:'shahid'},{$push:{orders : order}},{new:true},function(err,foundDoc){
+		// User.findByIdAndUpdate(savedUser._id,{orders : order},{new:true},function(err,foundDoc){
+			if(err){
+				console.log(err);
+			} else {
+				// console.log(foundDoc);
+				// console.log();
+				// console.log(savedUser);
+				savedUser.cart = "";
+				savedUser.order = "";
+				// console.log();
+				// console.log(savedUser);
+				// res.send('POST checkout');
+				res.render('checkout',{orderID : order.order_id,amount : order.grandTotal});
+			}
+		});
+	}
+
+	// res.render('checkout');
 });
 
 router.get('*',function(req,res){

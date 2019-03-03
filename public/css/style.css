@@ -404,6 +404,25 @@ form.update-profile-form > div.form-group > .btn.reset-button {
     margin: 10px 23px;
 }
 
+/* ------------------------------------------------- */
+/* -------------------   CHECKOUT    --------------- */
+/* ------------------------------------------------- */
+
+
+div.checkout-box{
+    margin-top: 70px;
+    text-align: center;
+}
+
+.fa.fa-check-circle-o {
+    color: green;
+    font-size: 2.5em;
+}
+
+span .fa.fa-check-circle-o {
+    margin-bottom: 10px;
+}
+
 /* ------------------------------------------------ */
 /* -------------------  Previous   ---------------- */
 /* ------------------------------------------------ */
