@@ -53,7 +53,15 @@ const orderSchema = mongoose.Schema({
     },
     items : [itemSchema],
     grandTotal : String,
-    address : addressSchema
+    address : addressSchema,
+    orderedAt : {
+        type: Date,
+        required : true
+    },
+    status : {
+        type : String,
+        required : true
+    }
 },{_id:false});
 
 const userSchema = mongoose.Schema({

@@ -1,0 +1,54 @@
+<% include partials/header%>
+
+<% include partials/navigation%>
+
+<div class='container'>
+    
+    <% include partials/_messages%>
+
+    <div class = 'table-responsive'>
+        <table class='table table-striped table-condensed'>
+
+        <tr>
+            <th> Order ID </th>
+            <th> Date </th>
+            <th> Total </th>  
+            <th> Status </th>
+        </tr>
+
+        <% orders.forEach(function(current){ %>
+
+            <tr>
+                <td> <%= current.order_id %> </td>
+                <td> <%= moment(current.orderedAt).format('Do MMMM YYYY hh:mm:ss a');%> </td>
+                <td> <%= current.grandTotal %> </td>
+                <td>
+                    <% switch(current.status) { 
+                        case 'Pending': %>
+                            <span class="label label-info"> Pending </span>
+                    <%        break; 
+                     case 'Accepted': %>
+                            <span class="label label-primary"> Accepted </span>
+                    <%        break; 
+                        case 'Rejected': %>
+                            <span class="label label-danger"> Rejected </span>
+                    <%        break; 
+                     case 'Dispatched': %>
+                            <span class="label label-warning"> Dispatched </span>
+                    <%        break; 
+                      case 'Delivered': %>
+                            <span class="label label-success"> Delivered </span>
+                    <%        break;
+                 } %>
+                </td>
+            </tr>
+
+        <% });%>
+        
+        </table>
+        </div>
+        
+        </div>
+        
+<% include partials/footer%>
+        

@@ -1,6 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const router  = express.Router();
 
@@ -207,12 +208,17 @@ router.post('/cart',middleware.isLoggedIn,function(req,res){
 				user.cart.push(foundItems);
 				res.sendStatus(200);
 			} else {
-				var index = user.cart.findIndex(function(element){
-					return element.Name === foundItems.Name;
-				});
-	
-				if(index === -1){
+				if(user.cart.length === 0 ){
+					user.cart = [];
 					user.cart.push(foundItems);
+				} else {
+					var index = user.cart.findIndex(function(element){
+						return element.Name === foundItems.Name;
+					});
+		
+					if(index === -1){
+						user.cart.push(foundItems);
+					}
 				}
 				res.sendStatus(200);
 			}
@@ -411,7 +417,16 @@ router.post('/order',middleware.isLoggedIn,function(req,res){
 });
 
 router.get('/order',middleware.isLoggedIn,function(req,res){
-	res.send('GET previous orders');
+	// res.send('GET previous orders');
+	User.findOne({username:req.user.username},function(err,foundDoc){
+		if(err){
+			console.log(err);
+		} else {
+			// console.log(foundDoc);
+			console.log(foundDoc.orders);
+			res.render('orders',{orders:foundDoc.orders,moment:moment});
+		}
+	});
 });
 
 router.post('/checkout',middleware.isLoggedIn,function(req,res){
@@ -444,6 +459,12 @@ router.post('/checkout',middleware.isLoggedIn,function(req,res){
 		order = savedUser.order;
 		// order.order_id = mongoose.Types.ObjectId();
 		order.order_id = mongoose.mongo.ObjectId();
+		// order.orderedAt = moment().format('Do MMMM YYYY hh:mm:ss a');
+		order.orderedAt = moment().toDate();
+		order.status = 'Pending';
+		// console.log(order.orderedAt); 
+		// console.log(moment());
+		// console.log(moment().format('Do MMMM YYYY hh:mm:ss a'));
 		// console.log(mongoose.mongo.ObjectId());
 		// console.log(mongoose.Types.ObjectId());
 		// console.log(savedUser);
@@ -472,6 +493,10 @@ router.post('/checkout',middleware.isLoggedIn,function(req,res){
 
 	// res.render('checkout');
 });
+
+// router.get('/checkout',function(req,res){
+// 	res.redirect('/order');
+// });
 
 router.get('*',function(req,res){
 	res.send("page not found");
