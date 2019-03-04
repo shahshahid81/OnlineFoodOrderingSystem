@@ -423,8 +423,41 @@ router.get('/order',middleware.isLoggedIn,function(req,res){
 			console.log(err);
 		} else {
 			// console.log(foundDoc);
-			console.log(foundDoc.orders);
+			// console.log(foundDoc.orders);
 			res.render('orders',{orders:foundDoc.orders,moment:moment});
+		}
+	});
+});
+
+router.get('/order/:id',middleware.isLoggedIn,function(req,res){
+	User.findOne({'orders.order_id':req.params.id},function(err,foundDoc){
+		if(err){
+			console.log(err);
+		} else {
+			var order = foundDoc.orders.find(function(element){
+				// console.log(element['order_id']);
+				// console.log(typeof element.order_id.toString());
+				return element.order_id.toString() === req.params.id;
+			});
+			console.log(order);
+			var productPromises = order.items.map(function(current){
+				return new Promise(function(resolve,reject){
+					Food.findById(current.product_id,function(err,foundDoc){
+						if(err){
+							reject(err);
+						} else {
+							resolve(foundDoc);
+						}
+					});
+				});
+			});
+
+			Promise.all(productPromises).then(function(items){
+				res.render('order-item',{items:items});
+			}).catch(function(err){
+				console.log(err);
+			});
+			// res.render('',{order:order});
 		}
 	});
 });

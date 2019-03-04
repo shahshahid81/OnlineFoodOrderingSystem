@@ -19,7 +19,7 @@
         <% orders.forEach(function(current){ %>
 
             <tr>
-                <td> <%= current.order_id %> </td>
+                <td> <a href="/order/<%=current.order_id%>"><%= current.order_id %> </a></td>
                 <td> <%= moment(current.orderedAt).format('Do MMMM YYYY hh:mm:ss a');%> </td>
                 <td> <%= current.grandTotal %> </td>
                 <td>

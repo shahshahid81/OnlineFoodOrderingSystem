@@ -1,0 +1,50 @@
+<% include partials/header %>
+
+<% include partials/navigation %>
+
+<div class="container">
+
+<% include partials/_messages %>
+
+    <%items.forEach(function(current){ %>
+        <div class="row cart-item">
+                    
+            <div class="col-md-3">
+                <div class="thumbnail">
+                    <img src="<%= current.ImagePath %>" class="food-image" alt="<%= current.Name %>">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h3 class='food-name'> <%= current.Name %> </h3>
+                <p class="description"> <%= current.Description %>  </p>
+            </div>
+            <div class="col-md-3">
+                <br>
+                <br>
+                <p>
+                <span class='food-price'> <%= current.Price %> </span> &#8360 &nbsp; x &nbsp;&nbsp;&nbsp;   
+
+                    <div class="quantity-group">
+                    <button type="button" class="btn btn-danger" id="decrement" onclick="decrement(event)">
+                    <i class="fa fa-minus" aria-hidden="true"></i>
+                    </button>
+                    <input type="number" id="quantity" name="quantity" class="quantity-box" value="1" oninput="validateQuantity(event)">
+                    <button type="button" class="btn btn-success" id="increment" onclick="increment(event)">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
+                    </div>
+                    
+                    &nbsp;&nbsp;&nbsp;
+                </p>
+                <i class="fa fa-trash" onClick ='removeItem(event,"<%= current.Name %>")'></i>
+                <hr>
+                <p> Total = <span class="total-price" data-price="<%= current.Price %>"><%= current.Price %></span></p>
+            </div>
+
+        </div>
+    <% });%>
+
+</div>
+
+
+<% include partials/footer %>
