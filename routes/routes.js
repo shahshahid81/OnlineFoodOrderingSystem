@@ -60,9 +60,6 @@ router.get('/menu',function(req,res){
 			if(err){
 				console.log(err);
 			} else {
-				// var currentUser = savedItems.find(function(element){
-				// 	return element.user === req.user.username;
-				// });
 				if( typeof req.user !== 'undefined'){
 					var currentUser = savedItems.find(function(element){
 						return element.user === req.user.username;
@@ -190,19 +187,6 @@ router.post('/cart',middleware.isLoggedIn,function(req,res){
 				return element.user === req.user.username;
 			});
 
-			// if(typeof user.cart === 'undefined'){
-			// 	user.cart = [];
-			// }
-
-			// var index = user.cart.findIndex(function(element){
-			// 	return element.Name === foundItems.Name;
-			// });
-
-			// if(index === -1){
-			// 	user.cart.push(foundItems);
-			// }
-			// res.sendStatus(200);
-
 			if( typeof user.cart === 'undefined'){
 				user.cart = [];
 				user.cart.push(foundItems);
@@ -256,16 +240,6 @@ router.post('/profile',middleware.isLoggedIn,function(req,res){
 			var username = req.body.email || foundUser.username;
 			var phoneNumber = req.body['phone-number'] || foundUser.phoneNumber; 
 
-			// console.log(req.body.name);
-			// console.log(req.body.username);
-			// console.log(req.body.phoneNumber);
-
-			// console.log('=======================');
-
-			// console.log(foundUser.name);
-			// console.log(foundUser.username);
-			// console.log(foundUser.phoneNumber);
-
 			var updatedUser = {
 				name ,
 				phoneNumber ,
@@ -289,76 +263,13 @@ router.post('/profile',middleware.isLoggedIn,function(req,res){
 
 });
 
-// router.get('/order',middleware.isLoggedIn,function(req,res){
-
-// 	// console.log(JSON.parse(req.query.items));
-// 	// console.log(JSON.parse(req.query.items).total);
-
-// 	var savedUser = savedItems.find(function(element){
-// 		return element.user === req.user.username;
-// 	});
-
-// 	// console.log(savedUser);
-
-// 	if(typeof savedUser === 'undefined'){	
-// 		req.flash('error','Please Enter Items in the cart');
-// 		res.redirect('/menu');
-// 	} else if(typeof savedUser.cart === 'undefined' || savedUser.cart.length === 0){	
-// 		req.flash('error','Please Enter Items in the cart');
-// 		res.redirect('/menu');
-// 	} else {
-// 		User.findOne({username:savedUser.user},function(err,foundUser){
-// 			if(err){
-// 				console.log(err);
-// 			} else {
-// 				res.render('order',{User:foundUser});
-// 			}
-// 		});
-// 	}
-// });
-
-// router.post('/order',middleware.isLoggedIn,function(req,res){
-// 	console.log(JSON.parse(req.query.items));
-// 	console.log(JSON.parse(req.query.items).total);
-// 	res.send('order');
-// });
-
-
 router.post('/order',middleware.isLoggedIn,function(req,res){
-
-	// // console.log(JSON.parse(req.query.items));
-	// // console.log(JSON.parse(req.query.items).total);
-
-	// var savedUser = savedItems.find(function(element){
-	// 	return element.user === req.user.username;
-	// });
-
-	// // console.log(savedUser);
-
-	// if(typeof savedUser === 'undefined'){	
-	// 	req.flash('error','Please Enter Items in the cart');
-	// 	res.redirect('/menu');
-	// } else if(typeof savedUser.cart === 'undefined' || savedUser.cart.length === 0){	
-	// 	req.flash('error','Please Enter Items in the cart');
-	// 	res.redirect('/menu');
-	// } else {
-	// 	User.findOne({username:savedUser.user},function(err,foundUser){
-	// 		if(err){
-	// 			console.log(err);
-	// 		} else {
-	// 			res.render('order',{User:foundUser});
-	// 		}
-	// 	});
-	// }
 
 	var orderItems = JSON.parse(req.query.items);
 
 	var savedUser = savedItems.find(function(element){
 		return element.user === req.user.username;
 	});
-
-	// console.log(orderItems);
-	// console.log("\n\n"+savedUser);
 
 	if(typeof savedUser === 'undefined' || typeof orderItems === 'undefined'){
 		req.flash('error','Please Enter items in the cart');
@@ -386,21 +297,14 @@ router.post('/order',middleware.isLoggedIn,function(req,res){
 			var savedOrder = {};
 			savedOrder.items = [];
 			foundItems.forEach(function(current){
-				// console.log(current);
-				// console.log([current[0]._id,current[1],parseInt(current[1])*parseInt(current[0].Price)]);
 				var item = {};
 				item.product_id = current[0]._id;
 				item.quantity = current[1],
 				item.price = (parseInt(current[1])*parseInt(current[0].Price)).toString();
-				// var arr = [current[0]._id,current[1]];
 				savedOrder.items.push(item);
 			});
-			// console.log(orderItems.total);
 			savedOrder.grandTotal = orderItems.total;
-			// console.log(foundItems);
-			// console.log(savedOrder);
 			savedUser.order = savedOrder;
-			// console.log(savedUser);
 			User.findOne({username:savedUser.user},function(err,foundUser){
 				if(err){
 					console.log(err);
@@ -417,13 +321,10 @@ router.post('/order',middleware.isLoggedIn,function(req,res){
 });
 
 router.get('/order',middleware.isLoggedIn,function(req,res){
-	// res.send('GET previous orders');
 	User.findOne({username:req.user.username},function(err,foundDoc){
 		if(err){
 			console.log(err);
 		} else {
-			// console.log(foundDoc);
-			// console.log(foundDoc.orders);
 			res.render('orders',{orders:foundDoc.orders,moment:moment});
 		}
 	});
@@ -435,18 +336,15 @@ router.get('/order/:id',middleware.isLoggedIn,function(req,res){
 			console.log(err);
 		} else {
 			var order = foundDoc.orders.find(function(element){
-				// console.log(element['order_id']);
-				// console.log(typeof element.order_id.toString());
 				return element.order_id.toString() === req.params.id;
 			});
-			console.log(order);
 			var productPromises = order.items.map(function(current){
 				return new Promise(function(resolve,reject){
 					Food.findById(current.product_id,function(err,foundDoc){
 						if(err){
 							reject(err);
 						} else {
-							resolve(foundDoc);
+							resolve({item:foundDoc,quantity : current.quantity});
 						}
 					});
 				});
@@ -457,7 +355,6 @@ router.get('/order/:id',middleware.isLoggedIn,function(req,res){
 			}).catch(function(err){
 				console.log(err);
 			});
-			// res.render('',{order:order});
 		}
 	});
 });
@@ -469,7 +366,7 @@ router.post('/checkout',middleware.isLoggedIn,function(req,res){
 		city : req.body.city,
 		pincode : req.body.pincode
 	};
-	// console.log(address);
+
 	var savedUser = savedItems.find(function(element){
 		return element.user === req.user.username;
 	});
@@ -487,52 +384,26 @@ router.post('/checkout',middleware.isLoggedIn,function(req,res){
 		req.flash('error','Please Enter items in the cart');
 		res.redirect('/menu');				
 	} else {
-		// console.log(savedUser);
 		savedUser.order.address = address;
 		order = savedUser.order;
-		// order.order_id = mongoose.Types.ObjectId();
 		order.order_id = mongoose.mongo.ObjectId();
-		// order.orderedAt = moment().format('Do MMMM YYYY hh:mm:ss a');
 		order.orderedAt = moment().toDate();
 		order.status = 'Pending';
-		// console.log(order.orderedAt); 
-		// console.log(moment());
-		// console.log(moment().format('Do MMMM YYYY hh:mm:ss a'));
-		// console.log(mongoose.mongo.ObjectId());
-		// console.log(mongoose.Types.ObjectId());
-		// console.log(savedUser);
-		// console.log(savedUser._id);
-		console.log(order);
 		User.findOneAndUpdate({username : savedUser.user},{$push:{orders : order}},function(err,foundDoc){
-		// User.findOneAndUpdate({username : savedUser.user},{$push:{orders : order}},{new:true},function(err,foundDoc){
-
-		// User.findOneAndUpdate({name:'shahid'},{$push:{orders : order}},{new:true},function(err,foundDoc){
-		// User.findByIdAndUpdate(savedUser._id,{orders : order},{new:true},function(err,foundDoc){
 			if(err){
 				console.log(err);
 			} else {
-				// console.log(foundDoc);
-				// console.log();
-				// console.log(savedUser);
 				savedUser.cart = "";
 				savedUser.order = "";
-				// console.log();
-				// console.log(savedUser);
-				// res.send('POST checkout');
 				res.render('checkout',{orderID : order.order_id,amount : order.grandTotal});
 			}
 		});
 	}
 
-	// res.render('checkout');
 });
 
-// router.get('/checkout',function(req,res){
-// 	res.redirect('/order');
+// router.get('*',function(req,res){
+// 	res.send("page not found");
 // });
-
-router.get('*',function(req,res){
-	res.send("page not found");
-});
 
 module.exports = router;

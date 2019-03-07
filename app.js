@@ -9,6 +9,7 @@ const LocalStrategy = require('passport-local').Strategy;
 
 const User = require("./models/user");
 const Food = require("./models/food");
+const admin = require("./routes/admin");
 const routes = require("./routes/routes");
 const seedDB = require('./seed');
 
@@ -58,6 +59,7 @@ app.use(function(req, res, next){
 app.set('view engine','ejs');
 
 app.use('/',routes);
+app.use('/admin',admin);
 
 app.listen(port,function(err){
 	if(err){
