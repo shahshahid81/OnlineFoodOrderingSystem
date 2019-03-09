@@ -1,0 +1,48 @@
+<% include partials/header %>
+
+<% include partials/side-nav %>
+
+<div class='admin-main'>
+
+    <% include partials/_messages %>
+
+    <div class="table-responsive">
+
+        <table class='table table-striped table-condensed'>
+        
+            <th> User ID </th>
+            <th> Name </th>
+            <th> Username </th>
+            <th> Phone Number </th>
+            <th> Edit </th>
+            <th> Delete </th>
+
+            <% if(users && users.length > 0){%>
+                <% users.forEach(function(current){ %>
+                    <tr>
+                        <td><%= current._id %></td>
+                        <td><%= current.name%></td>
+                        <td><%= current.username%></td>
+                        <td><%= current.phoneNumber%></td>
+                        <td>
+                            <form action='/admin/user/<%=current._id%>/modify%>' method='get'>
+                                <button class='icon'> <i class="fa fa-pencil"></i> </button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action='/admin/user/<%=current._id%>/delete%>' method='post'>
+                                <button class='icon'> <i class="fa fa-trash"></i> </button>
+                            </form>
+                        </td>
+                    </tr>
+
+                <% });%>
+            <% } %>
+
+        </table>
+
+    </div>
+
+</div>
+
+<% include partials/footer%>

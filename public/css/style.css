@@ -271,7 +271,7 @@ div.thumbnail {
 /* ------------------------------------------------ */
 
 form.sign-in-form {
-    width: 60%;
+    width: 45%;
     margin: 50px auto;
 }
 
@@ -291,7 +291,7 @@ form.sign-in-form > div.form-group > .btn.clear-button {
 /* ------------------------------------------------ */
 
 form.sign-up-form {
-    width: 65%;
+    width: 45%;
     margin: 30px auto;
 }
 
@@ -369,7 +369,7 @@ button.btn-lg.btn.empty-cart-button {
 /* ------------------------------------------------ */
 
 form.order-form {
-    width: 65%;
+    width: 45%;
     margin: 30px auto;
 }
 
@@ -389,7 +389,7 @@ form.order-form > div.form-group > .btn.clear-button {
 /* ------------------------------------------------- */
 
 form.update-profile-form {
-    width: 65%;
+    width: 45%;
     margin: 30px auto;
 }
 
@@ -484,6 +484,62 @@ span .fa.fa-check-circle-o {
 .fa-caret-down {
     float: right;
     padding-right: 8px;
+}
+
+/* ------------------------------------------------ */
+/* -------------------  USER/NEW   ---------------- */
+/* ------------------------------------------------ */
+
+form.new-user-form {
+    width : 45%;
+    margin: 60px auto;
+}
+
+.btn.sign-up-button {
+    font-weight: bold;
+}
+
+form.new-user-form > div.form-group > .btn.sign-up-button,
+form.new-user-form > div.form-group > .btn.clear-button {
+    width: 40%;
+    margin: 10px 23px;
+}
+
+/* ------------------------------------------------ */
+/* -------------------  ADMIN/USER  --------------- */
+/* ------------------------------------------------ */
+
+button.icon {
+    border:none;
+    background: none;
+}
+
+.fa.fa-pencil {
+    color: #212121;
+}
+
+.fa.fa-pencil:hover{
+    color:#3498DB;
+}
+
+/* ------------------------------------------------ */
+/* -------------------  USER/MODIFY --------------- */
+/* ------------------------------------------------ */
+
+form.modify-user-form {
+    width : 45%;
+    margin: 60px auto;
+}
+
+.btn.modify-button,
+.btn.reset-button {
+    font-weight: bold;
+}
+
+form.modify-user-form > div.form-group > .btn.modify-button,
+form.modify-user-form > div.form-group > .btn.reset-button {
+    width: 40%;
+    margin: 10px 23px;
 }
 
 /* ------------------------------------------------ */
