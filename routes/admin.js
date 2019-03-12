@@ -177,26 +177,31 @@ router.post('/food/:id/modify',upload.single('image'),function(req,res){
 
 });
 
-// router.post('/food/:id/modify',function(req,res){
+router.get('/food/new',function(req,res){
+    res.render('new-food');
+});
 
-//     var updatedFoodItem = {
-//         Name : req.body.name,
-//         Price : req.body.price,
-//         Category : req.body.category,
-//         ImagePath : req.body.i 
-//     };
+router.post('/food/new',upload.single('image'),function(req,res){
+    var newFoodItem = {
+        Name : req.body.name,
+        Price : req.body.price,
+        Category : req.body.category,
+        ImagePath : path.join('/img/Food',(req.body.name).toString().toUpperCase())+'.jpg',
+        Description : req.body.description
+    };
 
-//     Food.findByIdAndUpdate(req.params.id,updatedFoodItem,{new:true},function(err,modifiedUser){
-//         if(err){
-//             console.log(err);
-//             req.flash('err','An error occured.');
-//             res.redirect('/admin/food');
-//         } else {
-//             req.flash('success','Data updated successfully');
-//             res.redirect('/admin/food');
-//         }
-//     });
+    console.log(newFoodItem);
 
-// });
+    Food.insertMany(newFoodItem,function(err,doc){
+        if(err){
+            console.log(err);
+            req.flash('err','An error occured.');
+            res.redirect('/admin/food');
+        } else {
+            req.flash('success','Data Inserted successfully');
+            res.redirect('/admin/food');
+        }
+    });
+});
 
 module.exports = router;

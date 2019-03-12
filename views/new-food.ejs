@@ -1,0 +1,69 @@
+<% include partials/header %>
+
+<% include partials/side-nav %>
+
+    <div class='admin-main'>
+
+        <div class = "container">
+            <% include partials/_messages%>
+
+            <form action="/admin/food/new" method="post" class="modify-user-form">
+                
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        <input type="text" name="name" id="name" class="form-control input-lg" placeholder="Enter Name" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-inr"></i></span>
+                        <input type="text" name="price" id="price" class="form-control input-lg" placeholder="Enter Price" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-list"></i></span>
+                        <select id='category' name='category' class="form-control input-lg">
+
+                            <% var categories = ['Appetizers','Chicken','Seafood','Rice','Vegetable','Bread','Dessert','Beverage'];
+                            categories.forEach(function(current){ %>
+                                <option value= '<%=  current %>' > <%=  current %> </option>
+                            <% });%>
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">Image</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-image"></i></span>
+                        <input type='file' id='image' name='image' accept = '.jpg' class='form-control input-lg'>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-file-text"></i></span>
+                        <textarea id='description' name='description' class='form-control input-lg' rows = '3' maxlength='85' placeholder='Enter Description'></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-lg modify-button">Modify</button>
+                    <button type="reset" class="btn btn-default btn-lg reset-button">Reset</button>    
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+<% include partials/footer %>
