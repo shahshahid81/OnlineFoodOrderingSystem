@@ -1,9 +1,23 @@
 const express = require('express');
+const path = require('path');
 const moment = require('moment');
+const multer = require('multer');
 
 const router = express.Router();
 
 const User = require('../models/user');
+const Food = require('../models/food');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, path.join(__dirname,'../public/img/Food/'));
+    },
+    filename: function (req, file, cb) {
+        cb(null, req.body.name.toUpperCase()+'.jpg');
+    }
+});
+
+const upload = multer({ storage: storage })
 
 router.get('/',function(req,res){
     User.find({},function(err,foundDocs){
@@ -23,7 +37,7 @@ router.get('/',function(req,res){
         });
         // console.log(allOrders);
         // res.render('admin',{orders:{}});
-        res.render('admin',{orders:allOrders,moment:moment});
+        res.render('order-status',{orders:allOrders,moment:moment});
     });
 });
 
@@ -108,5 +122,81 @@ router.post('/user/:id/modify',function(req,res){
     });
 
 });
+
+router.get('/food',function(req,res){
+    Food.find({},{Description : 0,ImagePath : 0},function(err,foundDocs){
+        if(err){
+            console.log(err);
+        } else {
+            // console.log(foundDocs);
+            res.render('view-food',{food:foundDocs});
+        }
+    });
+}); 
+
+router.post('/food/:id/delete',function(req,res){
+    Food.findByIdAndDelete(req.params.id,function(){
+        req.flash('success','Food Item Deleted Successfully');
+        res.redirect('/admin/food');
+    });
+});
+
+router.get('/food/:id/modify',function(req,res){
+    Food.findById(req.params.id,function(err,foundDoc){
+        if(err){
+            console.log(err);
+        } else {
+            // console.log(foundDoc);
+            res.render('modify-food',{Food:foundDoc});
+        }
+    })
+});
+
+router.post('/food/:id/modify',upload.single('image'),function(req,res){
+
+    var updatedFoodItem = {
+        Name : req.body.name,
+        Price : req.body.price,
+        Category : req.body.category,
+        ImagePath : path.join('/img/Food',(req.body.name).toString().toUpperCase())+'.jpg',
+        Description : req.body.description
+    };
+
+    console.log(updatedFoodItem);
+
+    Food.findByIdAndUpdate(req.params.id,updatedFoodItem,{new:true},function(err,modifiedUser){
+        if(err){
+            console.log(err);
+            req.flash('err','An error occured.');
+            res.redirect('/admin/food');
+        } else {
+            req.flash('success','Data updated successfully');
+            res.redirect('/admin/food');
+        }
+    });
+
+});
+
+// router.post('/food/:id/modify',function(req,res){
+
+//     var updatedFoodItem = {
+//         Name : req.body.name,
+//         Price : req.body.price,
+//         Category : req.body.category,
+//         ImagePath : req.body.i 
+//     };
+
+//     Food.findByIdAndUpdate(req.params.id,updatedFoodItem,{new:true},function(err,modifiedUser){
+//         if(err){
+//             console.log(err);
+//             req.flash('err','An error occured.');
+//             res.redirect('/admin/food');
+//         } else {
+//             req.flash('success','Data updated successfully');
+//             res.redirect('/admin/food');
+//         }
+//     });
+
+// });
 
 module.exports = router;
