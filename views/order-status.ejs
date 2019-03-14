@@ -14,6 +14,7 @@
             <th> Date </th>
             <th> Total </th>  
             <th> Status </th>
+            <th>Change Status</th>
         </tr>
 
         <% if(orders && orders.length > 0){%>
@@ -23,7 +24,21 @@
                     <td><%= current.order_id %></td>
                     <td><%= moment(current.orderedAt).format('Do MMMM YYYY hh:mm:ss a');%></td>
                     <td><%= current.total%></td>
-                    <td><%= current.status%></td>
+                    <td>
+                        <form action = '/admin/<%=current.order_id%>' method = 'post'>
+                            <select id='category' class='category' name='category' class="form-control input-lg">
+
+                                <% var status = ['Pending','Accepted','Rejected','Dispatched','Delivered'];
+                                status.forEach(function(element){ %>
+                                    <option value= '<%=  element %>' <%= current.status === element ? 'selected' : ''%> > <%=  element %> </option>
+                                <% });%>
+
+                            </select>
+                    </td>
+                    <td>
+                            <button class='icon' type='submit'><i class="fa fa-check"></i></button>
+                        </form>
+                    </td>
                 </tr>
             <% });%>
         <% } %>
@@ -32,7 +47,5 @@
     </div>
 
 </div>
-
-<script src='/js/admin.js'></script>
 
 <% include partials/footer%>

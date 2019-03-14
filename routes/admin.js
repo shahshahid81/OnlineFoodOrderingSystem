@@ -41,6 +41,32 @@ router.get('/',function(req,res){
     });
 });
 
+router.post('/:id',function(req,res){
+    // res.send(req.body.category);
+    User.findOne({'orders.order_id' : req.params.id },{orders:1},function(err,doc){
+        if(err){
+            console.log(err);
+        } else {
+            // console.log(doc);
+            var order = doc.orders.find(function(current){
+                return current.order_id == req.params.id;
+            });
+            // console.log(order);
+            order.status = req.body.category;
+            // console.log(order.status);
+            // console.log(order);
+            doc.save(function(err,modifiedDoc){
+                if(err){
+                    console.log(err);
+                } else {
+                    console.log(modifiedDoc);
+                    res.redirect('/admin');
+                }
+            });
+        }
+    });
+});
+
 router.get('/user/new',function(req,res){
     res.render('new-user');
 });
