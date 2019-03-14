@@ -38,7 +38,7 @@ function clearCart(){
     clearRequest.send();
 }
 
-function removeItem(event,name){
+function removeItem(name){
 
     var removeRequest = new XMLHttpRequest();
     
@@ -105,7 +105,7 @@ function checkout() {
 
 var grandTotal = 0;
 
-function increment(event){
+function increment(){
     
     var quantityTextbox =$(event.currentTarget).prev();
     var quantity = parseInt(quantityTextbox.val());
@@ -120,7 +120,7 @@ function increment(event){
     updateTotal();
 }
 
-function decrement(event){
+function decrement(){
     var quantityTextbox =$(event.currentTarget).next();
     var quantity = parseInt(quantityTextbox.val());
     if(quantity > 1){
@@ -134,7 +134,7 @@ function decrement(event){
     updateTotal();
 }
 
-function validateQuantity(event){
+function validateQuantity(){
 
     const quantityTextbox = $(event.target);
     if(!(quantityTextbox.val() > 10 && quantityTextbox.val() < 1)){

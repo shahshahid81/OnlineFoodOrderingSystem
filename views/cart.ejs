@@ -29,18 +29,18 @@
                            <span class='food-price'> <%= current.Price %> </span> &#8360 &nbsp; x &nbsp;&nbsp;&nbsp;   
 
                             <div class="quantity-group">
-                            <button type="button" class="btn btn-danger" id="decrement" onclick="decrement(event)">
+                            <button type="button" class="btn btn-danger" id="decrement" onclick="decrement()">
                             <i class="fa fa-minus" aria-hidden="true"></i>
                             </button>
-                            <input type="number" id="quantity" name="quantity" class="quantity-box" value="1" oninput="validateQuantity(event)">
-                            <button type="button" class="btn btn-success" id="increment" onclick="increment(event)">
+                            <input type="number" id="quantity" name="quantity" class="quantity-box" value="1" oninput="validateQuantity()">
+                            <button type="button" class="btn btn-success" id="increment" onclick="increment()">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             </button>
                             </div>
                             
                             &nbsp;&nbsp;&nbsp;
                         </p>
-                        <i class="fa fa-trash" onClick ='removeItem(event,"<%= current.Name %>")'></i>
+                        <i class="fa fa-trash" onclick ='removeItem("<%= current.Name %>")'></i>
                         <hr>
                         <p> Total = <span class="total-price" data-price="<%= current.Price %>"><%= current.Price %></span></p>
                     </div>
@@ -60,12 +60,12 @@
 
                 <div class="row">
                     <form>
-                    <button class="btn btn-success btn-lg check-out-button" onclick='checkout(event)'>Checkout</button>
-                    <button class="btn btn-default btn-lg empty-cart-button" id="empty-cart">Empty Cart</button>
+                    <button class="btn btn-success btn-lg check-out-button" onclick='checkout()'>Checkout</button>
+                    <button class="btn btn-default btn-lg empty-cart-button" id="empty-cart" onclick = 'clearCart()'>Empty Cart</button>
                     </form>
                 </div>
                 </div>
                 
-<script src="/js/cart.js"></script>
+<script src="/js/script.js"></script>
 
 <% include partials/footer%>
