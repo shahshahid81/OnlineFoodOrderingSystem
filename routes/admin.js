@@ -8,6 +8,17 @@ const router = express.Router();
 const User = require('../models/user');
 const Food = require('../models/food');
 
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, path.join(__dirname,'../public/img/Food/'));
+//     },
+//     filename: function (req, file, cb) {
+//         if(typeof req.body.image !== 'undefined'){
+//             cb(null, req.body.name.toUpperCase()+'.jpg');
+//         }
+//     }
+// });
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, path.join(__dirname,'../public/img/Food/'));
@@ -17,7 +28,7 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage: storage })
+const upload = multer({ storage: storage });
 
 router.get('/',function(req,res){
     User.find({},function(err,foundDocs){
@@ -180,22 +191,28 @@ router.get('/food/:id/modify',function(req,res){
 
 router.post('/food/:id/modify',upload.single('image'),function(req,res){
 
+    console.log(req.body);
+
     var updatedFoodItem = {
         Name : req.body.name,
         Price : req.body.price,
         Category : req.body.category,
-        ImagePath : path.join('/img/Food',(req.body.name).toString().toUpperCase())+'.jpg',
         Description : req.body.description
     };
 
-    console.log(updatedFoodItem);
+    if(typeof req.file !== 'undefined'){
+        updatedFoodItem.ImagePath = path.join('/img/Food',(req.body.name).toString().toUpperCase())+'.jpg'; 
+    }
 
-    Food.findByIdAndUpdate(req.params.id,updatedFoodItem,{new:true},function(err,modifiedUser){
+    // console.log(updatedFoodItem);
+
+    Food.findByIdAndUpdate(req.params.id,updatedFoodItem,{new:true},function(err,modifiedFood){
         if(err){
             console.log(err);
             req.flash('err','An error occured.');
             res.redirect('/admin/food');
         } else {
+            console.log(modifiedFood);
             req.flash('success','Data updated successfully');
             res.redirect('/admin/food');
         }

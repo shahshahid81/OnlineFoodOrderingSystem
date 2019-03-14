@@ -15,7 +15,7 @@ const seedDB = require('./seed');
 
 const app = express();
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 mongoose.connect("mongodb://127.0.0.1:27017/foodDB",{ useNewUrlParser:true },function(err){
 	if(err){
@@ -36,8 +36,8 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(session({
 	cookie: { maxAge: 60 * 60 * 1000 },
 	resave:false,
