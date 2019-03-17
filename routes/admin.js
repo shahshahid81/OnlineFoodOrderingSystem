@@ -31,25 +31,44 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.get('/',function(req,res){
-    User.find({},function(err,foundDocs){
-        // console.log(foundDocs);
+    // User.find({},function(err,foundDocs){
+    //     // console.log(foundDocs);
+
+    //     var allOrders = [];
+    //     foundDocs.forEach(function(current){
+    //         current.orders.forEach(function(order){
+    //             allOrders.push({
+    //                 username : current.username,
+    //                 order_id: order.order_id,
+    //                 orderedAt : order.orderedAt,
+    //                 total : order.grandTotal,
+    //                 status : order.status
+    //             });
+    //         });
+    //     });
+    //     // console.log(allOrders);
+    //     res.render('order-status',{orders:allOrders,moment:moment});
+    // });
+
+    User.aggregate([
+		{$unwind : "$orders" },
+		{$sort : {"orders.orderedAt" : -1}}
+	]).exec(function(err,foundDocs){
+		// console.log(foundDocs);
 
         var allOrders = [];
         foundDocs.forEach(function(current){
-            current.orders.forEach(function(order){
-                allOrders.push({
-                    username : current.username,
-                    order_id: order.order_id,
-                    orderedAt : order.orderedAt,
-                    total : order.grandTotal,
-                    status : order.status
-                });
+            allOrders.push({
+                username : current.username,
+                order_id: current.orders.order_id,
+                orderedAt : current.orders.orderedAt,
+                total : current.orders.grandTotal,
+                status : current.orders.status
             });
         });
         // console.log(allOrders);
-        // res.render('admin',{orders:{}});
         res.render('order-status',{orders:allOrders,moment:moment});
-    });
+	});
 });
 
 router.post('/:id',function(req,res){

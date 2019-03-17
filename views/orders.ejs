@@ -16,14 +16,14 @@
             <th> Status </th>
         </tr>
 
-        <% orders.forEach(function(current){ %>
+        <% orderArr.forEach(function(current){ %>
 
             <tr>
-                <td> <a href="/order/<%=current.order_id%>"><%= current.order_id %> </a></td>
-                <td> <%= moment(current.orderedAt).format('Do MMMM YYYY hh:mm:ss a');%> </td>
-                <td> <%= current.grandTotal %> </td>
+                <td> <a href="/order/<%=current.orders.order_id%>"><%= current.orders.order_id %> </a></td>
+                <td> <%= moment(current.orders.orderedAt).format('Do MMMM YYYY hh:mm:ss a');%> </td>
+                <td> <%= current.orders.grandTotal %> </td>
                 <td>
-                    <% switch(current.status) { 
+                    <% switch(current.orders.status) { 
                         case 'Pending': %>
                             <span class="label label-info"> Pending </span>
                     <%        break; 

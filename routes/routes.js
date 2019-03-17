@@ -320,12 +320,38 @@ router.post('/order',middleware.isLoggedIn,function(req,res){
 
 });
 
+// router.get('/order',middleware.isLoggedIn,function(req,res){
+// 	User.findOne({username:req.user.username},{orders : 1},{},function(err,foundDoc){
+// 		if(err){
+// 			console.log(err);
+// 		} else {
+// 			console.log(foundDoc);
+// 			res.render('orders',{orders:foundDoc.orders,moment:moment});
+// 		}
+// 	});
+// });
+
 router.get('/order',middleware.isLoggedIn,function(req,res){
-	User.findOne({username:req.user.username},function(err,foundDoc){
+	// User.findOne({username:req.user.username},{orders : 1},{},function(err,foundDoc){
+	// 	if(err){
+	// 		console.log(err);
+	// 	} else {
+	// 		console.log(foundDoc);
+	// 		res.render('orders',{orders:foundDoc.orders,moment:moment});
+	// 	}
+	// });
+
+	User.aggregate([
+		{$match : {	username:req.user.username	}},
+		{$project : {orders : 1,_id : 0}},
+		{$unwind : "$orders" },
+		{$sort : {"orders.orderedAt" : -1}}
+	]).exec(function(err,foundDoc){
 		if(err){
 			console.log(err);
 		} else {
-			res.render('orders',{orders:foundDoc.orders,moment:moment});
+			console.log(foundDoc);
+			res.render('orders',{orderArr:foundDoc,moment:moment});
 		}
 	});
 });
@@ -401,9 +427,5 @@ router.post('/checkout',middleware.isLoggedIn,function(req,res){
 	}
 
 });
-
-// router.get('*',function(req,res){
-// 	res.send("page not found");
-// });
 
 module.exports = router;

@@ -7,7 +7,9 @@ function pageInit(){
     if(window.location.pathname === "/menu"){
         activeCategory();
         setAJAXListeners();
-    }    
+    } else if(window.location.pathname === "/cart"){
+        updateTotal();
+    } 
 }
 
 function activePage(){
