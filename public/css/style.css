@@ -34,7 +34,7 @@ html,body {
 
 /* -----------------Navigation------------ */
 
-.navbar div a {
+/* .navbar div a {
     font-size: 20px;
 }
 
@@ -73,6 +73,49 @@ html,body {
 }
 
 .nav.navbar-nav a.active:hover{
+    color: #000;
+    background: #fff;
+} */
+
+header .navbar div a {
+    font-size: 20px;
+}
+
+header .navbar-default {
+    background-color: #D32F2F;
+    border-color: #BDBDBD;
+}
+
+header .navbar-default .navbar-brand:visited,
+header .navbar-default .navbar-brand:link {
+    color: #fff;
+}
+header .navbar-default .navbar-brand:hover,
+header .navbar-default .navbar-brand:focus {
+    color: #212121;
+    background:#fff;
+    transition: 0.2s;
+}
+
+header .navbar-default .navbar-nav > li > a:link,
+header .navbar-default .navbar-nav > li > a:visited {
+    color: #fff;
+    font-size: 20px;
+}
+
+header .navbar-default .navbar-nav > li > a:hover,
+header .navbar-default .navbar-nav > li > a:focus {
+    color: #212121;
+    background:#fff;
+    transition: 0.2s;
+}
+
+header .nav.navbar-nav a.active{
+    color: #fff;
+    background: #000;
+}
+
+header .nav.navbar-nav a.active:hover{
     color: #000;
     background: #fff;
 }
@@ -184,7 +227,8 @@ body.main{
 .category-choice {
     list-style-type: none;
     text-align: center;
-    font-size: 1.1em;
+    /* font-size: 1.1em; */
+    font-size: 1em;
 }
 
 .category-choice > li{
@@ -203,12 +247,12 @@ body.main{
 }
 
 .category-choice > li > a.category-active{
-    color: #212121;
-}
-
-.category-choice > li > a.category-active:hover{
     color: #D32F2F;
 }
+
+/* .category-choice > li > a.category-active:hover{
+    color: #D32F2F;
+} */
 
 div.row.Item {
     width: 290px;
@@ -267,7 +311,7 @@ div.thumbnail {
   }
 
 /* ------------------------------------------------ */
-/* -------------------  SIGN UP   ---------------- */
+/* -------------------  SIGN IN    ---------------- */
 /* ------------------------------------------------ */
 
 form.sign-in-form {

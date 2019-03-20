@@ -1,7 +1,13 @@
 <div id="food-items">
 
-    <div class="row">
+    <% var foodArr = ['Chicken','Seafood','Appetizers','Rice','Bread','Vegetable','Beverage','Dessert'];
+    foodArr.forEach(function(category){ %>
+
+    <div id="<%=category%>" class="row">
+    
     <% Foods.forEach(function(food,index){ %>
+
+        <% if(food.Category === category){ %>
 
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                 <div class="row Item">
@@ -39,8 +45,11 @@
                     </div>
                 </div> 
             </div>
+        <% } %>
             
         <% }); %>
-        </div>
+        </div>        
+
+    <% });%>
 
 </div>

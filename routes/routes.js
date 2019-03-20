@@ -15,64 +15,83 @@ router.get('/',function(req,res){
 	res.render('index');
 });
 
+// router.get('/menu',function(req,res){
+
+// 	var itemCategory = req.query.item;
+// 	var visited = req.get('visited');
+
+// 	if(!itemCategory){
+// 		Food.find({Category:"Chicken"},function(err,allFoods){
+// 			if(err){
+// 			console.log(err);
+// 			}else{
+// 				if( typeof req.user !== 'undefined'){
+// 				var currentUser = savedItems.find(function(element){
+// 						return element.user === req.user.username;
+// 					});
+// 				}
+// 				if(typeof currentUser !== 'undefined'){
+// 					res.render("menu",{Foods:allFoods,cartItems:currentUser.cart});
+// 				} else {
+// 					res.render('menu',{Foods:allFoods,cartItems:{}});
+// 				}
+// 			}
+// 		});
+// 	} else if(itemCategory && visited === 'true') {
+// 		Food.find({Category:itemCategory},function(err,allFoods){
+// 			if(err){
+// 				console.log(err);
+// 			}else{
+// 				if( typeof req.user !== 'undefined'){
+// 					var currentUser = savedItems.find(function(element){
+// 						return element.user === req.user.username;
+// 					});
+// 				}
+// 				if(typeof currentUser !== 'undefined'){
+// 					res.render("partials/menu-item",{Foods:allFoods,cartItems:currentUser.cart});
+// 				} else {
+// 					res.render('partials/menu-item',{Foods:allFoods,cartItems:{}});
+// 				}
+// 			}
+// 		});
+// 	} else if(itemCategory && visited !== 'true'){
+// 		//for proper reload
+// 		Food.find({Category : itemCategory},function(err,allFoods){
+// 			if(err){
+// 				console.log(err);
+// 			} else {
+// 				if( typeof req.user !== 'undefined'){
+// 					var currentUser = savedItems.find(function(element){
+// 						return element.user === req.user.username;
+// 					});
+// 				}
+// 				if(typeof currentUser !== 'undefined'){				
+// 					res.render("menu",{Foods:allFoods,cartItems:currentUser.cart});
+// 				} else {
+// 					res.render('menu',{Foods:allFoods,cartItems:{}});
+// 				}
+// 			}
+// 		});
+// 	}
+// });
+
 router.get('/menu',function(req,res){
-
-	var itemCategory = req.query.item;
-	var visited = req.get('visited');
-
-	if(!itemCategory){
-		Food.find({Category:"Chicken"},function(err,allFoods){
-			if(err){
+	Food.find({},function(err,allFoods){
+		if(err){
 			console.log(err);
-			}else{
-				if( typeof req.user !== 'undefined'){
+		} else {
+			if( typeof req.user !== 'undefined'){
 				var currentUser = savedItems.find(function(element){
-						return element.user === req.user.username;
-					});
-				}
-				if(typeof currentUser !== 'undefined'){
-					res.render("menu",{Foods:allFoods,cartItems:currentUser.cart});
-				} else {
-					res.render('menu',{Foods:allFoods,cartItems:{}});
-				}
+					return element.user === req.user.username;
+				});
 			}
-		});
-	} else if(itemCategory && visited === 'true') {
-		Food.find({Category:itemCategory},function(err,allFoods){
-			if(err){
-				console.log(err);
-			}else{
-				if( typeof req.user !== 'undefined'){
-					var currentUser = savedItems.find(function(element){
-						return element.user === req.user.username;
-					});
-				}
-				if(typeof currentUser !== 'undefined'){
-					res.render("partials/menu-item",{Foods:allFoods,cartItems:currentUser.cart});
-				} else {
-					res.render('partials/menu-item',{Foods:allFoods,cartItems:{}});
-				}
-			}
-		});
-	} else if(itemCategory && visited !== 'true'){
-		//for proper reload
-		Food.find({Category : itemCategory},function(err,allFoods){
-			if(err){
-				console.log(err);
+			if(typeof currentUser !== 'undefined'){
+				res.render("menu",{Foods:allFoods,cartItems:currentUser.cart});
 			} else {
-				if( typeof req.user !== 'undefined'){
-					var currentUser = savedItems.find(function(element){
-						return element.user === req.user.username;
-					});
-				}
-				if(typeof currentUser !== 'undefined'){				
-					res.render("menu",{Foods:allFoods,cartItems:currentUser.cart});
-				} else {
-					res.render('menu',{Foods:allFoods,cartItems:{}});
-				}
+				res.render('menu',{Foods:allFoods,cartItems:{}});
 			}
-		});
-	}
+		}
+	});
 });
 
 router.get('/signup',function(req,res){
@@ -269,57 +288,126 @@ router.post('/profile',middleware.isLoggedIn,function(req,res){
 
 });
 
-router.post('/order',middleware.isLoggedIn,function(req,res){
+// router.post('/order',middleware.isLoggedIn,function(req,res){
 
-	var orderItems = JSON.parse(req.query.items);
+// 	var orderItems = JSON.parse(req.query.items);
+
+// 	var savedUser = savedItems.find(function(element){
+// 		return element.user === req.user.username;
+// 	});
+
+// 	if(typeof savedUser === 'undefined' || typeof orderItems === 'undefined'){
+// 		req.flash('error','Please Enter items in the cart');
+// 		res.redirect('/menu');
+// 	} else if(typeof orderItems.items === 'undefined'){
+// 		req.flash('error','Please Enter items in the cart');
+// 		res.redirect('/menu');		
+// 	} else if( orderItems.items.length === 0){
+// 		req.flash('error','Please Enter items in the cart');
+// 		res.redirect('/menu');
+// 	}else {
+// 		var orderItemsPromises = orderItems.items.map(function(current){
+// 			return new Promise(function(resolve,reject){
+// 				Food.findOne({Name:current.name},function(err,item){
+// 					if(err){
+// 						reject(err);
+// 					}
+// 					resolve([item,current.quantity]);
+// 				});
+// 			});
+// 		});
+
+
+// 		Promise.all(orderItemsPromises).then(function(foundItems){
+// 			var savedOrder = {};
+// 			savedOrder.items = [];
+// 			foundItems.forEach(function(current){
+// 				var item = {};
+// 				item.product_id = current[0]._id;
+// 				item.quantity = current[1],
+// 				item.price = (parseInt(current[1])*parseInt(current[0].Price)).toString();
+// 				savedOrder.items.push(item);
+// 			});
+// 			savedOrder.grandTotal = orderItems.total;
+// 			savedUser.order = savedOrder;
+// 			User.findOne({username:savedUser.user},function(err,foundUser){
+// 				if(err){
+// 					console.log(err);
+// 				} else {
+// 					res.render('order',{User:foundUser});
+// 				}
+// 			});
+// 		}).catch(function(err){
+// 			console.log(err);
+// 		});
+
+// 	}
+
+// });
+
+router.post('/order',middleware.isLoggedIn,function(req,res){
 
 	var savedUser = savedItems.find(function(element){
 		return element.user === req.user.username;
 	});
 
-	if(typeof savedUser === 'undefined' || typeof orderItems === 'undefined'){
-		req.flash('error','Please Enter items in the cart');
-		res.redirect('/menu');
-	} else if(typeof orderItems.items === 'undefined'){
-		req.flash('error','Please Enter items in the cart');
-		res.redirect('/menu');		
-	} else if( orderItems.items.length === 0){
+	console.log(savedUser);
+
+	if(typeof savedUser === 'undefined'){
 		req.flash('error','Please Enter items in the cart');
 		res.redirect('/menu');
 	}else {
-		var orderItemsPromises = orderItems.items.map(function(current){
-			return new Promise(function(resolve,reject){
-				Food.findOne({Name:current.name},function(err,item){
-					if(err){
-						reject(err);
-					}
-					resolve([item,current.quantity]);
-				});
-			});
+		// var orderItemsPromises = orderItems.items.map(function(current){
+		// 	return new Promise(function(resolve,reject){
+		// 		Food.findOne({Name:current.name},function(err,item){
+		// 			if(err){
+		// 				reject(err);
+		// 			}
+		// 			resolve([item,current.quantity]);
+		// 		});
+		// 	});
+		// });
+
+		// Promise.all(orderItemsPromises).then(function(foundItems){
+		// 	var savedOrder = {};
+		// 	savedOrder.items = [];
+		// 	foundItems.forEach(function(current){
+		// 		var item = {};
+		// 		item.product_id = current[0]._id;
+		// 		item.quantity = current[1],
+		// 		item.price = (parseInt(current[1])*parseInt(current[0].Price)).toString();
+		// 		savedOrder.items.push(item);
+		// 	});
+		// 	savedOrder.grandTotal = orderItems.total;
+		// 	savedUser.order = savedOrder;
+		// 	User.findOne({username:savedUser.user},function(err,foundUser){
+		// 		if(err){
+		// 			console.log(err);
+		// 		} else {
+		// 			res.render('order',{User:foundUser});
+		// 		}
+		// 	});
+		// }).catch(function(err){
+		// 	console.log(err);
+		// });
+
+		var savedOrder = {};
+		savedOrder.items = [];
+		savedUser.cart.forEach(function(current){
+			var item = {};
+			item.product_id = current._id;
+			item.quantity = current,
+			item.price = (parseInt(current)*parseInt(current.Price)).toString();
+			savedOrder.items.push(item);
 		});
-
-
-		Promise.all(orderItemsPromises).then(function(foundItems){
-			var savedOrder = {};
-			savedOrder.items = [];
-			foundItems.forEach(function(current){
-				var item = {};
-				item.product_id = current[0]._id;
-				item.quantity = current[1],
-				item.price = (parseInt(current[1])*parseInt(current[0].Price)).toString();
-				savedOrder.items.push(item);
-			});
-			savedOrder.grandTotal = orderItems.total;
-			savedUser.order = savedOrder;
-			User.findOne({username:savedUser.user},function(err,foundUser){
-				if(err){
-					console.log(err);
-				} else {
-					res.render('order',{User:foundUser});
-				}
-			});
-		}).catch(function(err){
-			console.log(err);
+		savedOrder.grandTotal = orderItems.total;
+		savedUser.order = savedOrder;
+		User.findOne({username:savedUser.user},function(err,foundUser){
+			if(err){
+				console.log(err);
+			} else {
+				res.render('order',{User:foundUser});
+			}
 		});
 
 	}
