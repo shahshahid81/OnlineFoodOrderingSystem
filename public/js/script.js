@@ -17,28 +17,31 @@ function activePage(){
 
     switch(activePath){
         case "/menu":
-            document.getElementById('menu').classList.add('active');
+            $('#menu').addClass('active');
             break;
         case "/aboutus":
-            document.getElementById('about-us').classList.add('active');
+            $('#about-us').addClass('active');
             break;
         case "/contactus" : 
-            document.getElementById('contact-us').classList.add('active');
+            $('#contact-us').addClass('active');
             break;
         case "/signin" : 
-            document.getElementById('signin').classList.add('active');
+            $('#signin').addClass('active');
             break;
         case "/signup" : 
-            document.getElementById('signup').classList.add('active');
+            $('#signup').addClass('active');
             break;
         case "/profile" : 
-            document.getElementById('profile').classList.add('active');
-            break;    
+            $('#user').addClass('active');
+            $('#profile').addClass('active');            
+            break;
         case "/order" : 
-            document.getElementById('order').classList.add('active');
-            break;    
+            $('#user').addClass('active');
+            $('#order').addClass('active');            
+            break;
         case "/cart" : 
-            document.getElementById('cart').classList.add('active');
+            $('#user').addClass('active');
+            $('#cart').addClass('active');            
             break;    
     }
 }
@@ -187,14 +190,13 @@ function clearCart(){
 }
 
 function removeItem(name){
-
     var removeRequest = new XMLHttpRequest();
     
     var mouseEventTarget = $(event.currentTarget);
 
     removeRequest.onreadystatechange = function(){
         if(this.status == 200 && this.readyState == 4){
-            mouseEventTarget.closest("div.row.cart-item").html("");            
+            mouseEventTarget.closest("tr.item").html("");            
             updateTotal();
         }
     }
@@ -209,7 +211,7 @@ function checkout() {
     event.preventDefault();
     var cart = {};
     cart.items = [];
-    $('div.row.cart-item').each(function(element){
+    $('tr.item').each(function(element){
         var name = $(this).find('h3.food-name').text();
         var quantity = $(this).find('input.quantity-box').val();
         var item = {
@@ -233,29 +235,29 @@ function checkout() {
 
 function increment(){
     
-    var quantityTextbox =$(event.currentTarget).prev();
+    var quantityTextbox =$(event.currentTarget).parent().prev();
     var quantity = parseInt(quantityTextbox.val());
     if(quantity < 10){
         quantity++;
         quantityTextbox.val(parseInt(quantityTextbox.val())+1);
         quantityTextbox.text(quantityTextbox.val());
-        price = $(event.currentTarget).closest('div.row.cart-item').find('span.total-price').attr('data-price');
+        price = $(event.currentTarget).closest('tr.item').find('span.total-price').attr('data-price');
         priceValue = parseInt(price) * quantity;
-        $(event.currentTarget).closest('div.row.cart-item').find('span.total-price').text(priceValue);
+        $(event.currentTarget).closest('tr.item').find('span.total-price').text(priceValue);
     }
     updateTotal();
 }
 
 function decrement(){
-    var quantityTextbox =$(event.currentTarget).next();
+    var quantityTextbox =$(event.currentTarget).parent().next();
     var quantity = parseInt(quantityTextbox.val());
     if(quantity > 1){
         quantity--;
         quantityTextbox.val(parseInt(quantityTextbox.val())-1);
         quantityTextbox.text(quantityTextbox.val());
-        price = $(event.currentTarget).closest('div.row.cart-item').find('span.total-price').attr('data-price');
+        price = $(event.currentTarget).closest('tr.item').find('span.total-price').attr('data-price');
         priceValue = parseInt(price) * quantity;
-        $(event.currentTarget).closest('div.row.cart-item').find('span.total-price').text(priceValue);
+        $(event.currentTarget).closest('tr.item').find('span.total-price').text(priceValue);
     }
     updateTotal();
 }
@@ -276,7 +278,7 @@ function updateTotal(){
 function validateQuantity(){
 
     const quantityTextbox = $(event.target);
-    if(!(quantityTextbox.val() > 10 && quantityTextbox.val() < 1)){
+    if(!(quantityTextbox.val() < 10 && quantityTextbox.val() > 1)){
         alert('Quantity must be in the range of 1 to 10.');
         quantityTextbox.val(1);
         updateTotal();

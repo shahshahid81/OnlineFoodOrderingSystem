@@ -1,26 +1,43 @@
-<div class="sidenav">
+<div class="col-xs-4 col-lg-3 sidenav">
 
-    <button class="dropdown-btn">Order Management 
-    </button>
-    
-    <div class="dropdown-container">
-        <a href="/admin">Change Order Status</a>
+    <nav class="navbar navbar-inverse navbar-left">
+    <div class="container-fluid">
+        <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myNavbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="user">  Order Management <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/admin">Change Order Status</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="user">  User Management <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/admin/user">View Users</a></li>
+                    <li><a href="/admin/user/new">Add User</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="user">  Food Management <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/admin/food">View Items</a></li>
+                    <li><a href="/admin/food/new">Add Item</a></li>
+                </ul>
+            </li>
+            
+        </ul>
+        </div>
     </div>
-
-    <button class="dropdown-btn">User Management 
-    </button>
-
-    <div class="dropdown-container">
-        <a href="/admin/user">View Users</a>
-        <a href="/admin/user/new">Add User</a>
-    </div>
-
-    <button class="dropdown-btn">Food Management 
-    </button>
-
-    <div class="dropdown-container">
-        <a href="/admin/food">View Items</a>
-        <a href="/admin/food/new">Add Item</a>
-    </div>
-
+    </nav>
 </div>

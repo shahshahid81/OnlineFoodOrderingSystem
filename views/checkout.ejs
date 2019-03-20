@@ -10,13 +10,13 @@
         </span>
         Thank You.
     </h2>
-        <p>Your order has been placed and will be processed as soon as possible.</p>
-        <br>
-        <p> Order ID: <%= orderID%>  </p>
-        <p> Amount: <%= amount%>  &#8360  </p>
+    <p>Your order has been placed and will be processed as soon as possible.</p>
+    <br>
+    <p> Order ID: <%= orderID%>  </p>
+    <p> Amount: <%= amount%>  &#8360  </p>
 
-        continue shopping - menu
-        view order - GET order
+    <a href="/menu" class="btn btn-lg btn-default continue-shopping" role="button"> Continue Shopping </a>
+    <a href="/order" class="btn btn-lg btn-success view-orders" role="button"> View Orders </a>
 </div>
 
 <% include partials/footer %>

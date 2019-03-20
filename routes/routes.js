@@ -90,7 +90,12 @@ router.post('/signup',function(req,res,next){
 	User.register(newUser , Password , function(err,user){
 		if(err){
 			console.log(err);
-			req.flash('error','An error occured');
+			if(err.name === 'UserExistsError'){
+				req.flash('error',err.message);
+			}
+			else {
+				req.flash('error','An error occured.');
+			}
 			return res.redirect("/signup");
 		} else {
 			req.login(user, function(err) {
@@ -118,6 +123,7 @@ router.get('/cart',middleware.isLoggedIn,function(req,res){
 		return element.user === req.user.username
 	});
 	if(typeof currentItems !== 'undefined'){
+		// console.log(currentItems.cart);
 		res.render('cart',{cartItems:currentItems.cart});
 	} else {
 		res.render('cart',{});

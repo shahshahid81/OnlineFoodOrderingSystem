@@ -1,5 +1,4 @@
 <% include partials/header%>
-
 <% include partials/navigation%>
 
     <hr>
@@ -9,53 +8,70 @@
 
         <% if(typeof cartItems !== 'undefined' && cartItems.length > 0){ %>
 
-            <% cartItems.forEach(function(current){ %>
-            
-                <div class="row cart-item">
+            <table class="table table-condensed table-striped">
+            <thead>
                 
-                    <div class="col-md-3">
-                        <div class="thumbnail">
-                            <img src="<%= current.ImagePath %>" class="food-image" alt="<%= current.Name %>">
+                <th class="col-xs-7"> Food Item</th>
+                <th class="col-xs-2"> Quantity </th>
+                <th class="col-xs-1"> Price </th>
+                <th class="col-xs-1">Total</th>
+                <th class="col-xs-1">  </th>
+
+            </thead>
+            <tbody>
+
+            <% cartItems.forEach(function(current){ %>
+
+                <tr class="item">
+                    <td>
+                        <img src="<%=current.ImagePath%>" class="food-image" alt="<%=current.Name%>">
+                        <h4 class='food-name'> <%=current.Name%> </h4>
+                    </td>
+                        
+                    <td>
+
+                        <div class="quantity-group input-group">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-danger decrement" id="decrement" onclick="decrement()">
+                                <i class="fa fa-minus" aria-hidden="true"></i>
+                                </button>
+                            </span>
+                        <input type="text" id="quantity" name="quantity" class="quantity-box form-control input-number" value="1" oninput="validateQuantity()">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-success increment" id="increment" onclick="increment()">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                </button>
+                            </span>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <h3 class='food-name'> <%= current.Name %> </h3>
-                        <p class="description"> <%= current.Description %>  </p>
-                    </div>
-                    <div class="col-md-3">
-                        <br>
-                        <br>
-                        <p>
-                           <span class='food-price'> <%= current.Price %> </span> &#8360 &nbsp; x &nbsp;&nbsp;&nbsp;   
 
-                            <div class="quantity-group">
-                            <button type="button" class="btn btn-danger" id="decrement" onclick="decrement()">
-                            <i class="fa fa-minus" aria-hidden="true"></i>
-                            </button>
-                            <input type="number" id="quantity" name="quantity" class="quantity-box" value="1" oninput="validateQuantity()">
-                            <button type="button" class="btn btn-success" id="increment" onclick="increment()">
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                            </button>
-                            </div>
-                            
-                            &nbsp;&nbsp;&nbsp;
-                        </p>
-                        <i class="fa fa-trash" onclick ='removeItem("<%= current.Name %>")'></i>
-                        <hr>
-                        <p> Total = <span class="total-price" data-price="<%= current.Price %>"><%= current.Price %></span></p>
-                    </div>
+                    </td>
+                    
+                    <td>
+                        <span class='food-price'> <%=current.Price%> </span> &#8360
+                    </td>
 
-                </div>
+                    <td>
+                        <span class="total-price" data-price="<%=current.Price%>"><%=current.Price%></span> &#8360 
+                    </td>
 
+                    <td>
+                        <i class="fa fa-trash" onclick ='removeItem("<%=current.Name%>")'></i>
+                    </td>
+
+                </tr>
+            
                 <% }) %>
-                <div>
-                    <hr>
-                    <p> Grand Total <span id="grand-total"></span> </p>
-                </div>
+
+            </tbody>
+            </table>
+
+            <p> Grand Total <span id="grand-total"></span> </p>
+
                 <% } else { %>
                 <h3> Cart is Empty! &nbsp; Select items from menu to add. </h3>
                 <% } %>   
-                </div> 
+
+        </div> 
                 <br>
 
                 <div class="row">
@@ -64,8 +80,6 @@
                     <button class="btn btn-default btn-lg empty-cart-button" id="empty-cart" onclick = 'clearCart()'>Empty Cart</button>
                     </form>
                 </div>
-                </div>
-                
-<script src="/js/script.js"></script>
-
+    </div>
+              
 <% include partials/footer%>
