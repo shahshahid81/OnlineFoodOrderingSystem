@@ -270,20 +270,46 @@ function removeItem(name){
 
 }
 
+// function checkout() {
+//     event.preventDefault();
+//     var cart = {};
+//     cart.items = [];
+//     $('tr.item').each(function(element){
+//         var name = $(this).find('h3.food-name').text();
+//         var quantity = $(this).find('input.quantity-box').val();
+//         var item = {
+//             name,
+//             quantity
+//         }
+//         cart.items.push(item);
+//     });
+//     cart.total = $('#grand-total').text();
+
+//     var redirect = function(url, method) {
+//         var form = document.createElement('form');
+//         document.body.appendChild(form);
+//         form.method = method;
+//         form.action = url;
+//         form.submit();
+//     };
+    
+//     redirect('/order?items='+JSON.stringify(cart), 'post');        
+// }
+
 function checkout() {
     event.preventDefault();
-    // var cart = {};
-    // cart.items = [];
-    // $('tr.item').each(function(element){
-    //     var name = $(this).find('h3.food-name').text();
-    //     var quantity = $(this).find('input.quantity-box').val();
-    //     var item = {
-    //         name,
-    //         quantity
-    //     }
-    //     cart.items.push(item);
-    // });
-    // cart.total = $('#grand-total').text();
+    var cart = {};
+    cart.items = [];
+    $('tr.item').each(function(element){
+        var name = $(this).find('h4.food-name').text();
+        var quantity = $(this).find('input.quantity-box').val();
+        var item = {
+            name,
+            quantity
+        }
+        cart.items.push(item);
+    });
+    cart.total = $('#grand-total').text();
 
     var redirect = function(url, method) {
         var form = document.createElement('form');
@@ -293,8 +319,7 @@ function checkout() {
         form.submit();
     };
     
-    // redirect('/order?items='+JSON.stringify(cart), 'post');        
-    redirect('/order','post');        
+    redirect('/order?items='+JSON.stringify(cart), 'post');        
 }
 
 function increment(){

@@ -288,131 +288,131 @@ router.post('/profile',middleware.isLoggedIn,function(req,res){
 
 });
 
-// router.post('/order',middleware.isLoggedIn,function(req,res){
-
-// 	var orderItems = JSON.parse(req.query.items);
-
-// 	var savedUser = savedItems.find(function(element){
-// 		return element.user === req.user.username;
-// 	});
-
-// 	if(typeof savedUser === 'undefined' || typeof orderItems === 'undefined'){
-// 		req.flash('error','Please Enter items in the cart');
-// 		res.redirect('/menu');
-// 	} else if(typeof orderItems.items === 'undefined'){
-// 		req.flash('error','Please Enter items in the cart');
-// 		res.redirect('/menu');		
-// 	} else if( orderItems.items.length === 0){
-// 		req.flash('error','Please Enter items in the cart');
-// 		res.redirect('/menu');
-// 	}else {
-// 		var orderItemsPromises = orderItems.items.map(function(current){
-// 			return new Promise(function(resolve,reject){
-// 				Food.findOne({Name:current.name},function(err,item){
-// 					if(err){
-// 						reject(err);
-// 					}
-// 					resolve([item,current.quantity]);
-// 				});
-// 			});
-// 		});
-
-
-// 		Promise.all(orderItemsPromises).then(function(foundItems){
-// 			var savedOrder = {};
-// 			savedOrder.items = [];
-// 			foundItems.forEach(function(current){
-// 				var item = {};
-// 				item.product_id = current[0]._id;
-// 				item.quantity = current[1],
-// 				item.price = (parseInt(current[1])*parseInt(current[0].Price)).toString();
-// 				savedOrder.items.push(item);
-// 			});
-// 			savedOrder.grandTotal = orderItems.total;
-// 			savedUser.order = savedOrder;
-// 			User.findOne({username:savedUser.user},function(err,foundUser){
-// 				if(err){
-// 					console.log(err);
-// 				} else {
-// 					res.render('order',{User:foundUser});
-// 				}
-// 			});
-// 		}).catch(function(err){
-// 			console.log(err);
-// 		});
-
-// 	}
-
-// });
-
 router.post('/order',middleware.isLoggedIn,function(req,res){
+
+	var orderItems = JSON.parse(req.query.items);
 
 	var savedUser = savedItems.find(function(element){
 		return element.user === req.user.username;
 	});
 
-	console.log(savedUser);
-
-	if(typeof savedUser === 'undefined'){
+	if(typeof savedUser === 'undefined' || typeof orderItems === 'undefined'){
+		req.flash('error','Please Enter items in the cart');
+		res.redirect('/menu');
+	} else if(typeof orderItems.items === 'undefined'){
+		req.flash('error','Please Enter items in the cart');
+		res.redirect('/menu');		
+	} else if( orderItems.items.length === 0){
 		req.flash('error','Please Enter items in the cart');
 		res.redirect('/menu');
 	}else {
-		// var orderItemsPromises = orderItems.items.map(function(current){
-		// 	return new Promise(function(resolve,reject){
-		// 		Food.findOne({Name:current.name},function(err,item){
-		// 			if(err){
-		// 				reject(err);
-		// 			}
-		// 			resolve([item,current.quantity]);
-		// 		});
-		// 	});
-		// });
-
-		// Promise.all(orderItemsPromises).then(function(foundItems){
-		// 	var savedOrder = {};
-		// 	savedOrder.items = [];
-		// 	foundItems.forEach(function(current){
-		// 		var item = {};
-		// 		item.product_id = current[0]._id;
-		// 		item.quantity = current[1],
-		// 		item.price = (parseInt(current[1])*parseInt(current[0].Price)).toString();
-		// 		savedOrder.items.push(item);
-		// 	});
-		// 	savedOrder.grandTotal = orderItems.total;
-		// 	savedUser.order = savedOrder;
-		// 	User.findOne({username:savedUser.user},function(err,foundUser){
-		// 		if(err){
-		// 			console.log(err);
-		// 		} else {
-		// 			res.render('order',{User:foundUser});
-		// 		}
-		// 	});
-		// }).catch(function(err){
-		// 	console.log(err);
-		// });
-
-		var savedOrder = {};
-		savedOrder.items = [];
-		savedUser.cart.forEach(function(current){
-			var item = {};
-			item.product_id = current._id;
-			item.quantity = current,
-			item.price = (parseInt(current)*parseInt(current.Price)).toString();
-			savedOrder.items.push(item);
+		var orderItemsPromises = orderItems.items.map(function(current){
+			return new Promise(function(resolve,reject){
+				Food.findOne({Name:current.name},function(err,item){
+					if(err){
+						reject(err);
+					}
+					resolve([item,current.quantity]);
+				});
+			});
 		});
-		savedOrder.grandTotal = orderItems.total;
-		savedUser.order = savedOrder;
-		User.findOne({username:savedUser.user},function(err,foundUser){
-			if(err){
-				console.log(err);
-			} else {
-				res.render('order',{User:foundUser});
-			}
+
+
+		Promise.all(orderItemsPromises).then(function(foundItems){
+			var savedOrder = {};
+			savedOrder.items = [];
+			foundItems.forEach(function(current){
+				var item = {};
+				item.product_id = current[0]._id;
+				item.quantity = current[1],
+				item.price = (parseInt(current[1])*parseInt(current[0].Price)).toString();
+				savedOrder.items.push(item);
+			});
+			savedOrder.grandTotal = orderItems.total;
+			savedUser.order = savedOrder;
+			User.findOne({username:savedUser.user},function(err,foundUser){
+				if(err){
+					console.log(err);
+				} else {
+					res.render('order',{User:foundUser});
+				}
+			});
+		}).catch(function(err){
+			console.log(err);
 		});
 
 	}
 
 });
+
+// router.post('/order',middleware.isLoggedIn,function(req,res){
+
+// 	var savedUser = savedItems.find(function(element){
+// 		return element.user === req.user.username;
+// 	});
+
+// 	console.log(savedUser);
+
+// 	if(typeof savedUser === 'undefined'){
+// 		req.flash('error','Please Enter items in the cart');
+// 		res.redirect('/menu');
+// 	}else {
+// 		// var orderItemsPromises = orderItems.items.map(function(current){
+// 		// 	return new Promise(function(resolve,reject){
+// 		// 		Food.findOne({Name:current.name},function(err,item){
+// 		// 			if(err){
+// 		// 				reject(err);
+// 		// 			}
+// 		// 			resolve([item,current.quantity]);
+// 		// 		});
+// 		// 	});
+// 		// });
+
+// 		// Promise.all(orderItemsPromises).then(function(foundItems){
+// 		// 	var savedOrder = {};
+// 		// 	savedOrder.items = [];
+// 		// 	foundItems.forEach(function(current){
+// 		// 		var item = {};
+// 		// 		item.product_id = current[0]._id;
+// 		// 		item.quantity = current[1],
+// 		// 		item.price = (parseInt(current[1])*parseInt(current[0].Price)).toString();
+// 		// 		savedOrder.items.push(item);
+// 		// 	});
+// 		// 	savedOrder.grandTotal = orderItems.total;
+// 		// 	savedUser.order = savedOrder;
+// 		// 	User.findOne({username:savedUser.user},function(err,foundUser){
+// 		// 		if(err){
+// 		// 			console.log(err);
+// 		// 		} else {
+// 		// 			res.render('order',{User:foundUser});
+// 		// 		}
+// 		// 	});
+// 		// }).catch(function(err){
+// 		// 	console.log(err);
+// 		// });
+
+// 		var savedOrder = {};
+// 		savedOrder.items = [];
+// 		savedUser.cart.forEach(function(current){
+// 			var item = {};
+// 			item.product_id = current._id;
+// 			item.quantity = current,
+// 			item.price = (parseInt(current)*parseInt(current.Price)).toString();
+// 			savedOrder.items.push(item);
+// 		});
+// 		savedOrder.grandTotal = orderItems.total;
+// 		savedUser.order = savedOrder;
+// 		User.findOne({username:savedUser.user},function(err,foundUser){
+// 			if(err){
+// 				console.log(err);
+// 			} else {
+// 				res.render('order',{User:foundUser});
+// 			}
+// 		});
+
+// 	}
+
+// });
 
 // router.get('/order',middleware.isLoggedIn,function(req,res){
 // 	User.findOne({username:req.user.username},{orders : 1},{},function(err,foundDoc){
@@ -460,7 +460,7 @@ router.get('/order/:id',middleware.isLoggedIn,function(req,res){
 			});
 			var productPromises = order.items.map(function(current){
 				return new Promise(function(resolve,reject){
-					Food.findById(current.product_id,function(err,foundDoc){
+					Food.findById(current.product_id,{Description : 0,Category : 0},function(err,foundDoc){
 						if(err){
 							reject(err);
 						} else {
@@ -471,7 +471,14 @@ router.get('/order/:id',middleware.isLoggedIn,function(req,res){
 			});
 
 			Promise.all(productPromises).then(function(items){
-				res.render('order-item',{items:items});
+				// console.log(items);
+				var grandTotal = 0;
+				items.forEach(function(current){
+					// console.log(current);
+					grandTotal+=parseInt(current.item.Price)*(current.quantity);
+				});
+				// console.log(grandTotal);
+				res.render('order-item',{items:items,grandTotal:grandTotal});
 			}).catch(function(err){
 				console.log(err);
 			});
