@@ -244,18 +244,89 @@ router.get('/signout', function(req, res){
 	res.redirect('/menu');
 });
 
-router.get('/profile',middleware.isLoggedIn,function(req,res){
+// router.get('/profile',middleware.isLoggedIn,function(req,res){
+
+// 	User.findOne({username:req.user.username},function(err,foundUser){
+// 		if(err){
+// 			console.log(err);
+// 		} else {
+// 			res.render('profile',{User:foundUser});
+// 		}
+// 	});
+// });
+
+// router.post('/profile',middleware.isLoggedIn,function(req,res){
+
+// 	User.findOne({username:req.user.username},function(err,foundUser){
+// 		if(err){
+// 			console.log(err);
+// 		} else {
+// 			var name = req.body.name || foundUser.name;
+// 			var username = req.body.email || foundUser.username;
+// 			var phoneNumber = req.body['phone-number'] || foundUser.phoneNumber; 
+
+// 			var updatedUser = {
+// 				name ,
+// 				phoneNumber ,
+// 				username
+// 			}		
+// 			User.findOneAndUpdate({_id : foundUser._id},updatedUser,{new : true},function(err,modifiedUser){
+// 				if(err){
+// 					console.log(err);
+// 					req.flash('error','Error while updating data');
+// 					res.redirect('/profile');
+// 				} else {
+// 					modifiedUser.setPassword(req.body['new-password'],function(){
+// 						modifiedUser.save();
+// 						req.flash('success','Data updated successfully');
+// 						res.redirect('/profile');
+// 					});
+// 				}
+// 			});
+// 		}
+// 	});
+
+// });
+
+router.get('/change-password',middleware.isLoggedIn,function(req,res){
 
 	User.findOne({username:req.user.username},function(err,foundUser){
 		if(err){
 			console.log(err);
 		} else {
-			res.render('profile',{User:foundUser});
+			res.render('change-password',{User:foundUser});
 		}
 	});
 });
 
-router.post('/profile',middleware.isLoggedIn,function(req,res){
+router.post('/change-password',middleware.isLoggedIn,function(req,res){
+
+	User.findOne({username:req.user.username},function(err,foundUser){
+		if(err){
+			console.log(err);
+		} else {
+			foundUser.setPassword(req.body['new-password'],function(){
+				foundUser.save();
+				req.flash('success','Data updated successfully');
+				res.redirect('/change-password');
+			});
+		}
+	});
+
+});
+
+router.get('/update-profile',middleware.isLoggedIn,function(req,res){
+
+	User.findOne({username:req.user.username},function(err,foundUser){
+		if(err){
+			console.log(err);
+		} else {
+			res.render('update-profile.ejs',{User:foundUser});
+		}
+	});
+});
+
+router.post('/update-profile',middleware.isLoggedIn,function(req,res){
 
 	User.findOne({username:req.user.username},function(err,foundUser){
 		if(err){
@@ -274,13 +345,10 @@ router.post('/profile',middleware.isLoggedIn,function(req,res){
 				if(err){
 					console.log(err);
 					req.flash('error','Error while updating data');
-					res.redirect('/profile');
+					res.redirect('/update-profile');
 				} else {
-					modifiedUser.setPassword(req.body['new-password'],function(){
-						modifiedUser.save();
-						req.flash('success','Data updated successfully');
-						res.redirect('/profile');
-					});
+					req.flash('success','Data updated successfully');
+					res.redirect('/update-profile');
 				}
 			});
 		}
