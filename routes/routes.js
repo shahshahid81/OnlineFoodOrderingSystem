@@ -15,66 +15,6 @@ router.get('/',function(req,res){
 	res.render('index');
 });
 
-// router.get('/menu',function(req,res){
-
-// 	var itemCategory = req.query.item;
-// 	var visited = req.get('visited');
-
-// 	if(!itemCategory){
-// 		Food.find({Category:"Chicken"},function(err,allFoods){
-// 			if(err){
-// 			console.log(err);
-// 			}else{
-// 				if( typeof req.user !== 'undefined'){
-// 				var currentUser = savedItems.find(function(element){
-// 						return element.user === req.user.username;
-// 					});
-// 				}
-// 				if(typeof currentUser !== 'undefined'){
-// 					res.render("menu",{Foods:allFoods,cartItems:currentUser.cart});
-// 				} else {
-// 					res.render('menu',{Foods:allFoods,cartItems:{}});
-// 				}
-// 			}
-// 		});
-// 	} else if(itemCategory && visited === 'true') {
-// 		Food.find({Category:itemCategory},function(err,allFoods){
-// 			if(err){
-// 				console.log(err);
-// 			}else{
-// 				if( typeof req.user !== 'undefined'){
-// 					var currentUser = savedItems.find(function(element){
-// 						return element.user === req.user.username;
-// 					});
-// 				}
-// 				if(typeof currentUser !== 'undefined'){
-// 					res.render("partials/menu-item",{Foods:allFoods,cartItems:currentUser.cart});
-// 				} else {
-// 					res.render('partials/menu-item',{Foods:allFoods,cartItems:{}});
-// 				}
-// 			}
-// 		});
-// 	} else if(itemCategory && visited !== 'true'){
-// 		//for proper reload
-// 		Food.find({Category : itemCategory},function(err,allFoods){
-// 			if(err){
-// 				console.log(err);
-// 			} else {
-// 				if( typeof req.user !== 'undefined'){
-// 					var currentUser = savedItems.find(function(element){
-// 						return element.user === req.user.username;
-// 					});
-// 				}
-// 				if(typeof currentUser !== 'undefined'){				
-// 					res.render("menu",{Foods:allFoods,cartItems:currentUser.cart});
-// 				} else {
-// 					res.render('menu',{Foods:allFoods,cartItems:{}});
-// 				}
-// 			}
-// 		});
-// 	}
-// });
-
 router.get('/menu',function(req,res){
 	Food.find({},function(err,allFoods){
 		if(err){
@@ -244,50 +184,6 @@ router.get('/signout', function(req, res){
 	res.redirect('/menu');
 });
 
-// router.get('/profile',middleware.isLoggedIn,function(req,res){
-
-// 	User.findOne({username:req.user.username},function(err,foundUser){
-// 		if(err){
-// 			console.log(err);
-// 		} else {
-// 			res.render('profile',{User:foundUser});
-// 		}
-// 	});
-// });
-
-// router.post('/profile',middleware.isLoggedIn,function(req,res){
-
-// 	User.findOne({username:req.user.username},function(err,foundUser){
-// 		if(err){
-// 			console.log(err);
-// 		} else {
-// 			var name = req.body.name || foundUser.name;
-// 			var username = req.body.email || foundUser.username;
-// 			var phoneNumber = req.body['phone-number'] || foundUser.phoneNumber; 
-
-// 			var updatedUser = {
-// 				name ,
-// 				phoneNumber ,
-// 				username
-// 			}		
-// 			User.findOneAndUpdate({_id : foundUser._id},updatedUser,{new : true},function(err,modifiedUser){
-// 				if(err){
-// 					console.log(err);
-// 					req.flash('error','Error while updating data');
-// 					res.redirect('/profile');
-// 				} else {
-// 					modifiedUser.setPassword(req.body['new-password'],function(){
-// 						modifiedUser.save();
-// 						req.flash('success','Data updated successfully');
-// 						res.redirect('/profile');
-// 					});
-// 				}
-// 			});
-// 		}
-// 	});
-
-// });
-
 router.get('/change-password',middleware.isLoggedIn,function(req,res){
 
 	User.findOne({username:req.user.username},function(err,foundUser){
@@ -385,7 +281,6 @@ router.post('/order',middleware.isLoggedIn,function(req,res){
 			});
 		});
 
-
 		Promise.all(orderItemsPromises).then(function(foundItems){
 			var savedOrder = {};
 			savedOrder.items = [];
@@ -413,95 +308,7 @@ router.post('/order',middleware.isLoggedIn,function(req,res){
 
 });
 
-// router.post('/order',middleware.isLoggedIn,function(req,res){
-
-// 	var savedUser = savedItems.find(function(element){
-// 		return element.user === req.user.username;
-// 	});
-
-// 	console.log(savedUser);
-
-// 	if(typeof savedUser === 'undefined'){
-// 		req.flash('error','Please Enter items in the cart');
-// 		res.redirect('/menu');
-// 	}else {
-// 		// var orderItemsPromises = orderItems.items.map(function(current){
-// 		// 	return new Promise(function(resolve,reject){
-// 		// 		Food.findOne({Name:current.name},function(err,item){
-// 		// 			if(err){
-// 		// 				reject(err);
-// 		// 			}
-// 		// 			resolve([item,current.quantity]);
-// 		// 		});
-// 		// 	});
-// 		// });
-
-// 		// Promise.all(orderItemsPromises).then(function(foundItems){
-// 		// 	var savedOrder = {};
-// 		// 	savedOrder.items = [];
-// 		// 	foundItems.forEach(function(current){
-// 		// 		var item = {};
-// 		// 		item.product_id = current[0]._id;
-// 		// 		item.quantity = current[1],
-// 		// 		item.price = (parseInt(current[1])*parseInt(current[0].Price)).toString();
-// 		// 		savedOrder.items.push(item);
-// 		// 	});
-// 		// 	savedOrder.grandTotal = orderItems.total;
-// 		// 	savedUser.order = savedOrder;
-// 		// 	User.findOne({username:savedUser.user},function(err,foundUser){
-// 		// 		if(err){
-// 		// 			console.log(err);
-// 		// 		} else {
-// 		// 			res.render('order',{User:foundUser});
-// 		// 		}
-// 		// 	});
-// 		// }).catch(function(err){
-// 		// 	console.log(err);
-// 		// });
-
-// 		var savedOrder = {};
-// 		savedOrder.items = [];
-// 		savedUser.cart.forEach(function(current){
-// 			var item = {};
-// 			item.product_id = current._id;
-// 			item.quantity = current,
-// 			item.price = (parseInt(current)*parseInt(current.Price)).toString();
-// 			savedOrder.items.push(item);
-// 		});
-// 		savedOrder.grandTotal = orderItems.total;
-// 		savedUser.order = savedOrder;
-// 		User.findOne({username:savedUser.user},function(err,foundUser){
-// 			if(err){
-// 				console.log(err);
-// 			} else {
-// 				res.render('order',{User:foundUser});
-// 			}
-// 		});
-
-// 	}
-
-// });
-
-// router.get('/order',middleware.isLoggedIn,function(req,res){
-// 	User.findOne({username:req.user.username},{orders : 1},{},function(err,foundDoc){
-// 		if(err){
-// 			console.log(err);
-// 		} else {
-// 			console.log(foundDoc);
-// 			res.render('orders',{orders:foundDoc.orders,moment:moment});
-// 		}
-// 	});
-// });
-
 router.get('/order',middleware.isLoggedIn,function(req,res){
-	// User.findOne({username:req.user.username},{orders : 1},{},function(err,foundDoc){
-	// 	if(err){
-	// 		console.log(err);
-	// 	} else {
-	// 		console.log(foundDoc);
-	// 		res.render('orders',{orders:foundDoc.orders,moment:moment});
-	// 	}
-	// });
 
 	User.aggregate([
 		{$match : {	username:req.user.username	}},
@@ -539,13 +346,10 @@ router.get('/order/:id',middleware.isLoggedIn,function(req,res){
 			});
 
 			Promise.all(productPromises).then(function(items){
-				// console.log(items);
 				var grandTotal = 0;
 				items.forEach(function(current){
-					// console.log(current);
 					grandTotal+=parseInt(current.item.Price)*(current.quantity);
 				});
-				// console.log(grandTotal);
 				res.render('order-item',{items:items,grandTotal:grandTotal});
 			}).catch(function(err){
 				console.log(err);

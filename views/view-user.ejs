@@ -1,6 +1,6 @@
 <% include partials/header %>
 
-<% include partials/side-nav %>
+<% include partials/admin-navigation %>
 
 <div class='admin-main'>
 
@@ -26,12 +26,12 @@
                         <td><%= current.phoneNumber%></td>
                         <td>
                             <form action='/admin/user/<%=current._id%>/modify%>' method='get'>
-                                <button class='icon'> <i class="fa fa-pencil"></i> </button>
+                                <button class='icon' onclick='validateAction()'> <i class="fa fa-pencil"></i> </button>
                             </form>
                         </td>
                         <td>
                             <form action='/admin/user/<%=current._id%>/delete%>' method='post'>
-                                <button class='icon'> <i class="fa fa-trash"></i> </button>
+                                <button class='icon' onclick='validateAction()'> <i class="fa fa-trash"></i> </button>
                             </form>
                         </td>
                     </tr>

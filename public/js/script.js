@@ -395,3 +395,52 @@ if(password.val() !== confirmPassword.val()){
 }
 
 }
+
+// ------------------------------------------------------
+// -------------     User Management---------------------
+// ------------------------------------------------------
+
+function validateAction(){
+    var choice = confirm('Do you want to proceed?');
+    if(choice === false){
+        event.preventDefault();
+    }
+}
+
+// ------------------------------------------------------
+// -------------   Order Management  --------------------
+// ------------------------------------------------------
+
+function editOrder(){
+    var statusElement = $(event.currentTarget).parent().prev();
+    var buttonElement = $(event.currentTarget).parent();
+    var statusElementString = "<select id='category' class='category' name='category' class='form-control input-lg'><option value= 'Pending' > Pending </option><option value= 'Accepted' > Accepted </option><option value= 'Rejected' > Rejected </option><option value= 'Dispatched' > Dispatched </option><option value= 'Delivered' > Delivered </option></select>";
+    var buttonElementString = "<button class='icon' onclick='changeStatus()'><i class='fa fa-check'></i></button>";
+    statusElement.html(statusElementString);
+    buttonElement.html(buttonElementString);
+}
+
+function changeStatus(){
+    // console.log($(event.currentTarget));
+    var choice = confirm('Do you want to proceed?');
+    if(choice === false){
+        event.preventDefault();        
+    } else{
+        
+        var statusElement = $(event.currentTarget).parent().prev();
+        var buttonElement = $(event.currentTarget).parent();
+        var orderID = $(event.currentTarget).closest('tr').find('.order-id').text();
+        $.ajax({
+            url : '/admin/'+orderID,
+            method : 'POST',
+            data : {category : $('.category').val()},
+            success : function(status){
+                var buttonElementString = "<button class='icon' onclick='editOrder()'><i class='fa fa-pencil'></i></button>";
+                var statusElementString = status;
+                statusElement.html(statusElementString);
+                buttonElement.html(buttonElementString);
+            }
+        });
+
+    }
+}

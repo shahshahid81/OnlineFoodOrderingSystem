@@ -8,17 +8,6 @@ const router = express.Router();
 const User = require('../models/user');
 const Food = require('../models/food');
 
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, path.join(__dirname,'../public/img/Food/'));
-//     },
-//     filename: function (req, file, cb) {
-//         if(typeof req.body.image !== 'undefined'){
-//             cb(null, req.body.name.toUpperCase()+'.jpg');
-//         }
-//     }
-// });
-
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, path.join(__dirname,'../public/img/Food/'));
@@ -31,30 +20,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.get('/',function(req,res){
-    // User.find({},function(err,foundDocs){
-    //     // console.log(foundDocs);
-
-    //     var allOrders = [];
-    //     foundDocs.forEach(function(current){
-    //         current.orders.forEach(function(order){
-    //             allOrders.push({
-    //                 username : current.username,
-    //                 order_id: order.order_id,
-    //                 orderedAt : order.orderedAt,
-    //                 total : order.grandTotal,
-    //                 status : order.status
-    //             });
-    //         });
-    //     });
-    //     // console.log(allOrders);
-    //     res.render('order-status',{orders:allOrders,moment:moment});
-    // });
 
     User.aggregate([
 		{$unwind : "$orders" },
 		{$sort : {"orders.orderedAt" : -1}}
 	]).exec(function(err,foundDocs){
-		// console.log(foundDocs);
 
         var allOrders = [];
         foundDocs.forEach(function(current){
@@ -66,31 +36,26 @@ router.get('/',function(req,res){
                 status : current.orders.status
             });
         });
-        // console.log(allOrders);
         res.render('order-status',{orders:allOrders,moment:moment});
 	});
 });
 
 router.post('/:id',function(req,res){
-    // res.send(req.body.category);
     User.findOne({'orders.order_id' : req.params.id },{orders:1},function(err,doc){
         if(err){
             console.log(err);
         } else {
-            // console.log(doc);
             var order = doc.orders.find(function(current){
                 return current.order_id == req.params.id;
             });
-            // console.log(order);
+            
             order.status = req.body.category;
-            // console.log(order.status);
-            // console.log(order);
+            
             doc.save(function(err,modifiedDoc){
                 if(err){
                     console.log(err);
                 } else {
-                    console.log(modifiedDoc);
-                    res.redirect('/admin');
+                    res.send(order.status);
                 }
             });
         }
@@ -113,17 +78,13 @@ router.post('/user/new',function(req,res){
 		if(err){
 			console.log(err);
 			req.flash('error','An error occured');
-			return res.redirect("/signup");
+			return res.redirect("/admin/user/new");
 		} else {
-			req.login(user, function(err) {
-                if (err) { return next(err); }
-                req.flash('success','User added Successfully');
-				return res.redirect('/admin/user/new');
-			  });
+            req.flash('success','User added Successfully');
+            return res.redirect('/admin/user/new');
 		}
 		
 	});
-    // res.render('new-user');
 });
 
 router.get('/user',function(req,res){
@@ -131,7 +92,6 @@ router.get('/user',function(req,res){
         if(err){
             console.log(err);
         } else {
-            // console.log(foundDocs);
             res.render('view-user',{users : foundDocs});
         }
     });
@@ -149,7 +109,6 @@ router.get('/user/:id/modify',function(req,res){
         if(err){
             console.log(err);
         } else {
-            // console.log(foundDoc);
             res.render('modify-user',{User:foundDoc});
         }
     })
@@ -184,7 +143,6 @@ router.get('/food',function(req,res){
         if(err){
             console.log(err);
         } else {
-            // console.log(foundDocs);
             res.render('view-food',{food:foundDocs});
         }
     });
@@ -202,7 +160,6 @@ router.get('/food/:id/modify',function(req,res){
         if(err){
             console.log(err);
         } else {
-            // console.log(foundDoc);
             res.render('modify-food',{Food:foundDoc});
         }
     })
@@ -210,7 +167,6 @@ router.get('/food/:id/modify',function(req,res){
 
 router.post('/food/:id/modify',upload.single('image'),function(req,res){
 
-    console.log(req.body);
 
     var updatedFoodItem = {
         Name : req.body.name,
@@ -222,8 +178,6 @@ router.post('/food/:id/modify',upload.single('image'),function(req,res){
     if(typeof req.file !== 'undefined'){
         updatedFoodItem.ImagePath = path.join('/img/Food',(req.body.name).toString().toUpperCase())+'.jpg'; 
     }
-
-    // console.log(updatedFoodItem);
 
     Food.findByIdAndUpdate(req.params.id,updatedFoodItem,{new:true},function(err,modifiedFood){
         if(err){
@@ -251,8 +205,6 @@ router.post('/food/new',upload.single('image'),function(req,res){
         ImagePath : path.join('/img/Food',(req.body.name).toString().toUpperCase())+'.jpg',
         Description : req.body.description
     };
-
-    console.log(newFoodItem);
 
     Food.insertMany(newFoodItem,function(err,doc){
         if(err){
