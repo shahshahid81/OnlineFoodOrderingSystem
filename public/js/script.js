@@ -105,18 +105,25 @@ pageInit();
 
 function validateSignUp(){
 
-    const phoneNumber = $('#phone-number');
-    const password = $('#password');
-    const confirmPassword = $('#confirm-password');
+    var choice = confirm('Do you want to proceed?');
+    if(choice === false){
+        event.preventDefault();        
+    } else{
+        
+        const phoneNumber = $('#phone-number');
+        const password = $('#password');
+        const confirmPassword = $('#confirm-password');
+    
+        if( phoneNumber.val().length !== 10 ){
+            alert("Enter Phone Number with 10 digits");
+            event.preventDefault();
+        }
+    
+        if(password.val() !== confirmPassword.val()){
+            alert("Entered Password does not match");
+            event.preventDefault();
+        }
 
-    if( phoneNumber.val().length !== 10 ){
-        alert("Enter Phone Number with 10 digits");
-        event.preventDefault();
-    }
-
-    if(password.val() !== confirmPassword.val()){
-        alert("Entered Password does not match");
-        event.preventDefault();
     }
 
 }
@@ -240,33 +247,49 @@ function setCategory(category="Chicken"){
 
 function clearCart(){
 
-    var clearRequest = new XMLHttpRequest();
-    clearRequest.onreadystatechange = function(){
-        if(this.status == 200 && this.readyState == 4){
-            $('#cart-list').html("<h3>Cart is Empty! &nbsp; Select items from menu to add.</h3>");
-            updateTotal();
+    var choice = confirm('Do you want to proceed?');
+    if(choice === false){
+        event.preventDefault();        
+    } else{
+        
+        var clearRequest = new XMLHttpRequest();
+        clearRequest.onreadystatechange = function(){
+            if(this.status == 200 && this.readyState == 4){
+                $('#cart-list').html("<h3>Cart is Empty! &nbsp; Select items from menu to add.</h3>");
+                updateTotal();
+            }
         }
+        clearRequest.open('post','/cart?items=[]');
+        clearRequest.setRequestHeader('clearCart','true');
+        clearRequest.send();
+
     }
-    clearRequest.open('post','/cart?items=[]');
-    clearRequest.setRequestHeader('clearCart','true');
-    clearRequest.send();
+
 }
 
 function removeItem(name){
-    var removeRequest = new XMLHttpRequest();
+
+    var choice = confirm('Do you want to proceed?');
+    if(choice === false){
+        event.preventDefault();        
+    } else{
+        
+        var removeRequest = new XMLHttpRequest();
+        
+        var mouseEventTarget = $(event.currentTarget);
     
-    var mouseEventTarget = $(event.currentTarget);
-
-    removeRequest.onreadystatechange = function(){
-        if(this.status == 200 && this.readyState == 4){
-            mouseEventTarget.closest("tr.item").html("");            
-            updateTotal();
+        removeRequest.onreadystatechange = function(){
+            if(this.status == 200 && this.readyState == 4){
+                mouseEventTarget.closest("tr.item").html("");            
+                updateTotal();
+            }
         }
-    }
+    
+        removeRequest.open('post','/cart?items='+name);
+        removeRequest.setRequestHeader('removeItem','true');
+        removeRequest.send();
 
-    removeRequest.open('post','/cart?items='+name);
-    removeRequest.setRequestHeader('removeItem','true');
-    removeRequest.send();
+    }
 
 }
 
@@ -297,29 +320,37 @@ function removeItem(name){
 // }
 
 function checkout() {
-    event.preventDefault();
-    var cart = {};
-    cart.items = [];
-    $('tr.item').each(function(element){
-        var name = $(this).find('h4.food-name').text();
-        var quantity = $(this).find('input.quantity-box').val();
-        var item = {
-            name,
-            quantity
-        }
-        cart.items.push(item);
-    });
-    cart.total = $('#grand-total').text();
 
-    var redirect = function(url, method) {
-        var form = document.createElement('form');
-        document.body.appendChild(form);
-        form.method = method;
-        form.action = url;
-        form.submit();
-    };
+    var choice = confirm('Do you want to proceed?');
+    if(choice === false){
+        event.preventDefault();        
+    } else{
+        
+        var cart = {};
+        cart.items = [];
+        $('tr.item').each(function(element){
+            var name = $(this).find('h4.food-name').text();
+            var quantity = $(this).find('input.quantity-box').val();
+            var item = {
+                name,
+                quantity
+            }
+            cart.items.push(item);
+        });
+        cart.total = $('#grand-total').text();
     
-    redirect('/order?items='+JSON.stringify(cart), 'post');        
+        var redirect = function(url, method) {
+            var form = document.createElement('form');
+            document.body.appendChild(form);
+            form.method = method;
+            form.action = url;
+            form.submit();
+        };
+        
+        redirect('/order?items='+JSON.stringify(cart), 'post');        
+
+    }
+
 }
 
 function increment(){
@@ -380,19 +411,27 @@ function validateQuantity(){
 // ------------------------------------------------------
 
 function validateUpdate(){
-const phoneNumber = $('#phone-number');
-const password = $('#new-password');
-const confirmPassword = $('#confirm-password');
 
-if(phoneNumber.val().length != 10 ){
-    alert("Enter Phone Number with 10 digits");
-    event.preventDefault();
-}
+    var choice = confirm('Do you want to proceed?');
+    if(choice === false){
+        event.preventDefault();        
+    } else{
+        
+        const phoneNumber = $('#phone-number');
+        const password = $('#new-password');
+        const confirmPassword = $('#confirm-password');
 
-if(password.val() !== confirmPassword.val()){
-    alert("Entered Password does not match");
-    event.preventDefault();
-}
+        if(phoneNumber.val().length != 10 ){
+            alert("Enter Phone Number with 10 digits");
+            event.preventDefault();
+        }
+
+        if(password.val() !== confirmPassword.val()){
+            alert("Entered Password does not match");
+            event.preventDefault();
+        }
+
+    }
 
 }
 
@@ -412,12 +451,19 @@ function validateAction(){
 // ------------------------------------------------------
 
 function editOrder(){
-    var statusElement = $(event.currentTarget).parent().prev();
-    var buttonElement = $(event.currentTarget).parent();
-    var statusElementString = "<select id='category' class='category' name='category' class='form-control input-lg'><option value= 'Pending' > Pending </option><option value= 'Accepted' > Accepted </option><option value= 'Rejected' > Rejected </option><option value= 'Dispatched' > Dispatched </option><option value= 'Delivered' > Delivered </option></select>";
-    var buttonElementString = "<button class='icon' onclick='changeStatus()'><i class='fa fa-check'></i></button>";
-    statusElement.html(statusElementString);
-    buttonElement.html(buttonElementString);
+    
+    var choice = confirm('Do you want to proceed?');
+    if(choice === false){
+        event.preventDefault();        
+    } else{
+        var statusElement = $(event.currentTarget).parent().prev();
+        var buttonElement = $(event.currentTarget).parent();
+        var statusElementString = "<select id='category' class='category' name='category' class='form-control input-lg'><option value= 'Pending' > Pending </option><option value= 'Accepted' > Accepted </option><option value= 'Rejected' > Rejected </option><option value= 'Dispatched' > Dispatched </option><option value= 'Delivered' > Delivered </option></select>";
+        var buttonElementString = "<button class='icon' onclick='changeStatus()'><i class='fa fa-check'></i></button>";
+        statusElement.html(statusElementString);
+        buttonElement.html(buttonElementString);
+    }
+    
 }
 
 function changeStatus(){

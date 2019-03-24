@@ -5,13 +5,12 @@
     /* -------------------  SIGN IN    ---------------- */
     /* ------------------------------------------------ */
 
-    form.sign-in-form {
+    .responsive-form {
         width: 40%;
         margin: 30px auto;
     }
-    
-    form.sign-in-form > div.form-group > .btn.sign-in-button,
-    form.sign-in-form > div.form-group > .btn.clear-button {
+
+    .responsive-button {
         width: 35%;
         margin: 10px 20px;
     }
@@ -20,7 +19,7 @@
     /* -------------------  SIGN UP   ---------------- */
     /* ------------------------------------------------ */
 
-    form.sign-up-form {
+    /* form.sign-up-form {
         width: 40%;
         margin: 30px auto;
     }
@@ -29,13 +28,13 @@
     form.sign-up-form > div.form-group > .btn.clear-button {
         width: 35%;
         margin: 10px 20px;
-    }
+    } */
 
     /* ------------------------------------------------ */
     /* -------------------   ORDER     ---------------- */
     /* ------------------------------------------------ */
 
-    form.order-form {
+    /* form.order-form {
         width: 40%;
         margin: 30px auto;
     }
@@ -44,13 +43,13 @@
     form.order-form > div.form-group > .btn.clear-button {
         width: 35%;
         margin: 10px 20px;
-    }
+    } */
 
     /* ------------------------------------------------- */
     /* -------------------   PROFILE    ---------------- */
     /* ------------------------------------------------- */
 
-    form.update-profile-form {
+    /* form.update-profile-form {
         width: 40%;
         margin: 30px auto;
     }
@@ -59,6 +58,23 @@
     form.update-profile-form > div.form-group > .btn.reset-button {
         width: 35%;
         margin: 10px 20px;
+    } */
+
+    /* ------------------------------------------------ */
+    /* -------------------  INDEX  -------------------- */
+    /* ------------------------------------------------ */
+
+    a.btn.main-button:link ,
+    a.btn.main-button:visited {
+        width: 25%;
+    }
+
+    div.jumbotron.vertical-center  h1 {
+        font-size: 2em;
+    }
+
+    div.jumbotron.vertical-center  h3 {
+        font-size: 1.4em;
     }
 
 }
@@ -70,13 +86,12 @@
     /* -------------------  SIGN IN    ---------------- */
     /* ------------------------------------------------ */
 
-    form.sign-in-form {
+    .responsive-form {
         width: 40%;
         margin: 30px auto;
     }
     
-    form.sign-in-form > div.form-group > .btn.sign-in-button,
-    form.sign-in-form > div.form-group > .btn.clear-button {
+    .responsive-button {
         width: 35%;
         margin: 10px 20px;
     }
@@ -85,7 +100,7 @@
     /* -------------------  SIGN UP   ---------------- */
     /* ------------------------------------------------ */
 
-    form.sign-up-form {
+    /* form.sign-up-form {
         width: 40%;
         margin: 30px auto;
     }
@@ -94,13 +109,13 @@
     form.sign-up-form > div.form-group > .btn.clear-button {
         width: 35%;
         margin: 10px 20px;
-    }
+    } */
 
     /* ------------------------------------------------ */
     /* -------------------   ORDER     ---------------- */
     /* ------------------------------------------------ */
 
-    form.order-form {
+    /* form.order-form {
         width: 40%;
         margin: 30px auto;
     }
@@ -109,13 +124,13 @@
     form.order-form > div.form-group > .btn.clear-button {
         width: 35%;
         margin: 10px 20px;
-    }
+    } */
 
     /* ------------------------------------------------- */
     /* -------------------   PROFILE    ---------------- */
     /* ------------------------------------------------- */
 
-    form.update-profile-form {
+    /* form.update-profile-form {
         width: 40%;
         margin: 30px auto;
     }
@@ -124,6 +139,23 @@
     form.update-profile-form > div.form-group > .btn.reset-button {
         width: 35%;
         margin: 10px 20px;
+    } */
+
+    /* ------------------------------------------------ */
+    /* -------------------  INDEX  -------------------- */
+    /* ------------------------------------------------ */
+
+    a.btn.main-button:link ,
+    a.btn.main-button:visited {
+        width: 25%;
+    }
+
+    div.jumbotron.vertical-center  h1 {
+        font-size: 2em;
+    }
+
+    div.jumbotron.vertical-center  h3 {
+        font-size: 1.4em;
     }
 }
 
@@ -135,13 +167,12 @@
     /* -------------------  SIGN IN    ---------------- */
     /* ------------------------------------------------ */
 
-    form.sign-in-form {
+    .responsive-form {
         width: 50%;
         margin: 30px auto;
     }
     
-    form.sign-in-form > div.form-group > .btn.sign-in-button,
-    form.sign-in-form > div.form-group > .btn.clear-button {
+    .responsive-button {
         width: 40%;
         margin: 10px;
     }
@@ -150,7 +181,7 @@
     /* -------------------  SIGN UP   ---------------- */
     /* ------------------------------------------------ */
 
-    form.sign-up-form {
+    /* form.sign-up-form {
         width: 50%;
         margin: 30px auto;
     }
@@ -159,13 +190,13 @@
     form.sign-up-form > div.form-group > .btn.clear-button {
         width: 40%;
         margin: 10px;
-    }
+    } */
 
     /* ------------------------------------------------ */
     /* -------------------   ORDER     ---------------- */
     /* ------------------------------------------------ */
 
-    form.order-form {
+    /* form.order-form {
         width: 50%;
         margin: 30px auto;
     }
@@ -174,12 +205,12 @@
     form.order-form > div.form-group > .btn.clear-button {
         width: 40%;
         margin: 10px;
-    }
+    } */
 
     /* ------------------------------------------------- */
     /* -------------------   PROFILE    ---------------- */
     /* ------------------------------------------------- */
-
+/* 
     form.update-profile-form {
         width: 50%;
         margin: 30px auto;
@@ -189,6 +220,23 @@
     form.update-profile-form > div.form-group > .btn.reset-button {
         width: 40%;
         margin: 10px;
+    } */
+
+    /* ------------------------------------------------ */
+    /* -------------------  INDEX  -------------------- */
+    /* ------------------------------------------------ */
+
+    a.btn.main-button:link ,
+    a.btn.main-button:visited {
+        width: 30%;
+    }
+
+    div.jumbotron.vertical-center  h1 {
+        font-size: 1.8em;
+    }
+
+    div.jumbotron.vertical-center  h3 {
+        font-size: 1.2em;
     }
 
 }
@@ -200,13 +248,12 @@
     /* -------------------  SIGN IN    ---------------- */
     /* ------------------------------------------------ */
 
-    form.sign-in-form {
+    .responsive-form {
         width: 80%;
         margin: 30px 20px;
     }
     
-    form.sign-in-form > div.form-group > .btn.sign-in-button,
-    form.sign-in-form > div.form-group > .btn.clear-button {
+    .responsive-button {
         width: 40%;
         margin: 12px;
     }
@@ -215,7 +262,7 @@
     /* -------------------  SIGN UP   ---------------- */
     /* ------------------------------------------------ */
 
-    form.sign-up-form {
+    /* form.sign-up-form {
         width: 80%;
         margin: 30px 20px;
     }
@@ -224,13 +271,13 @@
     form.sign-up-form > div.form-group > .btn.clear-button {
         width: 40%;
         margin: 12px;
-    }
+    } */
 
     /* ------------------------------------------------ */
     /* -------------------   ORDER     ---------------- */
     /* ------------------------------------------------ */
 
-    form.order-form {
+    /* form.order-form {
         width: 80%;
         margin: 30px 20px;
     }
@@ -239,13 +286,13 @@
     form.order-form > div.form-group > .btn.clear-button {
         width: 40%;
         margin: 12px;
-    }
+    } */
 
     /* ------------------------------------------------- */
     /* -------------------   PROFILE    ---------------- */
     /* ------------------------------------------------- */
 
-    form.update-profile-form {
+    /* form.update-profile-form {
         width: 80%;
         margin: 30px 20px;
     }
@@ -254,6 +301,23 @@
     form.update-profile-form > div.form-group > .btn.reset-button {
         width: 40%;
         margin: 12px;
+    } */
+
+
+    /* ------------------------------------------------ */
+    /* -------------------  INDEX  -------------------- */
+    /* ------------------------------------------------ */
+
+    a.btn.main-button:link ,
+    a.btn.main-button:visited {
+        width: 40%;
     }
 
+    div.jumbotron.vertical-center  h1 {
+        font-size: 1.8em;
+    }
+
+    div.jumbotron.vertical-center  h3 {
+        font-size: 1.2em;
+    }
 }

@@ -135,6 +135,32 @@ body.main{
     background-repeat: no-repeat;
 }
 
+div.jumbotron {
+    background: none;
+    color:#fff;
+}
+
+.vertical-center {
+    min-height: 90vh; 
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center; 
+    align-content: center;
+}
+
+div.jumbotron > h1,h3 {
+    text-align: center;
+}
+
+div.jumbotron.vertical-center  h1 {
+    font-size: 2.2em;
+}
+
+div.jumbotron.vertical-center  h3 {
+    font-size: 1.2em;
+}
+
 /* -----------------Navigation------------ */
 
 .main-nav {
@@ -170,20 +196,20 @@ body.main{
 .btn.main-button:link ,
 .btn.main-button:visited{
     display: inline-block;
-    padding : 10px 30px;
+    /* padding : 10px 30px; */
     width: 12rem;
     font-size: 1rem;
-    font-weight: 300;
+    font-weight: 400;
     text-decoration: none;
     border-radius: 200px;
     color:#fff;
-    transform: translate(120px);
+    /* transform: translate(120px); */
+    transform: translateX(1%);
     transition: background-color 0.2s, border 0.2s, color 0.2s;
     background-color: #D32F2F;
     border:1px solid #D32F2F;
     color:#fff;
-    margin-right: 15px;
-
+    margin-top: 20px;
 }
 
 .btn.main-button:hover,
@@ -275,6 +301,15 @@ div.thumbnail {
     font-size: 0.8em;
 }
 
+.Price {
+    display: inline;
+}
+
+.add-to-cart-form{
+    display: inline;
+    float: right;
+}
+
 .col-md-12 > .Description {
     widows: 270px;
     height: 120px;
@@ -284,8 +319,7 @@ div.thumbnail {
     word-spacing: 3px;
 }
 
-.btn.add-to-cart,
-.btn.order-online {
+.btn.add-to-cart {
     font-size: 0.8em;
     margin: 5px;
 }
@@ -296,9 +330,9 @@ div.thumbnail {
 }
 
 /* -----------------Loader------------ */
-.loader {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
+/* .loader {
+    border: 16px solid #f3f3f3; 
+    border-top: 16px solid #3498db; 
     border-radius: 50%;
     width: 120px;
     height: 120px;
@@ -308,13 +342,13 @@ div.thumbnail {
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-  }
+  } */
 
 /* ------------------------------------------------ */
 /* -------------------  SIGN IN    ---------------- */
 /* ------------------------------------------------ */
 
-form.sign-in-form {
+/* form.sign-in-form {
     width: 45%;
     margin: 50px auto;
 }
@@ -328,13 +362,24 @@ form.sign-in-form > div.form-group > .btn.sign-in-button,
 form.sign-in-form > div.form-group > .btn.clear-button {
     width: 40%;
     margin: 10px 23px;
+} */
+
+.responsive-form {
+    width: 45%;
+    margin: 50px auto;
+}
+
+.responsive-button {
+    font-weight: bold;
+    width: 40%;
+    margin: 10px 23px;
 }
 
 /* ------------------------------------------------ */
 /* -------------------  SIGN UP   ---------------- */
 /* ------------------------------------------------ */
 
-form.sign-up-form {
+/* form.sign-up-form {
     width: 45%;
     margin: 30px auto;
 }
@@ -347,13 +392,13 @@ form.sign-up-form > div.form-group > .btn.sign-up-button,
 form.sign-up-form > div.form-group > .btn.clear-button {
     width: 40%;
     margin: 10px 23px;
-}
+} */
 
 /* ------------------------------------------------ */
 /* -------------------  CONTACT US ---------------- */
 /* ------------------------------------------------ */
 
-form.contact-us-form {
+/* form.contact-us-form {
     width: 65%;
     margin: 30px auto;
 }
@@ -362,16 +407,16 @@ form.contact-us-form > div.form-group > .btn.submit-button,
 form.contact-us-form > div.form-group > .btn.clear-button {
     width: 40%;
     margin: 10px 23px;
-}
+} */
 
 /* ------------------------------------------------ */
 /* -------------------  ABOUT US   ---------------- */
 /* ------------------------------------------------ */
 
-.col-md-5 > .thumbnail > img.restaurant-image{
-    /* width: 800px; */
+/* .col-md-5 > .thumbnail > img.restaurant-image{
+    width: 800px;
     height: 300px;
-}
+} */
 
 /* ------------------------------------------------ */
 /* -------------------    CART     ---------------- */
@@ -437,7 +482,7 @@ input.quantity-box {
 /* -------------------   ORDER     ---------------- */
 /* ------------------------------------------------ */
 
-form.order-form {
+/* form.order-form {
     width: 45%;
     margin: 30px auto;
 }
@@ -451,13 +496,13 @@ form.order-form > div.form-group > .btn.submit-button,
 form.order-form > div.form-group > .btn.clear-button {
     width: 40%;
     margin: 10px 22px;
-}
+} */
 
 /* ------------------------------------------------- */
 /* -------------------   PROFILE    ---------------- */
 /* ------------------------------------------------- */
 
-form.update-profile-form {
+/* form.update-profile-form {
     width: 45%;
     margin: 30px auto;
 }
@@ -471,7 +516,7 @@ form.update-profile-form > div.form-group > .btn.update-button,
 form.update-profile-form > div.form-group > .btn.reset-button {
     width: 40%;
     margin: 10px 23px;
-}
+} */
 
 /* ------------------------------------------------- */
 /* -------------------   CHECKOUT    --------------- */
@@ -509,7 +554,7 @@ span .fa.fa-check-circle-o {
 /* ------------------------------------------------ */
 /* -------------------  USER/NEW   ---------------- */
 /* ------------------------------------------------ */
-
+/* 
 form.new-user-form {
     width : 45%;
     margin: 60px auto;
@@ -523,7 +568,7 @@ form.new-user-form > div.form-group > .btn.sign-up-button,
 form.new-user-form > div.form-group > .btn.clear-button {
     width: 40%;
     margin: 10px 23px;
-}
+} */
 
 /* ------------------------------------------------ */
 /* -------------------  ADMIN/USER  --------------- */
@@ -546,7 +591,7 @@ button.icon {
 /* -------------------  USER/MODIFY --------------- */
 /* ------------------------------------------------ */
 
-form.modify-user-form {
+/* form.modify-user-form {
     width : 45%;
     margin: 60px auto;
 }
@@ -560,4 +605,4 @@ form.modify-user-form > div.form-group > .btn.modify-button,
 form.modify-user-form > div.form-group > .btn.reset-button {
     width: 40%;
     margin: 10px 23px;
-}
+} */

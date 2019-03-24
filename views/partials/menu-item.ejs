@@ -20,7 +20,7 @@
                     <div class="col-md-12">
                         <p class="Description"> <%= food.Description %> </p>
                         <p class="Price"> <strong> &nbsp <%= food.Price %> &#8360  </strong>  </p>
-                        <form>
+                        <form class="add-to-cart-form">
                         <button class="btn btn-primary add-to-cart" onclick='toggleCart(event,"<%= food.Name %>")'>
                             
                             <% if(typeof cartItems!=='undefined' && cartItems.length > 0){ %>

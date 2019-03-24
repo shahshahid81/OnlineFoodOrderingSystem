@@ -6,7 +6,7 @@
 
     <div class='container'>
     
-    <form class='new-user-form' action='/admin/user/new' method='POST'>
+    <form class='new-user-form responsive-form' action='/admin/user/new' method='POST'>
     <% include partials/_messages%>
 
             <div class="form-group">
@@ -45,8 +45,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-lg sign-up-button"  onclick='validateSignUp()'>Sign Up</button>
-                <button type="reset" class="btn btn-default btn-lg clear-button">Clear</button>    
+                <button type="submit" class="btn btn-primary btn-lg sign-up-button responsive-button" onclick='validateSignUp()'>Sign Up</button>
+                <button type="reset" class="btn btn-default btn-lg clear-button responsive-button">Clear</button>    
             </div>
 
         </form>
