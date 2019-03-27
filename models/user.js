@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
-// const ObjectId = mongoose.Types.ObjectId;
 
 const itemSchema = mongoose.Schema({
     product_id : {

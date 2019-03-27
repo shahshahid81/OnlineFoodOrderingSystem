@@ -2,11 +2,13 @@ const express = require('express');
 const path = require('path');
 const moment = require('moment');
 const multer = require('multer');
+const passport = require('passport');
 
 const router = express.Router();
 
 const User = require('../models/user');
 const Food = require('../models/food');
+const middleware = require('../middleware/middleware');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -19,7 +21,20 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.get('/',function(req,res){
+router.get('/login',function(req,res){
+    res.render('admin/login');
+});
+
+router.post('/login',
+    passport.authenticate('admin-local',{
+        successRedirect : '/admin',
+        failureRedirect : "/admin/login",
+        failureFlash : true
+    }
+));
+
+router.get('/',middleware.isAdminLoggedIn,function(req,res){
+// router.get('/',function(req,res){
 
     User.aggregate([
 		{$unwind : "$orders" },

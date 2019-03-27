@@ -9,6 +9,7 @@ const LocalStrategy = require('passport-local').Strategy;
 
 const User = require("./models/user");
 const Food = require("./models/food");
+const Admin = require("./models/admin");
 const admin = require("./routes/admin");
 const routes = require("./routes/routes");
 const seedDB = require('./seed');
@@ -23,17 +24,50 @@ mongoose.connect("mongodb://127.0.0.1:27017/foodDB",{ useNewUrlParser:true },fun
 	}
 	else{
 		console.log('connected');
-		if(Food.find({},function(err,items){
+		Food.find({},function(err,items){
 			if(items.length === 0){
 				seedDB();
 			}
-		}));
+		});
+		Admin.findOne({username:'admin'},function(err,foundDoc){
+			if(!foundDoc){
+				const password = 'admin123';
+				Admin.register({username : 'admin'},password,function(err,user){
+					if(err){
+						console.log(err);
+					} else {
+						console.log('Admin Registered.');
+					}
+				});
+			}
+		});
 	}
 });
 
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.use('local',new LocalStrategy(User.authenticate()));
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
+
+passport.use('admin-local',new LocalStrategy(Admin.authenticate()));
+// passport.serializeUser(Admin.serializeUser());
+// passport.deserializeUser(Admin.deserializeUser());
+
+passport.serializeUser(function(user, done) {	
+	done(null, user.id);
+});
+  
+passport.deserializeUser(function(id, done) {
+	User.findById(id, function(err, user) {
+		if(user) {
+			done(err, user);
+		} else {
+			Admin.findById(id,function(err,admin){
+				done(err,admin);
+			});
+		}
+	});
+});
+
 app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
