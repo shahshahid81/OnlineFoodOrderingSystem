@@ -1,11 +1,11 @@
-<% include partials/header %>
+<% include ../partials/header %>
 
-<% include partials/admin-navigation %>
+<% include ../partials/admin-navigation %>
 
     <div class='admin-main'>
 
         <div class = "container">
-            <% include partials/_messages%>
+            <% include ../partials/_messages%>
 
             <form action="/admin/food/<%=Food._id%>/modify" method="post" class="modify-user-form responsive-form" enctype='multipart/form-data'>
                 
@@ -66,4 +66,4 @@
 
     </div>
 
-<% include partials/footer %>
+<% include ../partials/footer %>

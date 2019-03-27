@@ -47,46 +47,6 @@ function activePage(){
     }
 }
 
-// function activeCategory(){
-//     const activeCategory = window.location.search.replace("?item=","");
-
-//     $('ul.category-choice > li > a').each(function(){
-//         $(this).removeClass('category-active');
-//     });
-
-//     if(activeCategory === ""){
-//         $('#Chicken').addClass('category-active');
-//     } else {
-//         switch(activeCategory){
-//             case "Seafood" : 
-//                 $('#Seafood').addClass('category-active');
-//                 break;
-//             case "Appetizers" : 
-//                 $('#Appetizers').addClass('category-active');
-//                 break;
-//             case "Rice" : 
-//                 $('#Rice').addClass('category-active');
-//                 break;
-//             case "Bread" : 
-//                 $('#Bread').addClass('category-active');
-//                 break;
-//             case "Vegetable" : 
-//                 $('#Vegetable').addClass('category-active');
-//                 break;
-//             case "Beverage" : 
-//                 $('#Beverage').addClass('category-active');
-//                 break;
-//             case "Dessert" : 
-//                 $('#Dessert').addClass('category-active');
-//                 break;
-//             case "Chicken" : 
-//             default:
-//                 $('#Chicken').addClass('category-active');
-//                 break;
-//         }
-//     }
-// }
-
 function activeCategory(category='chicken'){
 
     $('ul.category-choice > li > a').each(function(){
@@ -108,7 +68,7 @@ function validateSignUp(){
     var choice = confirm('Do you want to proceed?');
     if(choice === false){
         event.preventDefault();        
-    } else{
+    } else {
         
         const phoneNumber = $('#phone-number');
         const password = $('#password');
@@ -131,63 +91,6 @@ function validateSignUp(){
 // ------------------------------------------------------
 // ------------------      Menu     ---------------------
 // ------------------------------------------------------
-
-// function setAJAXListeners(){
-
-//     $('ul.category-choice > li > a').each(function(){
-//         $(this).on("click",function(event){
-//             event.preventDefault();
-//             $('#food-items').html('<div class="loader"></div>');
-
-//             var query = "/menu?item="+capitalize($(this).text());
-
-//             var itemRequest = new XMLHttpRequest();
-//             itemRequest.onreadystatechange = function(){
-//                 if (this.readyState == 4 && this.status == 200) {
-//                     $('#food-items').html(itemRequest.responseText);
-//                     window.history.replaceState("","",query);
-//                     activeCategory();
-//                 }
-//             };
-            
-//             itemRequest.open("get",query);
-//             itemRequest.setRequestHeader('visited','true');
-//             itemRequest.send();
-//         });
-//     });
-    
-// }
-
-// function toggleCart(event,name){ 
-
-//     event.preventDefault();
-//     var cartRequest = new XMLHttpRequest();
-//     cartRequest.onreadystatechange = function(){
-//         if(this.readyState == 4 && this.status == 200){
-
-//             if($(event.target).text().trim() === 'Remove from Cart'){
-//                 $(event.target).text('Add to Cart');
-//             } else if($(event.target).text().trim() === 'Add to Cart'){
-//                 $(event.target).text('Remove from Cart');
-//             }
-
-//         } else if(this.readyState == 4 && this.status == 401){
-//             window.location.replace('/signin');
-//         }
-//     }
-
-//     var query = '/cart?items='+name;
-//     cartRequest.open('post',query);
-//     if($(event.target).text().trim() === 'Remove from Cart'){
-//         cartRequest.setRequestHeader('removeItem','true');
-//     }
-//     cartRequest.send();
-
-// }
-
-// function capitalize(str){
-//     return str.charAt(0)+str.slice(1).toLowerCase();
-// }
 
 function setAJAXListeners(){
 
@@ -293,39 +196,13 @@ function removeItem(name){
 
 }
 
-// function checkout() {
-//     event.preventDefault();
-//     var cart = {};
-//     cart.items = [];
-//     $('tr.item').each(function(element){
-//         var name = $(this).find('h3.food-name').text();
-//         var quantity = $(this).find('input.quantity-box').val();
-//         var item = {
-//             name,
-//             quantity
-//         }
-//         cart.items.push(item);
-//     });
-//     cart.total = $('#grand-total').text();
-
-//     var redirect = function(url, method) {
-//         var form = document.createElement('form');
-//         document.body.appendChild(form);
-//         form.method = method;
-//         form.action = url;
-//         form.submit();
-//     };
-    
-//     redirect('/order?items='+JSON.stringify(cart), 'post');        
-// }
-
 function checkout() {
 
     var choice = confirm('Do you want to proceed?');
     if(choice === false){
         event.preventDefault();        
-    } else{
-        
+    } else {
+        event.preventDefault();
         var cart = {};
         cart.items = [];
         $('tr.item').each(function(element){
@@ -418,21 +295,30 @@ function validateUpdate(){
     } else{
         
         const phoneNumber = $('#phone-number');
-        const password = $('#new-password');
-        const confirmPassword = $('#confirm-password');
-
+        
         if(phoneNumber.val().length != 10 ){
             alert("Enter Phone Number with 10 digits");
             event.preventDefault();
         }
+        
+    }
 
+}
+
+function validateChangePassword() {
+    var choice = confirm('Do you want to proceed?');
+    if(choice === false){
+        event.preventDefault();        
+    } else{
+
+        const password = $('#new-password');
+        const confirmPassword = $('#confirm-password');
         if(password.val() !== confirmPassword.val()){
             alert("Entered Password does not match");
             event.preventDefault();
         }
-
+        
     }
-
 }
 
 // ------------------------------------------------------
@@ -467,7 +353,6 @@ function editOrder(){
 }
 
 function changeStatus(){
-    // console.log($(event.currentTarget));
     var choice = confirm('Do you want to proceed?');
     if(choice === false){
         event.preventDefault();        

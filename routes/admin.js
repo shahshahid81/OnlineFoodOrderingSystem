@@ -36,7 +36,7 @@ router.get('/',function(req,res){
                 status : current.orders.status
             });
         });
-        res.render('order-status',{orders:allOrders,moment:moment});
+        res.render('admin/order-status',{orders:allOrders,moment:moment});
 	});
 });
 
@@ -63,7 +63,7 @@ router.post('/:id',function(req,res){
 });
 
 router.get('/user/new',function(req,res){
-    res.render('new-user');
+    res.render('admin/new-user');
 });
 
 router.post('/user/new',function(req,res){
@@ -92,7 +92,7 @@ router.get('/user',function(req,res){
         if(err){
             console.log(err);
         } else {
-            res.render('view-user',{users : foundDocs});
+            res.render('admin/view-user',{users : foundDocs});
         }
     });
 });
@@ -109,7 +109,7 @@ router.get('/user/:id/modify',function(req,res){
         if(err){
             console.log(err);
         } else {
-            res.render('modify-user',{User:foundDoc});
+            res.render('admin/modify-user',{User:foundDoc});
         }
     })
 });
@@ -143,7 +143,7 @@ router.get('/food',function(req,res){
         if(err){
             console.log(err);
         } else {
-            res.render('view-food',{food:foundDocs});
+            res.render('admin/view-food',{food:foundDocs});
         }
     });
 }); 
@@ -160,7 +160,7 @@ router.get('/food/:id/modify',function(req,res){
         if(err){
             console.log(err);
         } else {
-            res.render('modify-food',{Food:foundDoc});
+            res.render('admin/modify-food',{Food:foundDoc});
         }
     })
 });
@@ -185,7 +185,6 @@ router.post('/food/:id/modify',upload.single('image'),function(req,res){
             req.flash('err','An error occured.');
             res.redirect('/admin/food');
         } else {
-            console.log(modifiedFood);
             req.flash('success','Data updated successfully');
             res.redirect('/admin/food');
         }
@@ -194,7 +193,7 @@ router.post('/food/:id/modify',upload.single('image'),function(req,res){
 });
 
 router.get('/food/new',function(req,res){
-    res.render('new-food');
+    res.render('admin/new-food');
 });
 
 router.post('/food/new',upload.single('image'),function(req,res){
