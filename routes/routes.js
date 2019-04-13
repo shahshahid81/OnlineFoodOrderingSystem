@@ -7,6 +7,7 @@ const router  = express.Router();
 
 const Food = require("../models/food");
 const User = require("../models/user");
+const Message = require("../models/message");
 const middleware = require('../middleware/middleware');
 
 var savedItems = [];
@@ -30,6 +31,30 @@ router.get('/menu',function(req,res){
 			} else {
 				res.render('user/menu',{Foods:allFoods,cartItems:{}});
 			}
+		}
+	});
+});
+
+router.get('/contactus',function(req,res){
+	res.render('user/contact-us');
+});
+
+router.post('/contactus',function(req,res){
+	var messageObject = {
+		name : req.body.name,
+		phoneNumber : req.body['phone-number'],
+		email : req.body.email,
+		message : req.body.message
+	};
+
+	Message.insertMany(messageObject,function(err,doc){
+		if(err){
+			console.log(err);
+			req.flash('error','An error occured.');
+			res.redirect('/contactus');			
+		} else {
+			req.flash('success','Message Submitted Successfully.');
+			res.redirect('/contactus');			
 		}
 	});
 });

@@ -77,10 +77,36 @@ function validateSignUp(){
         if( phoneNumber.val().length !== 10 ){
             alert("Enter Phone Number with 10 digits");
             event.preventDefault();
-        }
-    
-        if(password.val() !== confirmPassword.val()){
+        } else if(password.val() !== confirmPassword.val()){
             alert("Entered Password does not match");
+            event.preventDefault();
+        }
+
+    }
+
+}
+
+// ------------------------------------------------------
+// ----------------      Contact Us  --------------------
+// ------------------------------------------------------
+
+function validateContactUs(){
+
+    var choice = confirm('Do you want to proceed?');
+    if(choice === false){
+        event.preventDefault();        
+    } else {
+        
+        const phoneNumber = $('#phone-number');
+        const message =$("#message");
+        if( phoneNumber.val().length !== 10 ){
+            alert("Enter Phone Number with 10 digits");
+            event.preventDefault();
+        } else if( message.val().length === 0 ){
+            alert("Message is Empty.Enter a Message.");
+            event.preventDefault();
+        } else if(message.val().length > 100) {
+            alert("Message should be within 100 characters");
             event.preventDefault();
         }
 
@@ -362,7 +388,7 @@ function changeStatus(){
         var buttonElement = $(event.currentTarget).parent();
         var orderID = $(event.currentTarget).closest('tr').find('.order-id').text();
         $.ajax({
-            url : '/admin/'+orderID,
+            url : '/admin/order/'+orderID,
             method : 'POST',
             data : {category : $('.category').val()},
             success : function(status){
@@ -375,3 +401,14 @@ function changeStatus(){
 
     }
 }
+
+// ------------------------------------------------------
+// -------------      Dashboard      --------------------
+// ------------------------------------------------------
+
+$('#myModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); 
+    var message = button.data('message');
+    var modal = $(this);
+    modal.find('.message').text(message);
+});
