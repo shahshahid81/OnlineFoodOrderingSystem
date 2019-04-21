@@ -10,7 +10,24 @@ function pageInit(){
         setAJAXListeners();
     } else if(window.location.pathname === "/cart"){
         updateTotal();
-    } 
+    } else if(window.location.pathname === "/admin/food"){
+        // $(document).ready( function () {
+        //     $('#food-table').DataTable({
+        //         "lengthMenu": [ 10,15,20 ]
+        //     });
+        // } );
+        $('#food-table').DataTable({
+            "lengthMenu": [ 10,15,20 ]
+        });
+    } else if(window.location.pathname === "/admin/user"){
+        $('#user-table').DataTable({
+            "lengthMenu": [ 10,15,20 ]
+        });
+    } else if(window.location.pathname === "/admin/order"){
+        $('#order-table').DataTable({
+            "lengthMenu": [ 20,25,30 ]
+        });
+    }
 }
 
 function activePage(){

@@ -8,15 +8,16 @@
 
     <div class="table-responsive">
 
-        <table class='table table-striped table-condensed'>
-        
+        <table id="user-table" class='table table-striped table-condensed'>
+        <thead>
             <th> User ID </th>
             <th> Name </th>
             <th> Username </th>
             <th> Phone Number </th>
             <th> Edit </th>
             <th> Delete </th>
-
+        </thead>
+        <tbody>
             <% if(users && users.length > 0){%>
                 <% users.forEach(function(current){ %>
                     <tr>
@@ -38,7 +39,7 @@
 
                 <% });%>
             <% } %>
-
+        <tbody>
         </table>
 
     </div>

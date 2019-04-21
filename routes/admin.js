@@ -39,8 +39,6 @@ router.get('/',middleware.isAdminLoggedIn,function(req,res){
         if(err){
             console.log(err);
         } else {
-            console.log(foundUsers);
-            // console.log(foundUsers.length);
             var userCount = foundUsers.length;
             var orderCount=0;
             var totalSales = 0;
@@ -50,16 +48,12 @@ router.get('/',middleware.isAdminLoggedIn,function(req,res){
                     totalSales += parseInt(order.grandTotal);
                 });
             });
-            // console.log(userCount);
-            // console.log(orderCount);
-            // console.log(totalSales);
             var statsObject = {
                 user : userCount,
                 order : orderCount,
                 sales : totalSales
             };
             Message.find({},function(err,docs){
-                // console.log(docs);
                 res.render('admin/dashboard',{stats : statsObject,messages : docs});
             });
         }
@@ -87,7 +81,7 @@ router.get('/order',middleware.isAdminLoggedIn,function(req,res){
 	});
 });
 
-router.post('/order/:id',function(req,res){
+router.post('/order/:id',middleware.isAdminLoggedIn,function(req,res){
     User.findOne({'orders.order_id' : req.params.id },{orders:1},function(err,doc){
         if(err){
             console.log(err);
@@ -109,11 +103,11 @@ router.post('/order/:id',function(req,res){
     });
 });
 
-router.get('/user/new',function(req,res){
+router.get('/user/new',middleware.isAdminLoggedIn,function(req,res){
     res.render('admin/new-user');
 });
 
-router.post('/user/new',function(req,res){
+router.post('/user/new',middleware.isAdminLoggedIn,function(req,res){
     const Password = req.body.password;
 	const newUser = {
 		name : req.body.name,
@@ -134,7 +128,7 @@ router.post('/user/new',function(req,res){
 	});
 });
 
-router.get('/user',function(req,res){
+router.get('/user',middleware.isAdminLoggedIn,function(req,res){
     User.find({},{orders : 0},function(err,foundDocs){
         if(err){
             console.log(err);
@@ -144,14 +138,14 @@ router.get('/user',function(req,res){
     });
 });
 
-router.post('/user/:id/delete',function(req,res){
+router.post('/user/:id/delete',middleware.isAdminLoggedIn,function(req,res){
     User.findByIdAndDelete(req.params.id,function(){
         req.flash('success','User Deleted Successfully');
         res.redirect('/admin/user');
     });
 });
 
-router.get('/user/:id/modify',function(req,res){
+router.get('/user/:id/modify',middleware.isAdminLoggedIn,function(req,res){
     User.findById(req.params.id,null,{orders:0},function(err,foundDoc){
         if(err){
             console.log(err);
@@ -161,7 +155,7 @@ router.get('/user/:id/modify',function(req,res){
     })
 });
 
-router.post('/user/:id/modify',function(req,res){
+router.post('/user/:id/modify',middleware.isAdminLoggedIn,function(req,res){
 
     var updatedUser = {
         name:req.body.name,
@@ -175,17 +169,19 @@ router.post('/user/:id/modify',function(req,res){
             req.flash('err','An error occured.');
             res.redirect('/admin/user');
         } else {
-            modifiedUser.setPassword(req.body['new-password'],function(){
-                modifiedUser.save();
-                req.flash('success','Data updated successfully');
-                res.redirect('/admin/user');
-            });
+            req.flash('success','Data updated successfully');
+            res.redirect('/admin/user');
+            // modifiedUser.setPassword(req.body['new-password'],function(){
+            //     req.flash('success','Data updated successfully');
+            //     res.redirect('/admin/user');
+            //     modifiedUser.save();
+            // });
         }
     });
 
 });
 
-router.get('/food',function(req,res){
+router.get('/food',middleware.isAdminLoggedIn,function(req,res){
     Food.find({},{Description : 0,ImagePath : 0},function(err,foundDocs){
         if(err){
             console.log(err);
@@ -195,14 +191,14 @@ router.get('/food',function(req,res){
     });
 }); 
 
-router.post('/food/:id/delete',function(req,res){
+router.post('/food/:id/delete',middleware.isAdminLoggedIn,function(req,res){
     Food.findByIdAndDelete(req.params.id,function(){
         req.flash('success','Food Item Deleted Successfully');
         res.redirect('/admin/food');
     });
 });
 
-router.get('/food/:id/modify',function(req,res){
+router.get('/food/:id/modify',middleware.isAdminLoggedIn,function(req,res){
     Food.findById(req.params.id,function(err,foundDoc){
         if(err){
             console.log(err);
@@ -212,8 +208,7 @@ router.get('/food/:id/modify',function(req,res){
     })
 });
 
-router.post('/food/:id/modify',upload.single('image'),function(req,res){
-
+router.post('/food/:id/modify',middleware.isAdminLoggedIn,upload.single('image'),function(req,res){
 
     var updatedFoodItem = {
         Name : req.body.name,
@@ -239,11 +234,12 @@ router.post('/food/:id/modify',upload.single('image'),function(req,res){
 
 });
 
-router.get('/food/new',function(req,res){
+router.get('/food/new',middleware.isAdminLoggedIn,function(req,res){
     res.render('admin/new-food');
 });
 
-router.post('/food/new',upload.single('image'),function(req,res){
+router.post('/food/new',middleware.isAdminLoggedIn,upload.single('image'),function(req,res){
+
     var newFoodItem = {
         Name : req.body.name,
         Price : req.body.price,
@@ -260,6 +256,16 @@ router.post('/food/new',upload.single('image'),function(req,res){
         } else {
             req.flash('success','Data Inserted successfully');
             res.redirect('/admin/food');
+        }
+    });
+});
+
+router.get('/temp',function(req,res){
+    Food.find({},{Description : 0,ImagePath : 0},function(err,foundDocs){
+        if(err){
+            console.log(err);
+        } else {
+            res.render('admin/temp',{food:foundDocs});
         }
     });
 });

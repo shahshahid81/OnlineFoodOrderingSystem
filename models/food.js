@@ -5,7 +5,8 @@ const foodSchema = mongoose.Schema({
         type : String,
         required : true,
         minlength : 1,
-        trim : true
+        trim : true,
+        unique : true
     },
     Description : {
         type : String,
@@ -16,6 +17,8 @@ const foodSchema = mongoose.Schema({
     Price : {
         type : Number,
         required : true,
+        minlength : 1,
+        trim : true
     },
     Category : {
         type : String,
