@@ -10,7 +10,9 @@ const LocalStrategy = require('passport-local').Strategy;
 const User = require("./models/user");
 const Food = require("./models/food");
 const Admin = require("./models/admin");
-const admin = require("./routes/admin");
+const adminRoutes = require("./routes/admin");
+const foodRoutes = require("./routes/food");
+const userRoutes = require("./routes/user");
 const routes = require("./routes/routes");
 const seedDB = require('./seed');
 
@@ -93,7 +95,9 @@ app.use(function(req, res, next){
 app.set('view engine','ejs');
 
 app.use('/',routes);
-app.use('/admin',admin);
+app.use('/admin',adminRoutes);
+app.use('/admin/user',userRoutes);
+app.use('/admin/food',foodRoutes);
 
 app.listen(port,function(err){
 	if(err){

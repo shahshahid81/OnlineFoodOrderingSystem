@@ -27,6 +27,14 @@ function pageInit(){
         $('#order-table').DataTable({
             "lengthMenu": [ 20,25,30 ]
         });
+    } else if(window.location.pathname === "/order"){
+        $('#order-table').DataTable({
+            "lengthMenu": [ 10,15,20 ]
+        });
+    } else if(window.location.pathname === "/admin"){
+        $('#message-table').DataTable({
+            "lengthMenu": [ 10,15,20 ]
+        });
     }
 }
 
