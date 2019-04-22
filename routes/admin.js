@@ -20,6 +20,11 @@ router.post('/login',
     }
 ));
 
+router.get('/logout', function(req, res){
+	req.logout();
+	res.redirect('/admin/login');
+});
+
 router.get('/',middleware.isAdminLoggedIn,function(req,res){
     User.find({},function(err,foundUsers){
         if(err){

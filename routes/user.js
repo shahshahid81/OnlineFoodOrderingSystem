@@ -54,7 +54,7 @@ router.get('/:id/modify',middleware.isAdminLoggedIn,function(req,res){
         } else {
             res.render('admin/modify-user',{User:foundDoc});
         }
-    })
+    });
 });
 
 router.post('/:id/modify',middleware.isAdminLoggedIn,function(req,res){

@@ -42,7 +42,7 @@ router.get('/:id/modify',middleware.isAdminLoggedIn,function(req,res){
         } else {
             res.render('admin/modify-food',{Food:foundDoc});
         }
-    })
+    });
 });
 
 router.post('/:id/modify',middleware.isAdminLoggedIn,upload.single('image'),function(req,res){

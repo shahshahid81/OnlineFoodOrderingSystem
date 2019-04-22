@@ -1,111 +1,110 @@
 <% include ../partials/header %>
 
-<%include ../partials/admin-navigation.ejs%>
+<div class="hold-transition skin-blue sidebar-mini">
 
-<div class="container-fluid">
-    <div class="row">
+    <%include ../partials/admin-header%>   
 
-        <div class="row">
-          <div class="col-xs-6 col-md-3">
+    <div class="wrapper">
 
-                <div class="circle-tile dark-blue">
-                    <a href="#"><div class="circle-tile-heading"><i class="fa fa-users fa-fw fa-3x"></i></div></a>
-                    <div class="circle-tile-content">
-                    <div class="circle-tile-description text-faded"> Users</div>
-                    <div class="circle-tile-number text-faded "><%= stats.user%></div>
-                    </div>
-                </div>
-
-          </div>
-          <div class="col-xs-6 col-md-3">
-
-            <div class="circle-tile red">
-                <a href="#"><div class="circle-tile-heading"><i class="fa fa-shopping-cart fa-fw fa-3x"></i></div></a>
-                <div class="circle-tile-content">
-                <div class="circle-tile-description text-faded"> Orders</div>
-                <div class="circle-tile-number text-faded "><%= stats.order%></div>
-                </div>
-            </div>
-
-          </div>
-          <div class="col-xs-6 col-md-3">
-
-            <div class="circle-tile purple">
-                <a href="#"><div class="circle-tile-heading"><i class="fa fa-inr fa-fw fa-3x"></i></div></a>
-                <div class="circle-tile-content">
-                <div class="circle-tile-description text-faded"> Sales</div>
-                <div class="circle-tile-number text-faded "><%= stats.sales%> &#8360 </div>
-                </div>
-            </div>
-
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-  
-            <div class="circle-tile blue">
-                <a href="#"><div class="circle-tile-heading"><i class="fa fa-comment fa-fw fa-3x"></i></div></a>
-                <div class="circle-tile-content">
-                <div class="circle-tile-description text-faded"> Messages</div>
-                <div class="circle-tile-number text-faded "><%= messages.length%></div>
-                </div>
-            </div>
-
-          </div>
-        </div>
-
-        <br>
-
-        <div class="row">
-            <div class="col-xs-12">
-                
-                <div class="table-responsive">
+    <%include ../partials/admin-sidebar%>                   
     
-                    <table id="message-table" class='table table-striped table-condensed'>
-                    <thead>
-                    <tr>
-                      <th> Message Id </th>
-                      <th> Name </th>
-                      <th> Email </th>
-                      <th> Phone Number </th>  
-                      <th> View Message </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <% messages.forEach(function(current){ %>
-                    <tr>
-                      <td> <%= current._id%> </td>
-                      <td> <%= current.name%> </td>
-                      <td> <%= current.email%> </td>
-                      <td> <%= current.phoneNumber%> </td>
-                      <td> <button type="button" class="icon" data-toggle="modal" data-target="#myModal" data-message="<%=current.message%>"> <i class="fa fa-file-text"></i> </button> </td>
-                    </tr>
-                    <% });%>
-                    </tbody>
-                    </table>
+        <div class="content-wrapper">
+        
+            <section class="content container-fluid">
 
-                </div>
-
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="exampleModalLabel">Message</h4>
-                      </div>
-                      <div class="modal-body">
-                        <pre class="message"> </pre>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                      </div>
+                <div class="row">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="info-box">
+                            <span class="info-box-icon bg-aqua"><i class="fa fa-users"></i></span>
+                
+                            <div class="info-box-content">
+                                <span class="info-box-text">Users</span> 
+                                <span class="info-box-number"><%= stats.user%></span>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="info-box">
+                            <span class="info-box-icon bg-red"><i class="fa fa-shopping-cart"></i></span>
+                
+                            <div class="info-box-content">
+                                <span class="info-box-text">Orders</span>
+                                <span class="info-box-number"><%= stats.order%></span>
+                            </div>
+                            </div>
+                        </div>
+                
+                        <div class="clearfix visible-sm-block"></div>
+                
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="info-box">
+                            <span class="info-box-icon bg-green"><i class="fa fa-inr"></i></span>
+                
+                            <div class="info-box-content">
+                                <span class="info-box-text">Sales</span>
+                                <span class="info-box-number"><%= stats.sales%></span> 
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="info-box">
+                            <span class="info-box-icon bg-yellow"><i class="fa fa-comment "></i></span>
+                
+                            <div class="info-box-content">
+                                <span class="info-box-text">Messages</span>
+                                <span class="info-box-number"><%= messages.length%></span>
+                            </div>
+                            </div>
+                        </div>
                     </div>
+                    <br>
+                    <div class="row">
+                      <div class="col-xs-12">
+                          <div class="table-responsive">
+                              <table id="message-table" class='table table-striped table-condensed'>
+                                  <thead>
+                                      <tr>
+                                      <th> Message Id </th>
+                                      <th> Name </th>
+                                      <th> Email </th>
+                                      <th> Phone Number </th>  
+                                      <th> View Message </th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <% messages.forEach(function(current){ %>
+                                      <tr>
+                                      <td> <%= current._id%> </td>
+                                      <td> <%= current.name%> </td>
+                                      <td> <%= current.email%> </td>
+                                      <td> <%= current.phoneNumber%> </td>
+                                      <td> <button type="button" class="icon" data-toggle="modal" data-target="#myModal" data-message="<%=current.message%>"> <i class="fa fa-file-text"></i> </button> </td>
+                                      </tr>
+                                      <% });%>
+                                  </tbody>
+                              </table>
+                          </div>
+                          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                  <h4 class="modal-title" id="exampleModalLabel">Message</h4>
+                                </div>
+                                <div class="modal-body">
+                                  <pre class="message"> </pre>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
                   </div>
-                </div>
-
-            </div>
+            </section>
         </div>
-
     </div>
-  </div>
+</div>
 
 <% include ../partials/footer %>
