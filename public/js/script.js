@@ -11,11 +11,6 @@ function pageInit(){
     } else if(window.location.pathname === "/cart"){
         updateTotal();
     } else if(window.location.pathname === "/admin/food"){
-        // $(document).ready( function () {
-        //     $('#food-table').DataTable({
-        //         "lengthMenu": [ 10,15,20 ]
-        //     });
-        // } );
         $('#food-table').DataTable({
             "lengthMenu": [ 10,15,20 ]
         });
@@ -94,16 +89,24 @@ function validateSignUp(){
     if(choice === false){
         event.preventDefault();        
     } else {
-        
+
+        const name = $("#name");        
         const phoneNumber = $('#phone-number');
+        const email = $('#email');
         const password = $('#password');
         const confirmPassword = $('#confirm-password');
     
-        if( phoneNumber.val().length !== 10 ){
+        if(!/^[a-zA-Z ]*$/.test(name.val())){
+            alert('Enter Name with alphabets only');
+            event.preventDefault();
+        } else if(phoneNumber.val().length !== 10 || !/^[0-9]*$/.test(phoneNumber.val()) ){
             alert("Enter Phone Number with 10 digits");
             event.preventDefault();
         } else if(password.val() !== confirmPassword.val()){
             alert("Entered Password does not match");
+            event.preventDefault();
+        } else if(!/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(email.val())){
+            alert('Enter proper email address');
             event.preventDefault();
         }
 
@@ -122,16 +125,24 @@ function validateContactUs(){
         event.preventDefault();        
     } else {
         
+        const name = $('#name');
         const phoneNumber = $('#phone-number');
         const message =$("#message");
-        if( phoneNumber.val().length !== 10 ){
+        const email = $('#email');
+        if(!/^[a-zA-Z ]*$/.test(name.val())){
+            alert('Enter Name with alphabets only');
+            event.preventDefault();
+        } else if( phoneNumber.val().length !== 10 || !/^[0-9]*$/.test(phoneNumber.val()) ){
             alert("Enter Phone Number with 10 digits");
             event.preventDefault();
         } else if( message.val().length === 0 ){
             alert("Message is Empty.Enter a Message.");
             event.preventDefault();
         } else if(message.val().length > 100) {
-            alert("Message should be within 100 characters");
+            alert("Message should be upto 100 characters only");
+            event.preventDefault();
+        } else if(!/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(email.val())){
+            alert('Enter proper email address');
             event.preventDefault();
         }
 
@@ -254,29 +265,33 @@ function checkout() {
         event.preventDefault();        
     } else {
         event.preventDefault();
-        var cart = {};
-        cart.items = [];
-        $('tr.item').each(function(element){
-            var name = $(this).find('h4.food-name').text();
-            var quantity = $(this).find('input.quantity-box').val();
-            var item = {
-                name,
-                quantity
-            }
-            cart.items.push(item);
-        });
-        cart.total = $('#grand-total').text();
-    
-        var redirect = function(url, method) {
-            var form = document.createElement('form');
-            document.body.appendChild(form);
-            form.method = method;
-            form.action = url;
-            form.submit();
-        };
+        if(updateTotal() < 300){
+            alert('Minimum order amount should be 300.');
+            return;
+        } else {
+            var cart = {};
+            cart.items = [];
+            $('tr.item').each(function(element){
+                var name = $(this).find('h4.food-name').text();
+                var quantity = $(this).find('input.quantity-box').val();
+                var item = {
+                    name,
+                    quantity
+                }
+                cart.items.push(item);
+            });
+            cart.total = $('#grand-total').text();
         
-        redirect('/order?items='+JSON.stringify(cart), 'post');        
-
+            var redirect = function(url, method) {
+                var form = document.createElement('form');
+                document.body.appendChild(form);
+                form.method = method;
+                form.action = url;
+                form.submit();
+            };
+            
+            redirect('/order?items='+JSON.stringify(cart), 'post');        
+        }
     }
 
 }
@@ -321,6 +336,7 @@ function updateTotal(){
         $('#cart-list').html("<h3>Cart is Empty! &nbsp; Select items from menu to add.</h3>");
     }
     $('#grand-total').text(grandTotal);
+    return grandTotal;
 }
 
 function validateQuantity(){
@@ -345,15 +361,21 @@ function validateUpdate(){
         event.preventDefault();        
     } else{
         
+        const email = $('#email');
+        const name = $('#name');
         const phoneNumber = $('#phone-number');
         
-        if(phoneNumber.val().length != 10 ){
+        if(!/^[a-zA-Z ]*$/.test(name.val())){
+            alert('Enter Name with alphabets only');
+            event.preventDefault();
+        } else if(phoneNumber.val().length != 10  || !/^[0-9]*$/.test(phoneNumber.val()) ){
             alert("Enter Phone Number with 10 digits");
             event.preventDefault();
-        }
-        
+        } else if(!/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(email.val())){
+            alert('Enter proper email address');
+            event.preventDefault();
+        }   
     }
-
 }
 
 function validateChangePassword() {
@@ -369,6 +391,44 @@ function validateChangePassword() {
             event.preventDefault();
         }
         
+    }
+}
+
+// ------------------------------------------------------
+// ------------------     Order   -----------------------
+// ------------------------------------------------------
+
+function validateOrder(){
+
+    var choice = confirm('Do you want to proceed?');
+    if(choice === false){
+        event.preventDefault();        
+    } else {
+
+        const name = $("#name");        
+        const phoneNumber = $('#phone-number');
+        const email = $('#email');
+        const apartment = $('#apartment'); 
+        const street = $('#street');
+        const city = $('#city');
+        const pincode = $('#pincode');
+
+        if(!/^[a-zA-Z ]*$/.test(name.val())){
+            alert('Enter Name with alphabets only');
+            event.preventDefault();
+        } else if(phoneNumber.val().length !== 10 || !/^[0-9]*$/.test(phoneNumber.val()) ){
+            alert("Enter Phone Number with 10 digits");
+            event.preventDefault();
+        } else if(pincode.val().length !== 6 || !/^[0-9]*$/.test(pincode.val()) ){
+            alert("Enter Pin Code with 6 digits");
+            event.preventDefault();
+        } else if(!/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(email.val())){
+            alert('Enter proper email address');
+            event.preventDefault();
+        } else if ( apartment.val().length === 0 || street.val().length === 0 || city.val().length === 0 ){
+            alert('Address cannot be empty');
+            event.preventDefault();
+        }
     }
 }
 
@@ -425,6 +485,64 @@ function changeStatus(){
         });
 
     }
+}
+
+// ------------------------------------------------------
+// -------------   Food Management   --------------------
+// ------------------------------------------------------
+
+function validateFoodItem(){
+    
+    var choice = confirm('Do you want to proceed?');
+    if(choice === false){
+        event.preventDefault();        
+    } else {
+        
+        const name = $("#name");
+        const price = $('#price');
+        const image = $('#image');
+        const description = $('#description');
+
+        if(!/^[a-zA-Z ]*$/.test(name.val())){
+            alert('Enter Name with alphabets only');
+            event.preventDefault();
+        } else if(price.val().length ==0 || !/^[0-9]*$/.test(price.val()) ){
+            alert("Enter at least one digit in price");
+            event.preventDefault();
+        } else if( image.val() === '' ){
+            alert("Enter Image File");
+            event.preventDefault();
+        } else if(description.val().length > 95 || description.val().length === 0){
+            alert('Description must be within 95 characters.');
+            event.preventDefault();
+        } 
+    }
+
+}
+
+function validateModifiedFoodItem(){
+    
+    var choice = confirm('Do you want to proceed?');
+    if(choice === false){
+        event.preventDefault();        
+    } else {
+        
+        const name = $("#name");
+        const price = $('#price');
+        const description = $('#description');
+
+        if(!/^[a-zA-Z ]*$/.test(name.val())){
+            alert('Enter Name with alphabets only');
+            event.preventDefault();
+        } else if(price.val().length ==0 || !/^[0-9]*$/.test(price.val()) ){
+            alert("Enter at least one digit in price");
+            event.preventDefault();
+        } else if(description.val().length > 95 || description.val().length === 0){
+            alert('Description must be within 95 characters.');
+            event.preventDefault();
+        } 
+    }
+
 }
 
 // ------------------------------------------------------

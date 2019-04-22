@@ -573,9 +573,15 @@ throw new Error('AdminLTE requires jQuery')
 
     $('body').removeClass(ClassName.holdTransition);
 
+    // if (this.options.resetHeight) {
+    //   $('body, html, ' + Selector.wrapper).css({
+    //     'height'    : 'auto',
+    //     'min-height': '100%'
+    //   });
+    // }
+
     if (this.options.resetHeight) {
       $('body, html, ' + Selector.wrapper).css({
-        'height'    : 'auto',
         'min-height': '100%'
       });
     }

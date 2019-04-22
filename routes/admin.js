@@ -36,7 +36,9 @@ router.get('/',middleware.isAdminLoggedIn,function(req,res){
             foundUsers.forEach(function(user){
                 orderCount += user.orders.length;
                 user.orders.forEach(function(order){
-                    totalSales += parseInt(order.grandTotal);
+                    if(order.status === 'Delivered'){
+                        totalSales += parseInt(order.grandTotal);
+                    }
                 });
             });
             var statsObject = {

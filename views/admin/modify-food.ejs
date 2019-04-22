@@ -46,11 +46,11 @@
                                 <label for="description">Description</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-file-text"></i></span>
-                                    <textarea id='description' name='description' class='form-control input-lg' rows = '3' maxlength='85' placeholder='Enter New Description'><%=Food.Description%></textarea>
+                                    <textarea id='description' name='description' class='form-control input-lg' rows = '3' maxlength='95' placeholder='Enter New Description'><%=Food.Description%></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-lg modify-button responsive-button">Modify</button>
+                                <button type="submit" class="btn btn-primary btn-lg modify-button responsive-button" onclick="validateModifiedFoodItem()">Modify</button>
                                 <button type="reset" class="btn btn-default btn-lg reset-button responsive-button">Reset</button>    
                             </div>
                         </form>
