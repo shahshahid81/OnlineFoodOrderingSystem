@@ -96,4 +96,11 @@ router.post('/order/:id',middleware.isAdminLoggedIn,function(req,res){
     });
 });
 
+router.post('/message/:id/delete',middleware.isAdminLoggedIn,function(req,res){
+    Message.findByIdAndDelete(req.params.id,function(){
+        req.flash('success','Message Deleted Successfully');
+        res.redirect('/admin');
+    });
+});
+
 module.exports = router;

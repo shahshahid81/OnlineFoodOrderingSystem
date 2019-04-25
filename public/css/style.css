@@ -232,6 +232,10 @@ div.thumbnail {
     margin: 10px 23px;
 }
 
+.restaurant-details {
+    text-align: center;
+}
+
 /* ------------------------------------------------ */
 /* -------------------    CART     ---------------- */
 /* ------------------------------------------------ */
@@ -358,7 +362,7 @@ button.icon {
 /* -------------------  DASHBOARD   --------------- */
 /* ------------------------------------------------ */
 
-.circle-tile {
+/* .circle-tile {
     margin-bottom: 15px;
     text-align: center;
 }
@@ -419,7 +423,7 @@ button.icon {
 }
 .red {
     background-color: #E74C3C;
-}
+} */
 
 .fa.fa-file-text {
     color: #212121;
