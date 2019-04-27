@@ -208,6 +208,10 @@ router.get('/signout', function(req, res){
 	res.redirect('/menu');
 });
 
+router.get('/aboutus',function(req,res){
+	res.render('user/aboutus');
+});
+
 router.get('/change-password',middleware.isLoggedIn,function(req,res){
 
 	User.findOne({username:req.user.username},function(err,foundUser){

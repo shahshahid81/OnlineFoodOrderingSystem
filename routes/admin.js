@@ -6,6 +6,7 @@ const router = express.Router();
 
 const User = require('../models/user');
 const Message = require("../models/message");
+const Admin = require("../models/admin");
 const middleware = require('../middleware/middleware');
 
 router.get('/login',function(req,res){
@@ -101,6 +102,33 @@ router.post('/message/:id/delete',middleware.isAdminLoggedIn,function(req,res){
         req.flash('success','Message Deleted Successfully');
         res.redirect('/admin');
     });
+});
+
+router.get('/change-password',middleware.isAdminLoggedIn,function(req,res){
+
+	Admin.findOne({username:'admin'},function(err,foundUser){
+		if(err){
+			console.log(err);
+		} else {
+			res.render('admin/change-password');
+		}
+	});
+});
+
+router.post('/change-password',middleware.isAdminLoggedIn,function(req,res){
+
+	Admin.findOne({username:'admin'},function(err,foundUser){
+		if(err){
+			console.log(err);
+		} else {
+			foundUser.setPassword(req.body['new-password'],function(){
+				foundUser.save();
+				req.flash('success','Data updated successfully');
+				res.redirect('/admin');
+			});
+		}
+	});
+
 });
 
 module.exports = router;
