@@ -25,9 +25,9 @@ node app.js
 
 All the required contents will be populated in the database.Open Web Browser and enter localhost:3000 in the address bar to access the web app.
 
-Admin Credentials : 
-Username - admin
-Password - admin123
+Admin Credentials : <br/> 
+Username - admin <br/>
+Password - admin123 <br/>
 
 Admin password can be changed afterwards.
 
