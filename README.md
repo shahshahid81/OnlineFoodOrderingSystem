@@ -11,7 +11,7 @@ Install Node.js (v8.10.0 or higher) and MongoDB (v4.0.6 or higher) for the opera
 
 ### Installing
 
-Clone the repository from github. After Cloning the repository, extract the file and enter the following commands :
+Clone the repository from github. After Cloning the repository, extract the files and open folder which contains package.json file. Open terminal or command prompt in the folder and enter the following commands :
 
 ```
 npm install
