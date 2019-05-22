@@ -87,6 +87,7 @@ header .nav.navbar-nav a.active:hover{
     background-repeat: no-repeat;
     min-width: 100%;
     min-height: 100%;
+    font-size: 20px;
 }
 
 div.jumbotron {
@@ -150,7 +151,8 @@ div.jumbotron.vertical-center  h3 {
 .category-choice {
     list-style-type: none;
     text-align: center;
-    font-size: 1em;
+    /* font-size: 1em; */
+    font-size: 20px;
 }
 
 .category-choice > li{
@@ -182,7 +184,7 @@ div.thumbnail {
 }
 
 .Title {
-    font-size: 0.9em;
+    font-size: 18px;
     text-align: center;
     text-transform: capitalize;
     margin: 3px;
@@ -190,7 +192,7 @@ div.thumbnail {
 
 .Description,
 .Price {
-    font-size: 0.8em;
+    font-size: 16px;
 }
 
 .Price {
@@ -212,7 +214,7 @@ div.thumbnail {
 }
 
 .btn.add-to-cart {
-    font-size: 0.8em;
+    font-size: 16px;
     margin: 5px;
 }
 

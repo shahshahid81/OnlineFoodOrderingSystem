@@ -47,12 +47,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/foodDB",{ useNewUrlParser:true },fun
 });
 
 passport.use('local',new LocalStrategy(User.authenticate()));
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
-
 passport.use('admin-local',new LocalStrategy(Admin.authenticate()));
-// passport.serializeUser(Admin.serializeUser());
-// passport.deserializeUser(Admin.deserializeUser());
 
 passport.serializeUser(function(user, done) {	
 	done(null, user.id);
