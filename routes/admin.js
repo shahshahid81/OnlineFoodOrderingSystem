@@ -26,32 +26,31 @@ router.get('/logout', function(req, res){
 	res.redirect('/admin/login');
 });
 
-router.get('/',middleware.isAdminLoggedIn,function(req,res){
-    User.find({},function(err,foundUsers){
-        if(err){
-            console.log(err);
-        } else {
-            var userCount = foundUsers.length;
-            var orderCount=0;
-            var totalSales = 0;
-            foundUsers.forEach(function(user){
-                orderCount += user.orders.length;
-                user.orders.forEach(function(order){
-                    if(order.status === 'Delivered'){
-                        totalSales += parseInt(order.grandTotal);
-                    }
-                });
+router.get('/',middleware.isAdminLoggedIn,async function(req,res){
+    
+    try {
+        let foundUsers = await  User.find({}).exec();
+        var userCount = foundUsers.length;
+        var orderCount=0;
+        var totalSales = 0;
+        foundUsers.forEach(function(user){
+            orderCount += user.orders.length;
+            user.orders.forEach(function(order){
+                if(order.status === 'Delivered'){
+                    totalSales += parseInt(order.grandTotal);
+                }
             });
-            var statsObject = {
-                user : userCount,
-                order : orderCount,
-                sales : totalSales
-            };
-            Message.find({},function(err,docs){
-                res.render('admin/dashboard',{stats : statsObject,messages : docs});
-            });
-        }
-    });
+        });
+        var statsObject = {
+            user : userCount,
+            order : orderCount,
+            sales : totalSales
+        };
+        let docs = await Message.find({}).exec();
+        res.render('admin/dashboard',{stats : statsObject,messages : docs});
+    } catch(err) {
+        console.log(err);
+    }
 });
 
 router.get('/order',middleware.isAdminLoggedIn,function(req,res){
@@ -75,26 +74,26 @@ router.get('/order',middleware.isAdminLoggedIn,function(req,res){
 	});
 });
 
-router.post('/order/:id',middleware.isAdminLoggedIn,function(req,res){
-    User.findOne({'orders.order_id' : req.params.id },{orders:1},function(err,doc){
-        if(err){
-            console.log(err);
-        } else {
-            var order = doc.orders.find(function(current){
-                return current.order_id == req.params.id;
-            });
-            
-            order.status = req.body.category;
-            
-            doc.save(function(err,modifiedDoc){
-                if(err){
-                    console.log(err);
-                } else {
-                    res.send(order.status);
-                }
-            });
-        }
-    });
+router.post('/order/:id',middleware.isAdminLoggedIn,async function(req,res){
+    try {
+        let doc = await User.findOne({'orders.order_id' : req.params.id },{orders:1}).exec();
+        var order = doc.orders.find(function(current){
+            return current.order_id == req.params.id;
+        });
+        
+        order.status = req.body.category;
+        
+        doc.save(function(err,modifiedDoc){
+            if(err){
+                console.log(err);
+            } else {
+                res.send(order.status);
+            }
+        });
+
+    } catch(err){
+        console.log(err);
+    }
 });
 
 router.post('/message/:id/delete',middleware.isAdminLoggedIn,function(req,res){
@@ -104,31 +103,29 @@ router.post('/message/:id/delete',middleware.isAdminLoggedIn,function(req,res){
     });
 });
 
-router.get('/change-password',middleware.isAdminLoggedIn,function(req,res){
+router.get('/change-password',middleware.isAdminLoggedIn,async function(req,res){
 
-	Admin.findOne({username:'admin'},function(err,foundUser){
-		if(err){
-			console.log(err);
-		} else {
-			res.render('admin/change-password');
-		}
-	});
+    try {
+        let foundUser = await Admin.findOne({username:'admin'}).exec();
+        res.render('admin/change-password');
+    } catch(err) {
+        console.log(err);
+    }
 });
 
-router.post('/change-password',middleware.isAdminLoggedIn,function(req,res){
+router.post('/change-password',middleware.isAdminLoggedIn,async function(req,res){
 
-	Admin.findOne({username:'admin'},function(err,foundUser){
-		if(err){
-			console.log(err);
-		} else {
-			foundUser.setPassword(req.body['new-password'],function(){
-				foundUser.save();
-				req.flash('success','Data updated successfully');
-				res.redirect('/admin');
-			});
-		}
-	});
+    try {
+        let foundUser = await Admin.findOne({username:'admin'}).exec();
+        foundUser.setPassword(req.body['new-password'],function(){
+            foundUser.save();
+            req.flash('success','Data updated successfully');
+            res.redirect('/admin');
+        });
 
+    } catch(err) {
+        console.log(err);
+    }
 });
 
-module.exports = router;
+module.exports = router;    

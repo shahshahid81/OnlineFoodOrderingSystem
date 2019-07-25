@@ -18,14 +18,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.get('/',middleware.isAdminLoggedIn,function(req,res){
-    Food.find({},{Description : 0,ImagePath : 0},function(err,foundDocs){
-        if(err){
-            console.log(err);
-        } else {
-            res.render('admin/view-food',{food:foundDocs});
-        }
-    });
+router.get('/',middleware.isAdminLoggedIn,async function(req,res){
+    try {
+        let foundDocs = await Food.find({},{Description : 0,ImagePath : 0}).exec();
+        res.render('admin/view-food',{food:foundDocs});
+    } catch(err) {
+        console.log(err);
+    }
 }); 
 
 router.post('/:id/delete',middleware.isAdminLoggedIn,function(req,res){
@@ -35,17 +34,16 @@ router.post('/:id/delete',middleware.isAdminLoggedIn,function(req,res){
     });
 });
 
-router.get('/:id/modify',middleware.isAdminLoggedIn,function(req,res){
-    Food.findById(req.params.id,function(err,foundDoc){
-        if(err){
-            console.log(err);
-        } else {
-            res.render('admin/modify-food',{Food:foundDoc});
-        }
-    });
+router.get('/:id/modify',middleware.isAdminLoggedIn,async function(req,res){
+    try {
+        let foundDoc = await Food.findById(req.params.id).exec();
+        res.render('admin/modify-food',{Food:foundDoc});
+    } catch(err) {
+        console.log(err);
+    }
 });
 
-router.post('/:id/modify',middleware.isAdminLoggedIn,upload.single('image'),function(req,res){
+router.post('/:id/modify',middleware.isAdminLoggedIn,upload.single('image'),async function(req,res){
 
     var updatedFoodItem = {
         Name : req.body.name,
@@ -58,24 +56,22 @@ router.post('/:id/modify',middleware.isAdminLoggedIn,upload.single('image'),func
         updatedFoodItem.ImagePath = path.join('/img/Food',(req.body.name).toString().toUpperCase())+'.jpg'; 
     }
 
-    Food.findByIdAndUpdate(req.params.id,updatedFoodItem,{new:true},function(err,modifiedFood){
-        if(err){
-            console.log(err);
-            req.flash('err','An error occured.');
-            res.redirect('/admin/food');
-        } else {
-            req.flash('success','Data updated successfully');
-            res.redirect('/admin/food');
-        }
-    });
-
+    try {
+        await Food.findByIdAndUpdate(req.params.id,updatedFoodItem,{new:true}).exec();
+        req.flash('success','Data updated successfully');
+        res.redirect('/admin/food');
+    } catch(err) {
+        console.log(err);
+        req.flash('err','An error occured.');
+        res.redirect('/admin/food');
+    }
 });
 
 router.get('/new',middleware.isAdminLoggedIn,function(req,res){
     res.render('admin/new-food');
 });
 
-router.post('/new',middleware.isAdminLoggedIn,upload.single('image'),function(req,res){
+router.post('/new',middleware.isAdminLoggedIn,upload.single('image'),async function(req,res){
 
     var newFoodItem = {
         Name : req.body.name,
@@ -85,16 +81,15 @@ router.post('/new',middleware.isAdminLoggedIn,upload.single('image'),function(re
         Description : req.body.description
     };
 
-    Food.insertMany(newFoodItem,function(err,doc){
-        if(err){
-            console.log(err);
-            req.flash('err','An error occured.');
-            res.redirect('/admin/food');
-        } else {
-            req.flash('success','Data Inserted successfully');
-            res.redirect('/admin/food');
-        }
-    });
+    try {
+        await Food.insertMany(newFoodItem).exec();
+        req.flash('success','Data Inserted successfully');
+        res.redirect('/admin/food');
+    } catch(err) {
+        console.log(err);
+        req.flash('err','An error occured.');
+        res.redirect('/admin/food');
+    }
 });
 
 module.exports = router;

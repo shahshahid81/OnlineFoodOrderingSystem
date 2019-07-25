@@ -20,31 +20,27 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
-mongoose.connect("mongodb://127.0.0.1:27017/foodDB",{ useNewUrlParser:true },function(err){
-	if(err){
+async function main(){
+	try {
+		await mongoose.connect("mongodb://127.0.0.1:27017/foodDB",{ useNewUrlParser:true });
+		console.log('connected');
+		let items = await Food.find({}).exec();
+		if(items.length === 0){
+			seedDB();
+		}
+		let foundDoc = await Admin.findOne({username:'admin'}).exec();
+		if(!foundDoc){
+			const password = 'admin123';
+			let user = await Admin.register({username : 'admin'},password);
+			if(user) {
+				console.log('Admin Registered.');
+			}
+		}
+		console.log('Server Started.....');
+	} catch(err) {
 		console.log(err);
 	}
-	else{
-		console.log('connected');
-		Food.find({},function(err,items){
-			if(items.length === 0){
-				seedDB();
-			}
-		});
-		Admin.findOne({username:'admin'},function(err,foundDoc){
-			if(!foundDoc){
-				const password = 'admin123';
-				Admin.register({username : 'admin'},password,function(err,user){
-					if(err){
-						console.log(err);
-					} else {
-						console.log('Admin Registered.');
-					}
-				});
-			}
-		});
-	}
-});
+}
 
 passport.use('local',new LocalStrategy(User.authenticate()));
 passport.use('admin-local',new LocalStrategy(Admin.authenticate()));
@@ -94,10 +90,4 @@ app.use('/admin',adminRoutes);
 app.use('/admin/user',userRoutes);
 app.use('/admin/food',foodRoutes);
 
-app.listen(port,function(err){
-	if(err){
-		console.log(err);
-	}else{
-		console.log('Server Started.....');
-	}
-});
+app.listen(port,main);

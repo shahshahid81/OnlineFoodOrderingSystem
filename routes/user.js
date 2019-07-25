@@ -9,7 +9,7 @@ router.get('/new',middleware.isAdminLoggedIn,function(req,res){
     res.render('admin/new-user');
 });
 
-router.post('/new',middleware.isAdminLoggedIn,function(req,res){
+router.post('/new',middleware.isAdminLoggedIn,async function(req,res){
     const Password = req.body.password;
 	const newUser = {
 		name : req.body.name,
@@ -17,47 +17,48 @@ router.post('/new',middleware.isAdminLoggedIn,function(req,res){
 		username : req.body.email
 	};
 
-	User.register(newUser , Password , function(err,user){
-		if(err){
-			console.log(err);
-			req.flash('error','An error occured');
-			return res.redirect("/admin/user/new");
-		} else {
-            req.flash('success','User added Successfully');
-            return res.redirect('/admin/user/new');
-		}
-		
-	});
+    try {
+        await User.register(newUser , Password);
+        req.flash('success','User added Successfully');
+        return res.redirect('/admin/user/new');
+    } catch(error) {
+        console.log(err);
+        req.flash('error','An error occured');
+        return res.redirect("/admin/user/new");
+    }
+	
 });
 
-router.get('/',middleware.isAdminLoggedIn,function(req,res){
-    User.find({},{orders : 0},function(err,foundDocs){
-        if(err){
-            console.log(err);
-        } else {
-            res.render('admin/view-user',{users : foundDocs});
-        }
-    });
+router.get('/',middleware.isAdminLoggedIn,async function(req,res){
+    try {
+        let users = await User.find({},{orders : 0}).exec();
+        res.render('admin/view-user',{users});
+    } catch (error) {
+        console.log(error);
+    }
 });
 
-router.post('/:id/delete',middleware.isAdminLoggedIn,function(req,res){
-    User.findByIdAndDelete(req.params.id,function(){
+router.post('/:id/delete',middleware.isAdminLoggedIn,async function(req,res){
+    try {
+        await User.findByIdAndDelete(req.params.id).exec();
         req.flash('success','User Deleted Successfully');
         res.redirect('/admin/user');
-    });
+    } catch (error) {
+        console.log(error);
+    }
+
 });
 
-router.get('/:id/modify',middleware.isAdminLoggedIn,function(req,res){
-    User.findById(req.params.id,null,{orders:0},function(err,foundDoc){
-        if(err){
-            console.log(err);
-        } else {
-            res.render('admin/modify-user',{User:foundDoc});
-        }
-    });
+router.get('/:id/modify',middleware.isAdminLoggedIn,async function(req,res){
+    try {
+        let user = await User.findById(req.params.id,null,{orders:0}).exec();
+        res.render('admin/modify-user',{User:user});
+    } catch(error) {
+        console.log(error);
+    }
 });
 
-router.post('/:id/modify',middleware.isAdminLoggedIn,function(req,res){
+router.post('/:id/modify',middleware.isAdminLoggedIn,async function(req,res){
 
     var updatedUser = {
         name:req.body.name,
@@ -65,16 +66,15 @@ router.post('/:id/modify',middleware.isAdminLoggedIn,function(req,res){
         username:req.body.email    
     };
 
-    User.findByIdAndUpdate(req.params.id,updatedUser,{new:true},function(err,modifiedUser){
-        if(err){
-            console.log(err);
-            req.flash('err','An error occured.');
-            res.redirect('/admin/user');
-        } else {
-            req.flash('success','Data updated successfully');
-            res.redirect('/admin/user');
-        }
-    });
+    try {
+        await User.findByIdAndUpdate(req.params.id,updatedUser,{new:true}).exec(); 
+        req.flash('success','Data updated successfully');
+        res.redirect('/admin/user');
+    } catch(error) {
+        console.log(error);
+        req.flash('err','An error occured.');
+        res.redirect('/admin/user');
+    }
 
 });
 

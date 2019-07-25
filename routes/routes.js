@@ -16,30 +16,29 @@ router.get('/',function(req,res){
 	res.render('user/index');
 });
 
-router.get('/menu',function(req,res){
-	Food.find({},function(err,allFoods){
-		if(err){
-			console.log(err);
-		} else {
-			if( typeof req.user !== 'undefined'){
-				var currentUser = savedItems.find(function(element){
-					return element.user === req.user.username;
-				});
-			}
-			if(typeof currentUser !== 'undefined'){
-				res.render("user/menu",{Foods:allFoods,cartItems:currentUser.cart});
-			} else {
-				res.render('user/menu',{Foods:allFoods,cartItems:{}});
-			}
+router.get('/menu',async function(req,res){
+	try {
+		let allFoods = await Food.find({}).exec();
+		if( typeof req.user !== 'undefined'){
+			var currentUser = savedItems.find(function(element){
+				return element.user === req.user.username;
+			});
 		}
-	});
+		if(typeof currentUser !== 'undefined'){
+			res.render("user/menu",{Foods:allFoods,cartItems:currentUser.cart});
+		} else {
+			res.render('user/menu',{Foods:allFoods,cartItems:{}});
+		}
+	} catch(error) {
+		console.log(error);
+	}
 });
 
 router.get('/contactus',function(req,res){
 	res.render('user/contact-us');
 });
 
-router.post('/contactus',function(req,res){
+router.post('/contactus',async function(req,res){
 	var messageObject = {
 		name : req.body.name,
 		phoneNumber : req.body['phone-number'],
@@ -47,23 +46,22 @@ router.post('/contactus',function(req,res){
 		message : req.body.message
 	};
 
-	Message.insertMany(messageObject,function(err,doc){
-		if(err){
-			console.log(err);
-			req.flash('error','An error occured.');
-			res.redirect('/contactus');			
-		} else {
-			req.flash('success','Message Submitted Successfully.');
-			res.redirect('/contactus');			
-		}
-	});
+	try {
+		await Message.insertMany(messageObject).exec();
+		req.flash('success','Message Submitted Successfully.');
+		res.redirect('/contactus');			
+	} catch(error) {
+		console.log(error);
+		req.flash('error','An error occured.');
+		res.redirect('/contactus');			
+	}
 });
 
 router.get('/signup',function(req,res){
 	res.render("user/signup");
 });
 
-router.post('/signup',function(req,res,next){
+router.post('/signup',async function(req,res,next){
 	const Password = req.body.password;
 	const newUser = {
 		name : req.body.name,
@@ -71,24 +69,22 @@ router.post('/signup',function(req,res,next){
 		username : req.body.email
 	};
 
-	User.register(newUser , Password , function(err,user){
-		if(err){
-			console.log(err);
-			if(err.name === 'UserExistsError'){
-				req.flash('error',err.message);
-			}
-			else {
-				req.flash('error','An error occured.');
-			}
-			return res.redirect("/signup");
-		} else {
-			req.login(user, function(err) {
-				if (err) { return next(err); }
-				return res.redirect('/menu');
-			  });
+	try {
+		let user = await User.register(newUser , Password).exec();
+		req.login(user, function(err) {
+			if (err) { return next(err); }
+			return res.redirect('/menu');
+		  });
+	} catch(error) {
+		console.log(error);
+		if(error.name === 'UserExistsError'){
+			req.flash('error',error.message);
 		}
-		
-	});
+		else {
+			req.flash('error','An error occured.');
+		}
+		return res.redirect("/signup");
+	}
 });
 
 router.get('/signin',function(req,res){
@@ -223,60 +219,52 @@ router.get('/change-password',middleware.isLoggedIn,function(req,res){
 	});
 });
 
-router.post('/change-password',middleware.isLoggedIn,function(req,res){
-
-	User.findOne({username:req.user.username},function(err,foundUser){
-		if(err){
-			console.log(err);
-		} else {
-			foundUser.setPassword(req.body['new-password'],function(){
-				foundUser.save();
-				req.flash('success','Data updated successfully');
-				res.redirect('/change-password');
-			});
-		}
-	});
+router.post('/change-password',middleware.isLoggedIn,async function(req,res){
+	try {
+		let foundUser = await User.findOne({username:req.user.username}).exec();
+		foundUser.setPassword(req.body['new-password'],function(){
+			foundUser.save();
+			req.flash('success','Data updated successfully');
+			res.redirect('/change-password');
+		});
+	} catch(error) {
+		console.log(error);
+	}
 
 });
 
-router.get('/update-profile',middleware.isLoggedIn,function(req,res){
+router.get('/update-profile',middleware.isLoggedIn,async function(req,res){
 
-	User.findOne({username:req.user.username},function(err,foundUser){
-		if(err){
-			console.log(err);
-		} else {
-			res.render('user/update-profile.ejs',{User:foundUser});
-		}
-	});
+	try {
+		let user = await User.findOne({username:req.user.username}).exec();
+		res.render('user/update-profile.ejs',{User:user});
+	} catch(err) {
+		console.log(err);
+	}
 });
 
-router.post('/update-profile',middleware.isLoggedIn,function(req,res){
+router.post('/update-profile',middleware.isLoggedIn,async function(req,res){
 
-	User.findOne({username:req.user.username},function(err,foundUser){
-		if(err){
-			console.log(err);
-		} else {
-			var name = req.body.name || foundUser.name;
-			var username = req.body.email || foundUser.username;
-			var phoneNumber = req.body['phone-number'] || foundUser.phoneNumber; 
+	try {
+		let foundUser = await User.findOne({username:req.user.username}).exec();
 
-			var updatedUser = {
-				name ,
-				phoneNumber ,
-				username
-			}		
-			User.findOneAndUpdate({_id : foundUser._id},updatedUser,{new : true},function(err,modifiedUser){
-				if(err){
-					console.log(err);
-					req.flash('error','Error while updating data');
-					res.redirect('/update-profile');
-				} else {
-					req.flash('success','Data updated successfully');
-					res.redirect('/update-profile');
-				}
-			});
-		}
-	});
+		var name = req.body.name || foundUser.name;
+		var username = req.body.email || foundUser.username;
+		var phoneNumber = req.body['phone-number'] || foundUser.phoneNumber; 
+	
+		var updatedUser = {
+			name ,
+			phoneNumber ,
+			username
+		}	
+		await User.findOneAndUpdate({_id : foundUser._id},updatedUser,{new : true}).exec();
+		req.flash('success','Data updated successfully');
+		res.redirect('/update-profile');
+	} catch(err) {
+		console.log(err);
+		req.flash('error','Error while updating data');
+		res.redirect('/update-profile');
+	}
 
 });
 
@@ -352,40 +340,40 @@ router.get('/order',middleware.isLoggedIn,function(req,res){
 	});
 });
 
-router.get('/order/:id',middleware.isLoggedIn,function(req,res){
-	User.findOne({'orders.order_id':req.params.id},function(err,foundDoc){
-		if(err){
+router.get('/order/:id',middleware.isLoggedIn,async function(req,res){
+	try {
+		let foundDoc = await User.findOne({'orders.order_id':req.params.id}).exec();
+		var order = foundDoc.orders.find(function(element){
+			return element.order_id.toString() === req.params.id;
+		});
+		var productPromises = order.items.map(function(current){
+			return new Promise(function(resolve,reject){
+				Food.findById(current.product_id,{Description : 0,Category : 0},function(err,foundDoc){
+					if(err){
+						reject(err);
+					} else {
+						resolve({item:foundDoc,quantity : current.quantity});
+					}
+				});
+			});
+		});
+	
+		Promise.all(productPromises).then(function(items){
+			var grandTotal = 0;
+			items.forEach(function(current){
+				grandTotal+=parseInt(current.item.Price)*(current.quantity);
+			});
+			res.render('user/order-item',{items:items,grandTotal:grandTotal});
+		}).catch(function(err){
 			console.log(err);
-		} else {
-			var order = foundDoc.orders.find(function(element){
-				return element.order_id.toString() === req.params.id;
-			});
-			var productPromises = order.items.map(function(current){
-				return new Promise(function(resolve,reject){
-					Food.findById(current.product_id,{Description : 0,Category : 0},function(err,foundDoc){
-						if(err){
-							reject(err);
-						} else {
-							resolve({item:foundDoc,quantity : current.quantity});
-						}
-					});
-				});
-			});
-
-			Promise.all(productPromises).then(function(items){
-				var grandTotal = 0;
-				items.forEach(function(current){
-					grandTotal+=parseInt(current.item.Price)*(current.quantity);
-				});
-				res.render('user/order-item',{items:items,grandTotal:grandTotal});
-			}).catch(function(err){
-				console.log(err);
-			});
-		}
-	});
+		});
+	} catch(err) {
+		console.log(err);
+	}
 });
 
-router.post('/checkout',middleware.isLoggedIn,function(req,res){
+router.post('/checkout',middleware.isLoggedIn,async function(req,res){
+
 	var address = {
 		apartment : req.body.apartment,
 		street : req.body.street,
@@ -415,17 +403,11 @@ router.post('/checkout',middleware.isLoggedIn,function(req,res){
 		order.order_id = mongoose.mongo.ObjectId();
 		order.orderedAt = moment().toDate();
 		order.status = 'Pending';
-		User.findOneAndUpdate({username : savedUser.user},{$push:{orders : order}},function(err,foundDoc){
-			if(err){
-				console.log(err);
-			} else {
-				savedUser.cart = "";
-				savedUser.order = "";
-				res.render('user/checkout',{orderID : order.order_id,amount : order.grandTotal});
-			}
-		});
+		await User.findOneAndUpdate({username : savedUser.user},{$push:{orders : order}}).exec();
+		savedUser.cart = "";
+		savedUser.order = "";
+		res.render('user/checkout',{orderID : order.order_id,amount : order.grandTotal});	
 	}
-
 });
 
 module.exports = router;
