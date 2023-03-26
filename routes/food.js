@@ -20,30 +20,29 @@ const upload = multer({ storage: storage });
 
 router.get("/", middleware.isAdminLoggedIn, async function (req, res) {
   try {
-    let foundDocs = await Food.find({}, { Description: 0, ImagePath: 0 });
+    const foundDocs = await Food.find({}, { Description: 0, ImagePath: 0 });
     res.render("admin/view-food", { food: foundDocs });
   } catch (err) {
     console.log(err);
   }
 });
 
-router.post("/:id/delete", middleware.isAdminLoggedIn, function (req, res) {
-  Food.findByIdAndDelete(req.params.id, function () {
+router.post(
+  "/:id/delete",
+  middleware.isAdminLoggedIn,
+  async function (req, res) {
+    await Food.findByIdAndDelete(req.params.id);
     req.flash("success", "Food Item Deleted Successfully");
     res.redirect("/admin/food");
-  });
-});
+  }
+);
 
 router.get(
   "/:id/modify",
   middleware.isAdminLoggedIn,
   async function (req, res) {
-    try {
-      let foundDoc = await Food.findById(req.params.id);
-      res.render("admin/modify-food", { Food: foundDoc });
-    } catch (err) {
-      console.log(err);
-    }
+    const foundDoc = await Food.findById(req.params.id);
+    res.render("admin/modify-food", { Food: foundDoc });
   }
 );
 
@@ -52,7 +51,7 @@ router.post(
   middleware.isAdminLoggedIn,
   upload.single("image"),
   async function (req, res) {
-    var updatedFoodItem = {
+    const updatedFoodItem = {
       Name: req.body.name,
       Price: req.body.price,
       Category: req.body.category,
@@ -71,7 +70,6 @@ router.post(
       req.flash("success", "Data updated successfully");
       res.redirect("/admin/food");
     } catch (err) {
-      console.log(err);
       req.flash("err", "An error occured.");
       res.redirect("/admin/food");
     }
@@ -87,7 +85,7 @@ router.post(
   middleware.isAdminLoggedIn,
   upload.single("image"),
   async function (req, res) {
-    var newFoodItem = {
+    const newFoodItem = {
       Name: req.body.name,
       Price: req.body.price,
       Category: req.body.category,

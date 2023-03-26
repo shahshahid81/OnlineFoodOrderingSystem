@@ -10,7 +10,7 @@ router.get("/new", middleware.isAdminLoggedIn, function (req, res) {
 });
 
 router.post("/new", middleware.isAdminLoggedIn, async function (req, res) {
-  const Password = req.body.password;
+  const password = req.body.password;
   const newUser = {
     name: req.body.name,
     phoneNumber: req.body["phone-number"],
@@ -18,36 +18,27 @@ router.post("/new", middleware.isAdminLoggedIn, async function (req, res) {
   };
 
   try {
-    await User.register(newUser, Password);
+    await User.register(newUser, password);
     req.flash("success", "User added Successfully");
     return res.redirect("/admin/user/new");
   } catch (error) {
-    console.log(err);
     req.flash("error", "An error occured");
     return res.redirect("/admin/user/new");
   }
 });
 
 router.get("/", middleware.isAdminLoggedIn, async function (req, res) {
-  try {
-    let users = await User.find({}, { orders: 0 });
-    res.render("admin/view-user", { users });
-  } catch (error) {
-    console.log(error);
-  }
+  const users = await User.find({}, { orders: 0 });
+  res.render("admin/view-user", { users });
 });
 
 router.post(
   "/:id/delete",
   middleware.isAdminLoggedIn,
   async function (req, res) {
-    try {
-      await User.findByIdAndDelete(req.params.id);
-      req.flash("success", "User Deleted Successfully");
-      res.redirect("/admin/user");
-    } catch (error) {
-      console.log(error);
-    }
+    await User.findByIdAndDelete(req.params.id);
+    req.flash("success", "User Deleted Successfully");
+    res.redirect("/admin/user");
   }
 );
 
@@ -55,12 +46,8 @@ router.get(
   "/:id/modify",
   middleware.isAdminLoggedIn,
   async function (req, res) {
-    try {
-      let user = await User.findById(req.params.id, null, { orders: 0 });
-      res.render("admin/modify-user", { User: user });
-    } catch (error) {
-      console.log(error);
-    }
+    const user = await User.findById(req.params.id, null, { orders: 0 });
+    res.render("admin/modify-user", { User: user });
   }
 );
 
@@ -68,7 +55,7 @@ router.post(
   "/:id/modify",
   middleware.isAdminLoggedIn,
   async function (req, res) {
-    var updatedUser = {
+    const updatedUser = {
       name: req.body.name,
       phoneNumber: req.body["phone-number"],
       username: req.body.email,

@@ -51,16 +51,18 @@ passport.serializeUser(function (user, done) {
   done(null, user.id);
 });
 
-passport.deserializeUser(function (id, done) {
-  User.findById(id, function (err, user) {
+passport.deserializeUser(async function (id, done) {
+  try {
+    const user = User.findById(id);
     if (user) {
-      done(err, user);
-    } else {
-      Admin.findById(id, function (err, admin) {
-        done(err, admin);
-      });
+      return done(null, user);
     }
-  });
+
+    const admin = Admin.findById(id);
+    done(null, admin);
+  } catch (error) {
+    done(error);
+  }
 });
 
 app.use(express.static(__dirname + "/public"));

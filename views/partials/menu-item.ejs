@@ -1,6 +1,6 @@
 <div id="food-items">
 
-  <% var foodArr = ['Chicken','Seafood','Appetizers','Rice','Bread','Vegetable','Beverage','Dessert'];
+  <% const foodArr = ['Chicken','Seafood','Appetizers','Rice','Bread','Vegetable','Beverage','Dessert'];
     foodArr.forEach(function(category){ %>
 
   <div id="<%=category%>" class="row">
@@ -24,8 +24,8 @@
             <button class="btn btn-primary add-to-cart" onclick='toggleCart(event,"<%= food.Name %>")'>
 
               <% if(typeof cartItems!=='undefined' && cartItems.length > 0){ %>
-              <% var flag = false;%>
-              <% for(var i=0;i<cartItems.length;i++){%>
+              <% const flag = false;%>
+              <% for(let i=0;i<cartItems.length;i++){%>
               <% if(cartItems[i].Name === food.Name ){%>
               <% flag = true; %>
               <% break; %>

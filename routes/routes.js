@@ -10,28 +10,26 @@ const User = require("../models/user");
 const Message = require("../models/message");
 const middleware = require("../middleware/middleware");
 
-var savedItems = [];
+const savedUsers = [];
 
 router.get("/", function (req, res) {
   res.render("user/index");
 });
 
 router.get("/menu", async function (req, res) {
-  try {
-    let allFoods = await Food.find({});
-    if (typeof req.user !== "undefined") {
-      var currentUser = savedItems.find(function (element) {
-        return element.user === req.user.username;
+  const allFoods = await Food.find({});
+  if (typeof req.user === "undefined") {
+    const currentUser = savedUsers.find(
+      (element) => element.user === req.user.username
+    );
+    if (typeof currentUser !== "undefined") {
+      res.render("user/menu", {
+        Foods: allFoods,
+        cartItems: currentUser.cart,
       });
     }
-    if (typeof currentUser !== "undefined") {
-      res.render("user/menu", { Foods: allFoods, cartItems: currentUser.cart });
-    } else {
-      res.render("user/menu", { Foods: allFoods, cartItems: {} });
-    }
-  } catch (error) {
-    console.log(error);
   }
+  res.render("user/menu", { Foods: allFoods, cartItems: {} });
 });
 
 router.get("/contactus", function (req, res) {
@@ -39,7 +37,7 @@ router.get("/contactus", function (req, res) {
 });
 
 router.post("/contactus", async function (req, res) {
-  var messageObject = {
+  const messageObject = {
     name: req.body.name,
     phoneNumber: req.body["phone-number"],
     email: req.body.email,
@@ -70,7 +68,7 @@ router.post("/signup", async function (req, res, next) {
   };
 
   try {
-    let user = await User.register(newUser, Password);
+    const user = await User.register(newUser, Password);
     req.login(user, function (err) {
       if (err) {
         return next(err);
@@ -102,7 +100,7 @@ router.post(
 );
 
 router.get("/cart", middleware.isLoggedIn, function (req, res) {
-  currentItems = savedItems.find(function (element) {
+  currentItems = savedUsers.find(function (element) {
     return element.user === req.user.username;
   });
   if (typeof currentItems !== "undefined") {
@@ -112,43 +110,42 @@ router.get("/cart", middleware.isLoggedIn, function (req, res) {
   }
 });
 
-router.post("/cart", middleware.isLoggedIn, function (req, res) {
+router.post("/cart", middleware.isLoggedIn, async function (req, res) {
   if (
-    savedItems.find(function (element) {
-      return element.user === req.user.username;
-    }) === undefined
+    savedUsers.find((element) => element.user === req.user.username) ===
+    undefined
   ) {
-    savedItems.push({ user: req.user.username });
+    savedUsers.push({ user: req.user.username });
   }
 
-  var removeItem = req.get("removeItem");
-  var clearCart = req.get("clearCart");
+  const removeItem = req.get("removeItem");
+  const clearCart = req.get("clearCart");
 
   if (removeItem === "true") {
-    var items = req.query.items;
+    const items = req.query.items;
 
-    var userObject = savedItems.find(function (element) {
+    const userObject = savedUsers.find(function (element) {
       return element.user === req.user.username;
     });
 
-    var itemIndex = userObject.cart.findIndex(function (element) {
+    const itemIndex = userObject.cart.findIndex(function (element) {
       return element.Name === items;
     });
 
     userObject.cart.splice(itemIndex, 1);
 
-    for (var i = 0; i < savedItems.length; i++) {
-      if (savedItems[i].user === userObject.user) {
-        savedItems[i].cart = userObject.cart;
+    for (let i = 0; i < savedUsers.length; i++) {
+      if (savedUsers[i].user === userObject.user) {
+        savedUsers[i].cart = userObject.cart;
         break;
       }
     }
 
     res.sendStatus(200);
   } else if (clearCart === "true") {
-    var userObject = savedItems.find(function (element) {
-      return element.user === req.user.username;
-    });
+    const userObject = savedUsers.find(
+      (element) => element.user === req.user.username
+    );
 
     if (typeof userObject.cart !== "undefined") {
       userObject.cart = [];
@@ -156,46 +153,33 @@ router.post("/cart", middleware.isLoggedIn, function (req, res) {
 
     res.sendStatus(200);
   } else {
-    var items = req.query.items;
+    const items = req.query.items;
 
-    var cartItems = new Promise(function (resolve, reject) {
-      Food.findOne({ Name: items }, function (err, item) {
-        if (err) {
-          reject(err);
-        }
-        resolve(item);
-      });
-    });
+    const foundItems = await Food.findOne({ Name: items });
 
-    cartItems
-      .then(function (foundItems) {
-        var user = savedItems.find(function (element) {
-          return element.user === req.user.username;
-        });
+    const user = savedUsers.find(
+      (element) => element.user === req.user.username
+    );
 
-        if (typeof user.cart === "undefined") {
-          user.cart = [];
+    if (typeof user.cart === "undefined") {
+      user.cart = [];
+      user.cart.push(foundItems);
+      res.sendStatus(200);
+    } else {
+      if (user.cart.length === 0) {
+        user.cart = [];
+        user.cart.push(foundItems);
+      } else {
+        const index = user.cart.findIndex(
+          (element) => element.Name === foundItems.Name
+        );
+
+        if (index === -1) {
           user.cart.push(foundItems);
-          res.sendStatus(200);
-        } else {
-          if (user.cart.length === 0) {
-            user.cart = [];
-            user.cart.push(foundItems);
-          } else {
-            var index = user.cart.findIndex(function (element) {
-              return element.Name === foundItems.Name;
-            });
-
-            if (index === -1) {
-              user.cart.push(foundItems);
-            }
-          }
-          res.sendStatus(200);
         }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      }
+      res.sendStatus(200);
+    }
   }
 });
 
@@ -208,42 +192,32 @@ router.get("/aboutus", function (req, res) {
   res.render("user/aboutus");
 });
 
-router.get("/change-password", middleware.isLoggedIn, function (req, res) {
-  User.findOne({ username: req.user.username }, function (err, foundUser) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("user/change-password", { User: foundUser });
-    }
-  });
-});
+router.get(
+  "/change-password",
+  middleware.isLoggedIn,
+  async function (req, res) {
+    const foundUser = await User.findOne({ username: req.user.username });
+    res.render("user/change-password", { User: foundUser });
+  }
+);
 
 router.post(
   "/change-password",
   middleware.isLoggedIn,
   async function (req, res) {
-    try {
-      let foundUser = await User.findOne({
-        username: req.user.username,
-      });
-      foundUser.setPassword(req.body["new-password"], function () {
-        foundUser.save();
-        req.flash("success", "Data updated successfully");
-        res.redirect("/change-password");
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    const foundUser = await User.findOne({
+      username: req.user.username,
+    });
+    await foundUser.setPassword(req.body["new-password"]);
+    await foundUser.save();
+    req.flash("success", "Data updated successfully");
+    res.redirect("/change-password");
   }
 );
 
 router.get("/update-profile", middleware.isLoggedIn, async function (req, res) {
-  try {
-    let user = await User.findOne({ username: req.user.username });
-    res.render("user/update-profile.ejs", { User: user });
-  } catch (err) {
-    console.log(err);
-  }
+  const user = await User.findOne({ username: req.user.username });
+  res.render("user/update-profile.ejs", { User: user });
 });
 
 router.post(
@@ -251,15 +225,15 @@ router.post(
   middleware.isLoggedIn,
   async function (req, res) {
     try {
-      let foundUser = await User.findOne({
+      const foundUser = await User.findOne({
         username: req.user.username,
       });
 
-      var name = req.body.name || foundUser.name;
-      var username = req.body.email || foundUser.username;
-      var phoneNumber = req.body["phone-number"] || foundUser.phoneNumber;
+      const name = req.body.name || foundUser.name;
+      const username = req.body.email || foundUser.username;
+      const phoneNumber = req.body["phone-number"] || foundUser.phoneNumber;
 
-      var updatedUser = {
+      const updatedUser = {
         name,
         phoneNumber,
         username,
@@ -277,12 +251,12 @@ router.post(
   }
 );
 
-router.post("/order", middleware.isLoggedIn, function (req, res) {
-  var orderItems = JSON.parse(req.query.items);
+router.post("/order", middleware.isLoggedIn, async function (req, res) {
+  const orderItems = JSON.parse(req.query.items);
 
-  var savedUser = savedItems.find(function (element) {
-    return element.user === req.user.username;
-  });
+  const savedUser = savedUsers.find(
+    (element) => element.user === req.user.username
+  );
 
   if (typeof savedUser === "undefined" || typeof orderItems === "undefined") {
     req.flash("error", "Please Enter items in the cart");
@@ -294,110 +268,85 @@ router.post("/order", middleware.isLoggedIn, function (req, res) {
     req.flash("error", "Please Enter items in the cart");
     res.redirect("/menu");
   } else {
-    var orderItemsPromises = orderItems.items.map(function (current) {
-      return new Promise(function (resolve, reject) {
-        Food.findOne({ Name: current.name }, function (err, item) {
-          if (err) {
-            reject(err);
-          }
-          resolve([item, current.quantity]);
-        });
-      });
+    const foodToFind = orderItems.items.map((item) => item._id);
+    const foundItems = await Food.find({ _id: { $in: foodToFind } });
+
+    const savedOrderItems = foundItems.map((item) => {
+      const order = orderItems.items.find(
+        (orderItem) => orderItem._id === item._id
+      );
+
+      return {
+        product_id: item._id,
+        quantity: order.quantity,
+        price: parseInt(order.quantity) * parseInt(item.Price).toString(),
+      };
     });
 
-    Promise.all(orderItemsPromises)
-      .then(function (foundItems) {
-        var savedOrder = {};
-        savedOrder.items = [];
-        foundItems.forEach(function (current) {
-          var item = {};
-          item.product_id = current[0]._id;
-          (item.quantity = current[1]),
-            (item.price = (
-              parseInt(current[1]) * parseInt(current[0].Price)
-            ).toString());
-          savedOrder.items.push(item);
-        });
-        savedOrder.grandTotal = orderItems.total;
-        savedUser.order = savedOrder;
-        User.findOne({ username: savedUser.user }, function (err, foundUser) {
-          if (err) {
-            console.log(err);
-          } else {
-            res.render("user/order", { User: foundUser });
-          }
-        });
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
+    const savedOrder = { items: savedOrderItems, grandTotal: orderItems.total };
+    savedUser.order = savedOrder;
+
+    const foundUser = User.findOne({ username: savedUser.user });
+    res.render("user/order", { User: foundUser });
   }
 });
 
-router.get("/order", middleware.isLoggedIn, function (req, res) {
-  User.aggregate([
+router.get("/order", middleware.isLoggedIn, async function (req, res) {
+  const orderArr = await User.aggregate([
     { $match: { username: req.user.username } },
     { $project: { orders: 1, _id: 0 } },
     { $unwind: "$orders" },
     { $sort: { "orders.orderedAt": -1 } },
-  ]).exec(function (err, foundDoc) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("user/orders", { orderArr: foundDoc, moment: moment });
-    }
-  });
+  ]);
+
+  res.render("user/orders", { orderArr, moment });
 });
 
 router.get("/order/:id", middleware.isLoggedIn, async function (req, res) {
   try {
-    let foundDoc = await User.findOne({
+    const user = await User.findOne({
       "orders.order_id": req.params.id,
     });
-    var order = foundDoc.orders.find(function (element) {
-      return element.order_id.toString() === req.params.id;
-    });
-    var productPromises = order.items.map(function (current) {
-      return new Promise(function (resolve, reject) {
-        Food.findById(
-          current.product_id,
-          { Description: 0, Category: 0 },
-          function (err, foundDoc) {
-            if (err) {
-              reject(err);
-            } else {
-              resolve({ item: foundDoc, quantity: current.quantity });
-            }
-          }
-        );
-      });
+    const order = user.orders.find(
+      (element) => element.order_id.toString() === req.params.id
+    );
+
+    const foodToFind = order.items.map((item) => item._id);
+    const foundItems = await Food.find(
+      { _id: { $in: foodToFind } },
+      { Description: 0, Category: 0 }
+    );
+
+    const items = foundItems.map((foundItem) => {
+      const order = order.items.find(
+        (orderItem) => orderItem._id === item._id
+      );
+
+      return {
+        item: foundItem,
+        quantity: order.quantity,
+      };
     });
 
-    Promise.all(productPromises)
-      .then(function (items) {
-        var grandTotal = 0;
-        items.forEach(function (current) {
-          grandTotal += parseInt(current.item.Price) * current.quantity;
-        });
-        res.render("user/order-item", { items: items, grandTotal: grandTotal });
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
+    let grandTotal = 0;
+    items.forEach((current) => {
+      grandTotal += parseInt(current.item.Price) * current.quantity;
+    });
+    res.render("user/order-item", { items, grandTotal });
   } catch (err) {
     console.log(err);
   }
 });
 
 router.post("/checkout", middleware.isLoggedIn, async function (req, res) {
-  var address = {
+  const address = {
     apartment: req.body.apartment,
     street: req.body.street,
     city: req.body.city,
     pincode: req.body.pincode,
   };
 
-  var savedUser = savedItems.find(function (element) {
+  const savedUser = savedUsers.find(function (element) {
     return element.user === req.user.username;
   });
 
