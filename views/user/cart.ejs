@@ -55,7 +55,7 @@
           </td>
 
           <td>
-            <i class="fa fa-trash" onclick='removeItem("<%=current.Name%>")'></i>
+            <i class="fa fa-trash" onclick='removeItem("<%=current._id%>")'></i>
           </td>
 
         </tr>
@@ -76,12 +76,10 @@
 
   <div class="row">
     <form>
-      <button class="btn btn-success btn-lg check-out-button" onclick='checkout()'>Checkout</button>
+      <button class="btn btn-success btn-lg check-out-button" onclick="checkout()">Checkout</button>
       <button class="btn btn-default btn-lg empty-cart-button" id="empty-cart" onclick='clearCart()'>Empty Cart</button>
     </form>
   </div>
 </div>
 
 <%-include('../partials/footer')%>
-
-

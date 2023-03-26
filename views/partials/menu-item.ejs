@@ -21,12 +21,12 @@
           <p class="Description"> <%= food.Description %> </p>
           <p class="Price"> <strong> &nbsp <%= food.Price %> &#8360 </strong> </p>
           <form class="add-to-cart-form">
-            <button class="btn btn-primary add-to-cart" onclick='toggleCart(event,"<%= food.Name %>")'>
+            <button class="btn btn-primary add-to-cart" onclick='toggleCart(event,"<%= food._id %>")'>
 
               <% if(typeof cartItems!=='undefined' && cartItems.length > 0){ %>
-              <% const flag = false;%>
+              <% let flag = false;%>
               <% for(let i=0;i<cartItems.length;i++){%>
-              <% if(cartItems[i].Name === food.Name ){%>
+              <% if(cartItems[i]._id === food._id ){%>
               <% flag = true; %>
               <% break; %>
               <% } %>

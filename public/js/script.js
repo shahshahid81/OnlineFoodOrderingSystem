@@ -161,7 +161,7 @@ function setAJAXListeners() {
   });
 }
 
-function toggleCart(event, name) {
+function toggleCart(event, id) {
   event.preventDefault();
   var cartRequest = new XMLHttpRequest();
   cartRequest.onreadystatechange = function () {
@@ -176,7 +176,7 @@ function toggleCart(event, name) {
     }
   };
 
-  var query = "/cart?items=" + name;
+  const query = "/cart?id=" + id;
   cartRequest.open("post", query);
   if ($(event.target).text().trim() === "Remove from Cart") {
     cartRequest.setRequestHeader("removeItem", "true");
@@ -189,7 +189,7 @@ function capitalize(str) {
 }
 
 function setCategory(category = "Chicken") {
-  var categoryArr = [
+  const categoryArr = [
     "Chicken",
     "Seafood",
     "Appetizers",
@@ -229,7 +229,7 @@ function clearCart() {
   }
 }
 
-function removeItem(name) {
+function removeItem(id) {
   var choice = confirm("Do you want to proceed?");
   if (choice === false) {
     event.preventDefault();
@@ -245,7 +245,7 @@ function removeItem(name) {
       }
     };
 
-    removeRequest.open("post", "/cart?items=" + name);
+    removeRequest.open("post", "/cart?id=" + id);
     removeRequest.setRequestHeader("removeItem", "true");
     removeRequest.send();
   }
@@ -261,12 +261,11 @@ function checkout() {
       alert("Minimum order amount should be 300.");
       return;
     } else {
-      var cart = {};
-      cart.items = [];
+      const cart = { items: [] };
       $("tr.item").each(function (element) {
-        var name = $(this).find("h4.food-name").text();
-        var quantity = $(this).find("input.quantity-box").val();
-        var item = {
+        const name = $(this).find("h4.food-name").text();
+        const quantity = $(this).find("input.quantity-box").val();
+        const item = {
           name,
           quantity,
         };
@@ -274,8 +273,8 @@ function checkout() {
       });
       cart.total = $("#grand-total").text();
 
-      var redirect = function (url, method) {
-        var form = document.createElement("form");
+      const redirect = function (url, method) {
+        const form = document.createElement("form");
         document.body.appendChild(form);
         form.method = method;
         form.action = url;

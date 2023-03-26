@@ -9,8 +9,7 @@ const Food = require("../models/food");
 const User = require("../models/user");
 const Message = require("../models/message");
 const middleware = require("../middleware/middleware");
-
-const savedUsers = [];
+const { ObjectId } = require("bson");
 
 router.get("/", function (req, res) {
   res.render("user/index");
@@ -18,18 +17,13 @@ router.get("/", function (req, res) {
 
 router.get("/menu", async function (req, res) {
   const allFoods = await Food.find({});
-  if (typeof req.user === "undefined") {
-    const currentUser = savedUsers.find(
-      (element) => element.user === req.user.username
-    );
-    if (typeof currentUser !== "undefined") {
-      res.render("user/menu", {
-        Foods: allFoods,
-        cartItems: currentUser.cart,
-      });
-    }
-  }
-  res.render("user/menu", { Foods: allFoods, cartItems: {} });
+  const cartItems = req.user?.cart
+    ? allFoods.filter((foodItem) =>
+        req.user.cart.includes(new ObjectId(foodItem))
+      )
+    : [];
+
+  res.render("user/menu", { Foods: allFoods, cartItems });
 });
 
 router.get("/contactus", function (req, res) {
@@ -60,7 +54,7 @@ router.get("/signup", function (req, res) {
 });
 
 router.post("/signup", async function (req, res, next) {
-  const Password = req.body.password;
+  const password = req.body.password;
   const newUser = {
     name: req.body.name,
     phoneNumber: req.body["phone-number"],
@@ -68,7 +62,7 @@ router.post("/signup", async function (req, res, next) {
   };
 
   try {
-    const user = await User.register(newUser, Password);
+    const user = await User.register(newUser, password);
     req.login(user, function (err) {
       if (err) {
         return next(err);
@@ -99,85 +93,55 @@ router.post(
   })
 );
 
-router.get("/cart", middleware.isLoggedIn, function (req, res) {
-  currentItems = savedUsers.find(function (element) {
-    return element.user === req.user.username;
-  });
-  if (typeof currentItems !== "undefined") {
-    res.render("user/cart", { cartItems: currentItems.cart });
-  } else {
-    res.render("user/cart", {});
+router.get("/cart", middleware.isLoggedIn, async function (req, res) {
+  let cartItems = [];
+
+  if (req.user?.cart) {
+    cartItems = await Food.find({ _id: { $in: req.user.cart } });
   }
+
+  res.render("user/cart", { cartItems });
 });
 
 router.post("/cart", middleware.isLoggedIn, async function (req, res) {
-  if (
-    savedUsers.find((element) => element.user === req.user.username) ===
-    undefined
-  ) {
-    savedUsers.push({ user: req.user.username });
-  }
-
   const removeItem = req.get("removeItem");
   const clearCart = req.get("clearCart");
 
   if (removeItem === "true") {
-    const items = req.query.items;
+    const id = req.query.id;
 
-    const userObject = savedUsers.find(function (element) {
-      return element.user === req.user.username;
-    });
+    req.user.cart = req.user.cart.filter((element) => !element.equals(id));
 
-    const itemIndex = userObject.cart.findIndex(function (element) {
-      return element.Name === items;
-    });
-
-    userObject.cart.splice(itemIndex, 1);
-
-    for (let i = 0; i < savedUsers.length; i++) {
-      if (savedUsers[i].user === userObject.user) {
-        savedUsers[i].cart = userObject.cart;
-        break;
-      }
-    }
-
+    await req.user.save();
     res.sendStatus(200);
   } else if (clearCart === "true") {
-    const userObject = savedUsers.find(
-      (element) => element.user === req.user.username
-    );
-
-    if (typeof userObject.cart !== "undefined") {
-      userObject.cart = [];
-    }
+    req.user.cart = [];
+    await req.user.save();
 
     res.sendStatus(200);
   } else {
-    const items = req.query.items;
+    const id = req.query.id;
 
-    const foundItems = await Food.findOne({ Name: items });
+    const foundItem = await Food.findOne({ _id: id });
 
-    const user = savedUsers.find(
-      (element) => element.user === req.user.username
-    );
-
-    if (typeof user.cart === "undefined") {
-      user.cart = [];
-      user.cart.push(foundItems);
+    if (typeof req.user.cart === "undefined") {
+      req.user.cart = [foundItem._id];
+      await req.user.save();
       res.sendStatus(200);
     } else {
-      if (user.cart.length === 0) {
-        user.cart = [];
-        user.cart.push(foundItems);
+      if (req.user.cart.length === 0) {
+        req.user.cart = [foundItem._id];
       } else {
-        const index = user.cart.findIndex(
-          (element) => element.Name === foundItems.Name
+        console.log({ foundItem: foundItem._id, cart: req.user.cart });
+        const index = req.user.cart.findIndex((element) =>
+          element.equals(foundItem._id)
         );
 
         if (index === -1) {
-          user.cart.push(foundItems);
+          req.user.cart.push(foundItem._id);
         }
       }
+      await req.user.save();
       res.sendStatus(200);
     }
   }
@@ -255,22 +219,20 @@ router.post(
 router.post("/order", middleware.isLoggedIn, async function (req, res) {
   const orderItems = JSON.parse(req.query.items);
 
-  if (typeof orderItems === "undefined") {
-    req.flash("error", "Please Enter items in the cart");
-    return res.redirect("/menu");
-  } else if (typeof orderItems.items === "undefined") {
-    req.flash("error", "Please Enter items in the cart");
-    return res.redirect("/menu");
-  } else if (orderItems.items.length === 0) {
+  if (
+    typeof orderItems === "undefined" ||
+    typeof orderItems.items === "undefined" ||
+    orderItems.items.length === 0
+  ) {
     req.flash("error", "Please Enter items in the cart");
     return res.redirect("/menu");
   } else {
-    const foodToFind = orderItems.items.map((item) => item._id);
-    const foundItems = await Food.find({ _id: { $in: foodToFind } });
+    const foodToFind = orderItems.items.map((item) => item.name.trim());
+    const foundItems = await Food.find({ Name: { $in: foodToFind } });
 
     const savedOrderItems = foundItems.map((item) => {
       const order = orderItems.items.find(
-        (orderItem) => orderItem._id === item._id
+        (orderItem) => orderItem.name.trim() === item.Name
       );
 
       return {
@@ -281,7 +243,9 @@ router.post("/order", middleware.isLoggedIn, async function (req, res) {
     });
 
     const savedOrder = { items: savedOrderItems, grandTotal: orderItems.total };
-    req.user.order = savedOrder;
+
+    req.user.savedOrder = savedOrder;
+    await req.user.save();
 
     res.render("user/order", { User: req.user });
   }
@@ -340,34 +304,27 @@ router.post("/checkout", middleware.isLoggedIn, async function (req, res) {
     pincode: req.body.pincode,
   };
 
-  const savedUser = savedUsers.find(function (element) {
-    return element.user === req.user.username;
-  });
-
-  if (typeof savedUser === "undefined" || typeof address === "undefined") {
-    req.flash("error", "Please Enter items in the cart");
-    res.redirect("/menu");
-  } else if (typeof savedUser.order === "undefined") {
-    req.flash("error", "Please Enter items in the cart");
-    res.redirect("/menu");
-  } else if (typeof savedUser.order.items === "undefined") {
-    req.flash("error", "Please Enter items in the cart");
-    res.redirect("/menu");
-  } else if (savedUser.order.items.length === 0) {
+  if (
+    typeof req.user?.cart?.length === "undefined" ||
+    req.user.cart.length === 0
+  ) {
     req.flash("error", "Please Enter items in the cart");
     res.redirect("/menu");
   } else {
-    savedUser.order.address = address;
-    order = savedUser.order;
-    order.order_id = mongoose.mongo.ObjectId();
-    order.orderedAt = moment().toDate();
-    order.status = "Pending";
-    await User.findOneAndUpdate(
-      { username: savedUser.user },
-      { $push: { orders: order } }
-    );
-    savedUser.cart = "";
-    savedUser.order = "";
+    const orderId = new mongoose.mongo.ObjectId();
+    const order = {
+      order_id: orderId,
+      orderedAt: moment().toDate(),
+      status: "Pending",
+      address,
+      items: req.user.savedOrder.items,
+      grandTotal: req.user.savedOrder.grandTotal,
+    };
+
+    req.user.orders.push(order);
+    req.user.cart = [];
+    req.user.savedOrder = {};
+    await req.user.save();
     res.render("user/checkout", {
       orderID: order.order_id,
       amount: order.grandTotal,

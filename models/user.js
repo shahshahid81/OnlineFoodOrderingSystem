@@ -93,6 +93,8 @@ const userSchema = mongoose.Schema({
     unique: true,
     trim: true,
   },
+  cart: [ObjectId],
+  savedOrder: { items: [itemSchema], grandTotal: String },
   orders: [orderSchema],
 });
 
