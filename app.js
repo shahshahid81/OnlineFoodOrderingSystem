@@ -22,7 +22,8 @@ const port = process.env.PORT || 3000;
 
 async function main() {
   try {
-    await mongoose.connect("mongodb://127.0.0.1:27017/foodDB", {
+    await mongoose.connect("mongodb://database:27017/foodDB", {
+    // await mongoose.connect("mongodb://127.0.0.1:27017/foodDB", {
       useNewUrlParser: true,
     });
     console.log("connected");
