@@ -1,34 +1,38 @@
-<% include ../partials/header%>
+<%-include('../partials/header')%>
+
 
 <div class="container">
+  <%-include ('../partials/_messages')%>
 
-    <% include ../partials/_messages%>
+  <br />
 
-    <br>
+  <h3>Admin Login</h3>
 
-    <h3> Admin Login </h3>
-
-    <form class="sign-in-form responsive-form" method="post" action="/admin/login">
-        <div class="form-group">
-            <label for="username">Username</label>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                <input type="text" name="username" id="username" class="form-control input-lg" placeholder="Enter username" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                <input type="password" name="password" id="password" minlength="6" maxlength="32" class="form-control input-lg" placeholder="Enter Password" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-lg sign-in-button responsive-button">Sign In</button>
-            <button type="reset" class="btn btn-default btn-lg clear-button responsive-button">Clear</button>    
-        </div>
-    </form>
-    <a href="/">Back to Home</a>
+  <form class="sign-in-form responsive-form" method="post" action="/admin/login">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+        <input type="text" name="username" id="username" class="form-control input-lg" placeholder="Enter username" required />
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-key"></i></span>
+        <input type="password" name="password" id="password" minlength="6" maxlength="32" class="form-control input-lg" placeholder="Enter Password" required />
+      </div>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary btn-lg sign-in-button responsive-button">
+        Sign In
+      </button>
+      <button type="reset" class="btn btn-default btn-lg clear-button responsive-button">
+        Clear
+      </button>
+    </div>
+  </form>
+  <a href="/">Back to Home</a>
 </div>
 
-<% include ../partials/footer%>
+<%-include ('../partials/footer')%>

@@ -1,54 +1,56 @@
-<% include ../partials/header%>
+<%-include('../partials/header')%>
 
-<% include ../partials/navigation%>
 
+<%-include('../partials/navigation')%>
 <div class="container">
 
-    <% include ../partials/_messages%>
+  <%-include('../partials/_messages')%>
 
 
-    <form action="/checkout" method="post" class="order-form responsive-form">
-    
-        <div class="form-group">
-            <label for="name">Name</label>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                <input type="text" name="name" id="name" class="form-control input-lg" placeholder="Enter Name" value = '<%= User.name %>' required>
-            </div>
-        </div>
+  <form action="/checkout" method="post" class="order-form responsive-form">
 
-        <div class="form-group">
-            <label for="phone-number">Phone Number</label>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
-                <input type="text" name="phone-number" id="phone-number" class="form-control input-lg" minlength="1" maxlength="10" placeholder="Enter Phone Number" value = '<%= User.phoneNumber %>' required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="email">Email Address</label>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                <input type="email" name="email" id="email" class="form-control input-lg" placeholder="Enter Email" value = '<%= User.username %>' required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="address">Address</label>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
-                <input type="text" name="apartment" id="apartment" class="form-control input-lg" placeholder="Flat / Apartment" required>
-                <input type="text" name="street" id="street" class="form-control input-lg" placeholder="Street" required>
-                <input type="text" name="city" id="city" class="form-control input-lg" placeholder="City" required>
-                <input type="text" name="pincode" id="pincode" class="form-control input-lg" placeholder="Pincode" required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-lg submit-button responsive-button" onclick= "validateOrder()">Submit</button>
-            <button type="reset" class="btn btn-default btn-lg clear-button responsive-button">Clear</button>    
-        </div>
-    </form>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+        <input type="text" name="name" id="name" class="form-control input-lg" placeholder="Enter Name" value='<%= User.name %>' required>
+      </div>
     </div>
 
-<% include ../partials/footer%>
+    <div class="form-group">
+      <label for="phone-number">Phone Number</label>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+        <input type="text" name="phone-number" id="phone-number" class="form-control input-lg" minlength="1" maxlength="10" placeholder="Enter Phone Number" value='<%= User.phoneNumber %>' required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+        <input type="email" name="email" id="email" class="form-control input-lg" placeholder="Enter Email" value='<%= User.username %>' required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="address">Address</label>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+        <input type="text" name="apartment" id="apartment" class="form-control input-lg" placeholder="Flat / Apartment" required>
+        <input type="text" name="street" id="street" class="form-control input-lg" placeholder="Street" required>
+        <input type="text" name="city" id="city" class="form-control input-lg" placeholder="City" required>
+        <input type="text" name="pincode" id="pincode" class="form-control input-lg" placeholder="Pincode" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary btn-lg submit-button responsive-button" onclick="validateOrder()">Submit</button>
+      <button type="reset" class="btn btn-default btn-lg clear-button responsive-button">Clear</button>
+    </div>
+  </form>
+</div>
+
+<%-include('../partials/footer')%>
+
+

@@ -1,45 +1,45 @@
 <header>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span> 
-            </button>
-            <a class="navbar-brand" href="/"><i class="fa fa-cutlery"></i> &nbsp; TopFoods</a>
-            </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
-            <li><a href="/" id="home">Home</a></li>
-            <li><a href="/menu" id="menu">Menu</a></li>
-            <li><a href="/aboutus" id="about-us">About Us</a></li>
-            <li><a href="/contactus" id="contact-us">Contact Us</a></li>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"><i class="fa fa-cutlery"></i> &nbsp; TopFoods</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li><a href="/" id="home">Home</a></li>
+          <li><a href="/menu" id="menu">Menu</a></li>
+          <li><a href="/aboutus" id="about-us">About Us</a></li>
+          <li><a href="/contactus" id="contact-us">Contact Us</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <% if(!user) {%>
+          <li><a href="/signup" id="signup"><i class="fa fa-user-plus"></i> Sign Up </a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="signin"> Sign In <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/signin"><i class="fa fa-sign-in"></i> User Sign In </a></li>
+              <li><a href="/admin/login"><i class="fa fa-sign-in"></i> Admin Sign In </a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <% if(!user) {%>
-                <li><a href="/signup" id="signup"><i class="fa fa-user-plus"></i> Sign Up </a></li> 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="signin"> Sign In <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/signin" ><i class="fa fa-sign-in"></i> User Sign In </a></li>
-                        <li><a href="/admin/login"><i class="fa fa-sign-in"></i> Admin Sign In </a></li>
-                    </ul>
-                </li>
-                <% } else { %>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="user"> <i class="fa fa-user"></i>  <%= user.name %> <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/update-profile" id='update-profile'><i class="fa fa-pencil"></i> Update Profile </a></li>
-                        <li><a href="/change-password" id='change-password'><i class="fa fa-key"></i> Change Password </a></li>
-                        <li><a href="/cart" id='cart'><i class="fa fa-cart-arrow-down"></i> Cart </a></li>
-                        <li><a href="/order" id='order'><i class="fa fa-shopping-cart"></i> Order </a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/signout" id='signout'><i class="fa fa-sign-out" ></i> Sign Out </a></li>                    
-                    </ul>
-                </li>
-                <% } %>
+          </li>
+          <% } else { %>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="user"> <i class="fa fa-user"></i> <%= user.name %> <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/update-profile" id='update-profile'><i class="fa fa-pencil"></i> Update Profile </a></li>
+              <li><a href="/change-password" id='change-password'><i class="fa fa-key"></i> Change Password </a></li>
+              <li><a href="/cart" id='cart'><i class="fa fa-cart-arrow-down"></i> Cart </a></li>
+              <li><a href="/order" id='order'><i class="fa fa-shopping-cart"></i> Order </a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="/signout" id='signout'><i class="fa fa-sign-out"></i> Sign Out </a></li>
             </ul>
-        </div>
-    </nav>
+          </li>
+          <% } %>
+        </ul>
+      </div>
+  </nav>
 </header>

@@ -1,55 +1,55 @@
 <div id="food-items">
 
-    <% var foodArr = ['Chicken','Seafood','Appetizers','Rice','Bread','Vegetable','Beverage','Dessert'];
+  <% var foodArr = ['Chicken','Seafood','Appetizers','Rice','Bread','Vegetable','Beverage','Dessert'];
     foodArr.forEach(function(category){ %>
 
-    <div id="<%=category%>" class="row">
-    
+  <div id="<%=category%>" class="row">
+
     <% Foods.forEach(function(food,index){ %>
 
-        <% if(food.Category === category){ %>
+    <% if(food.Category === category){ %>
 
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                <div class="row Item">
-                    <div class="thumbnail">
-                        <img src="<%= food.ImagePath %>" alt="<%= food.Name %>" class="img-thumbnail img-responsive">
-                        <div class="caption">
-                            <p class="Title"><strong> <%= food.Name %> </strong></p>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <p class="Description"> <%= food.Description %> </p>
-                        <p class="Price"> <strong> &nbsp <%= food.Price %> &#8360  </strong>  </p>
-                        <form class="add-to-cart-form">
-                        <button class="btn btn-primary add-to-cart" onclick='toggleCart(event,"<%= food.Name %>")'>
-                            
-                            <% if(typeof cartItems!=='undefined' && cartItems.length > 0){ %>
-                                <% var flag = false;%>
-                                <% for(var i=0;i<cartItems.length;i++){%>
-                                    <% if(cartItems[i].Name === food.Name ){%>
-                                        <% flag = true; %>
-                                        <% break; %>
-                                    <% } %>
-                                <% } %>
-                                    <% if(flag === true ){ %>
-                                        Remove from Cart
-                                    <% } else {%>
-                                        Add to Cart
-                                    <% } %>
-                            <% } else { %>
-                                Add to Cart
-                            <% } %>
-                        
-                        </button>
-                        </form>
-                    </div>
-                </div> 
-            </div>
-        <% } %>
-            
-        <% }); %>
-        </div>        
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="row Item">
+        <div class="thumbnail">
+          <img src="<%= food.ImagePath %>" alt="<%= food.Name %>" class="img-thumbnail img-responsive">
+          <div class="caption">
+            <p class="Title"><strong> <%= food.Name %> </strong></p>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <p class="Description"> <%= food.Description %> </p>
+          <p class="Price"> <strong> &nbsp <%= food.Price %> &#8360 </strong> </p>
+          <form class="add-to-cart-form">
+            <button class="btn btn-primary add-to-cart" onclick='toggleCart(event,"<%= food.Name %>")'>
 
-    <% });%>
+              <% if(typeof cartItems!=='undefined' && cartItems.length > 0){ %>
+              <% var flag = false;%>
+              <% for(var i=0;i<cartItems.length;i++){%>
+              <% if(cartItems[i].Name === food.Name ){%>
+              <% flag = true; %>
+              <% break; %>
+              <% } %>
+              <% } %>
+              <% if(flag === true ){ %>
+              Remove from Cart
+              <% } else {%>
+              Add to Cart
+              <% } %>
+              <% } else { %>
+              Add to Cart
+              <% } %>
+
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <% } %>
+
+    <% }); %>
+  </div>
+
+  <% });%>
 
 </div>

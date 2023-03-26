@@ -1,50 +1,50 @@
-<% include ../partials/header %>
+<%-include('../partials/header')%>
 
-<% include ../partials/navigation %>
+
+<%-include('../partials/navigation')%>
 
 <div class="container">
 
-<% include ../partials/_messages %>
+  <%-include('../partials/_messages')%>
+  <table class="table table-condensed table-striped">
+    <thead>
 
-    <table class="table table-condensed table-striped">
-            <thead>
-                
-                <th class="col-xs-8"> Food Item</th>
-                <th class="col-xs-2"> Quantity </th>
-                <th class="col-xs-1"> Price </th>
-                <th class="col-xs-1">Total</th>
+      <th class="col-xs-8"> Food Item</th>
+      <th class="col-xs-2"> Quantity </th>
+      <th class="col-xs-1"> Price </th>
+      <th class="col-xs-1">Total</th>
 
-            </thead>
-            <tbody>
+    </thead>
+    <tbody>
 
-    <%items.forEach(function(current){ %>
-        <tr class="item">
-            <td>
-                <img src="<%=current.item.ImagePath%>" class="food-image" alt="<%=current.item.Name%>">
-                <h4 class='food-name'> <%=current.item.Name%> </h4>
-            </td>
-                
-            <td>
+      <%items.forEach(function(current){ %>
+      <tr class="item">
+        <td>
+          <img src="<%=current.item.ImagePath%>" class="food-image" alt="<%=current.item.Name%>">
+          <h4 class='food-name'> <%=current.item.Name%> </h4>
+        </td>
 
-                <span> <%=current.quantity%> </span> 
+        <td>
 
-            </td>
-            
-            <td>
-                <span class='food-price'> <%=current.item.Price%> </span> &#8360
-            </td>
+          <span> <%=current.quantity%> </span>
 
-            <td>
-                <span class="total-price"><%= parseInt(current.item.Price) * parseInt(current.quantity) %></span> &#8360 
-            </td>
+        </td>
 
-        </tr>
-    <% });%>
+        <td>
+          <span class='food-price'> <%=current.item.Price%> </span> &#8360
+        </td>
+
+        <td>
+          <span class="total-price"><%= parseInt(current.item.Price) * parseInt(current.quantity) %></span> &#8360
+        </td>
+
+      </tr>
+      <% });%>
     </tbody>
-    </table>
+  </table>
 
-    <p> Grand Total  = <span id="grand-total"> <%=grandTotal%></span> </p>
+  <p> Grand Total = <span id="grand-total"> <%=grandTotal%></span> </p>
 </div>
 
 
-<% include ../partials/footer %>
+<%-include('../partials/footer')%>

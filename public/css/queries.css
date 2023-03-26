@@ -1,142 +1,135 @@
 /*Big tablet to 1200px (widths smaller than the 1140px row)*/
-@media only screen and (max-width: 1200px){
+@media only screen and (max-width: 1200px) {
+  /* ------------------------------------------------ */
+  /* -------------------  Common   ---------------- */
+  /* ------------------------------------------------ */
 
-    /* ------------------------------------------------ */
-    /* -------------------  Common   ---------------- */
-    /* ------------------------------------------------ */
+  .responsive-form {
+    width: 40%;
+    margin: 30px auto;
+  }
 
-    .responsive-form {
-        width: 40%;
-        margin: 30px auto;
-    }
+  .responsive-button {
+    width: 35%;
+    margin: 10px 20px;
+  }
 
-    .responsive-button {
-        width: 35%;
-        margin: 10px 20px;
-    }
-    
-    /* ------------------------------------------------ */
-    /* -------------------  INDEX  -------------------- */
-    /* ------------------------------------------------ */
+  /* ------------------------------------------------ */
+  /* -------------------  INDEX  -------------------- */
+  /* ------------------------------------------------ */
 
-    a.btn.main-button:link ,
-    a.btn.main-button:visited {
-        width: 25%;
-    }
+  a.btn.main-button:link,
+  a.btn.main-button:visited {
+    width: 25%;
+  }
 
-    div.jumbotron.vertical-center  h1 {
-        font-size: 2em;
-    }
+  div.jumbotron.vertical-center h1 {
+    font-size: 2em;
+  }
 
-    div.jumbotron.vertical-center  h3 {
-        font-size: 1.4em;
-    }
-
+  div.jumbotron.vertical-center h3 {
+    font-size: 1.4em;
+  }
 }
 
 /*Small tablet to big tablet:from 768px to 1023px*/
-@media only screen and (max-width: 1023px){
+@media only screen and (max-width: 1023px) {
+  /* ------------------------------------------------ */
+  /* -------------------  Common   ---------------- */
+  /* ------------------------------------------------ */
 
-    /* ------------------------------------------------ */
-    /* -------------------  Common   ---------------- */
-    /* ------------------------------------------------ */
+  .responsive-form {
+    width: 40%;
+    margin: 30px auto;
+  }
 
-    .responsive-form {
-        width: 40%;
-        margin: 30px auto;
-    }
-    
-    .responsive-button {
-        width: 35%;
-        margin: 10px 20px;
-    }
+  .responsive-button {
+    width: 35%;
+    margin: 10px 20px;
+  }
 
-    /* ------------------------------------------------ */
-    /* -------------------  INDEX  -------------------- */
-    /* ------------------------------------------------ */
+  /* ------------------------------------------------ */
+  /* -------------------  INDEX  -------------------- */
+  /* ------------------------------------------------ */
 
-    a.btn.main-button:link ,
-    a.btn.main-button:visited {
-        width: 25%;
-    }
+  a.btn.main-button:link,
+  a.btn.main-button:visited {
+    width: 25%;
+  }
 
-    div.jumbotron.vertical-center  h1 {
-        font-size: 2em;
-    }
+  div.jumbotron.vertical-center h1 {
+    font-size: 2em;
+  }
 
-    div.jumbotron.vertical-center  h3 {
-        font-size: 1.4em;
-    }
+  div.jumbotron.vertical-center h3 {
+    font-size: 1.4em;
+  }
 }
 
-
 /*Small phones to small tablets: from 481px to 767px*/
-@media only screen and (max-width: 767px){
+@media only screen and (max-width: 767px) {
+  /* ------------------------------------------------ */
+  /* -------------------  Common   ---------------- */
+  /* ------------------------------------------------ */
 
-    /* ------------------------------------------------ */
-    /* -------------------  Common   ---------------- */
-    /* ------------------------------------------------ */
+  .responsive-form {
+    width: 50%;
+    margin: 30px auto;
+  }
 
-    .responsive-form {
-        width: 50%;
-        margin: 30px auto;
-    }
-    
-    .responsive-button {
-        width: 40%;
-        margin: 10px;
-    }
+  .responsive-button {
+    width: 40%;
+    margin: 10px;
+  }
 
-    /* ------------------------------------------------ */
-    /* -------------------  INDEX  -------------------- */
-    /* ------------------------------------------------ */
+  /* ------------------------------------------------ */
+  /* -------------------  INDEX  -------------------- */
+  /* ------------------------------------------------ */
 
-    a.btn.main-button:link ,
-    a.btn.main-button:visited {
-        width: 30%;
-    }
+  a.btn.main-button:link,
+  a.btn.main-button:visited {
+    width: 30%;
+  }
 
-    div.jumbotron.vertical-center  h1 {
-        font-size: 1.8em;
-    }
+  div.jumbotron.vertical-center h1 {
+    font-size: 1.8em;
+  }
 
-    div.jumbotron.vertical-center  h3 {
-        font-size: 1.2em;
-    }
-
+  div.jumbotron.vertical-center h3 {
+    font-size: 1.2em;
+  }
 }
 
 /* Small phones: from 0 to 480px */
-@media only screen and (max-width: 480px){
+@media only screen and (max-width: 480px) {
+  /* ------------------------------------------------ */
+  /* -------------------  Common   ---------------- */
+  /* ------------------------------------------------ */
 
-    /* ------------------------------------------------ */
-    /* -------------------  Common   ---------------- */
-    /* ------------------------------------------------ */
+  .responsive-form {
+    width: 80%;
+    margin: 30px 20px;
+  }
 
-    .responsive-form {
-        width: 80%;
-        margin: 30px 20px;
-    }
-    
-    .responsive-button {
-        width: 40%;
-        margin: 12px;
-    }
+  .responsive-button {
+    width: 40%;
+    margin: 12px;
+  }
 
-    /* ------------------------------------------------ */
-    /* -------------------  INDEX  -------------------- */
-    /* ------------------------------------------------ */
+  /* ------------------------------------------------ */
+  /* -------------------  INDEX  -------------------- */
+  /* ------------------------------------------------ */
 
-    a.btn.main-button:link ,
-    a.btn.main-button:visited {
-        width: 40%;
-    }
+  a.btn.main-button:link,
+  a.btn.main-button:visited {
+    width: 40%;
+  }
 
-    div.jumbotron.vertical-center  h1 {
-        font-size: 1.8em;
-    }
+  div.jumbotron.vertical-center h1 {
+    font-size: 1.8em;
+  }
 
-    div.jumbotron.vertical-center  h3 {
-        font-size: 1.2em;
-    }
+  div.jumbotron.vertical-center h3 {
+    font-size: 1.2em;
+  }
 }

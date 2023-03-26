@@ -1,49 +1,47 @@
-<% include ../partials/header%>
+<%-include('../partials/header')%>
 
-<% include ../partials/navigation%>
 
+<%-include('../partials/navigation')%>
 
 <section>
-        <div class="container menu-form">
+  <div class="container menu-form">
 
-        <% include ../partials/_messages %>
-
-        <nav class="navbar navbar-inverse">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#category" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-            
-                <div class="collapse navbar-collapse" id="category">
-                    <ul class="nav navbar-nav category-choice">
-                        
-                        <li><a id="chicken">Chicken</a></li>
-                        <li><a id="seafood">Seafood</a></li>
-                        <li><a id="appetizers">Appetizers</a></li>
-                        <li><a id="rice">Rice</a></li>
-                        <li><a id="bread">Bread</a></li>
-                        <li><a id="vegetable">Vegetable</a></li>
-                        <li><a id="beverage">Beverage</a></li>
-                        <li><a id="dessert">Dessert</a></li>
-
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-            <hr>
-
-            <% include ../partials/menu-item %>
-
+    <%-include('../partials/_messages')%>
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#category" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
         </div>
 
-    </div>
+        <div class="collapse navbar-collapse" id="category">
+          <ul class="nav navbar-nav category-choice">
+
+            <li><a id="chicken">Chicken</a></li>
+            <li><a id="seafood">Seafood</a></li>
+            <li><a id="appetizers">Appetizers</a></li>
+            <li><a id="rice">Rice</a></li>
+            <li><a id="bread">Bread</a></li>
+            <li><a id="vegetable">Vegetable</a></li>
+            <li><a id="beverage">Beverage</a></li>
+            <li><a id="dessert">Dessert</a></li>
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <hr>
+
+    <%-include('../partials/menu-item') %>
+
+  </div>
+
+  </div>
 </section>
 
-<% include ../partials/footer%>
-
+<%-include('../partials/footer')%>
