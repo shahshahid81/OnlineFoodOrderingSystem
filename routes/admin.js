@@ -23,8 +23,9 @@ router.post(
 );
 
 router.get("/logout", function (req, res) {
-  req.logout();
-  res.redirect("/admin/login");
+  req.logout(() => {
+    res.redirect("/admin/login");
+  });
 });
 
 router.get("/", middleware.isAdminLoggedIn, async function (req, res) {

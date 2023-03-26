@@ -53,12 +53,12 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(async function (id, done) {
   try {
-    const user = User.findById(id);
+    const user = await User.findById(id);
     if (user) {
       return done(null, user);
     }
 
-    const admin = Admin.findById(id);
+    const admin = await Admin.findById(id);
     done(null, admin);
   } catch (error) {
     done(error);

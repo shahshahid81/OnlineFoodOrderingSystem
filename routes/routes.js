@@ -184,8 +184,9 @@ router.post("/cart", middleware.isLoggedIn, async function (req, res) {
 });
 
 router.get("/signout", function (req, res) {
-  req.logout();
-  res.redirect("/menu");
+  req.logout(() => {
+    res.redirect("/menu");
+  });
 });
 
 router.get("/aboutus", function (req, res) {
@@ -254,19 +255,15 @@ router.post(
 router.post("/order", middleware.isLoggedIn, async function (req, res) {
   const orderItems = JSON.parse(req.query.items);
 
-  const savedUser = savedUsers.find(
-    (element) => element.user === req.user.username
-  );
-
-  if (typeof savedUser === "undefined" || typeof orderItems === "undefined") {
+  if (typeof orderItems === "undefined") {
     req.flash("error", "Please Enter items in the cart");
-    res.redirect("/menu");
+    return res.redirect("/menu");
   } else if (typeof orderItems.items === "undefined") {
     req.flash("error", "Please Enter items in the cart");
-    res.redirect("/menu");
+    return res.redirect("/menu");
   } else if (orderItems.items.length === 0) {
     req.flash("error", "Please Enter items in the cart");
-    res.redirect("/menu");
+    return res.redirect("/menu");
   } else {
     const foodToFind = orderItems.items.map((item) => item._id);
     const foundItems = await Food.find({ _id: { $in: foodToFind } });
@@ -284,10 +281,9 @@ router.post("/order", middleware.isLoggedIn, async function (req, res) {
     });
 
     const savedOrder = { items: savedOrderItems, grandTotal: orderItems.total };
-    savedUser.order = savedOrder;
+    req.user.order = savedOrder;
 
-    const foundUser = User.findOne({ username: savedUser.user });
-    res.render("user/order", { User: foundUser });
+    res.render("user/order", { User: req.user });
   }
 });
 
@@ -318,9 +314,7 @@ router.get("/order/:id", middleware.isLoggedIn, async function (req, res) {
     );
 
     const items = foundItems.map((foundItem) => {
-      const order = order.items.find(
-        (orderItem) => orderItem._id === item._id
-      );
+      const order = order.items.find((orderItem) => orderItem._id === item._id);
 
       return {
         item: foundItem,
